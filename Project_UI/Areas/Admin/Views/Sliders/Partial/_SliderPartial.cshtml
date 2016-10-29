@@ -1,0 +1,42 @@
+﻿@model Project_Entity.Slider
+
+<div class="col-lg-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            @if (Model != null)
+            {
+                <h5> City Edit Table</h5>
+            }
+            else
+            {
+                <h5> City Insert Table</h5>
+            }
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-6">
+                    <form method="post" enctype="multipart/form-data" action="#">
+                        @Html.LabelFor(x => x.Header)
+                        @Html.TextBoxFor(x => x.Header, new { @class = "form-control" })
+                        @Html.LabelFor(x => x.Text)
+                        @Html.TextBoxFor(x => x.Text, new { @class = "form-control" })
+                        @Html.LabelFor(x => x.SubText)
+                        @Html.TextBoxFor(x => x.SubText, new { @class = "form-control" })
+
+                        <br />
+
+                        <button type="submit" value="Save" class="btn btn-xs btn-success btn-xs radius-4">
+                            <i class="ace-icon fa fa-floppy-o bigger-160"></i>
+                            Save
+                        </button>
+                        <a href="/Admin/Sliders/Index" class="btn btn-xs btn-info btn-xs radius-4"><i class="ace-icon fa fa-undo bigger-150"> Previous</i></a>
+                </div>
+                <!-- /.col-lg-6 (nested) -->
+            </div>
+            <!-- /.row (nested) -->
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+</div>
+<!-- /.col-lg-12 -->

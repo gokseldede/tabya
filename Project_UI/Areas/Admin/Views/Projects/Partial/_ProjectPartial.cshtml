@@ -1,0 +1,147 @@
+﻿
+
+@model Project_Entity.Project
+
+<div class="col-lg-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            @if (Model != null)
+            {
+                <h5> Proje Düzenleme</h5>
+            }
+            else
+            {
+                <h5> Proje Ekleme</h5>
+            }
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-6">
+                    @*<script type="text/javascript">
+                        $(function () {
+                            $('#datetimepicker10').datetimepicker({
+                                viewMode: 'years',
+                                format: 'MM/YYYY'
+                            });
+                        });
+                    </script>*@
+                    <form method="post" enctype="multipart/form-data" action="#">
+                        <label>Proje Adı :</label>
+                        @Html.TextBoxFor(x => x.Name, new { @class = "form-control", @placeholder = "Örn : Maslak 1453" })
+                        <label>Proje Açıklaması :</label>
+                        @Html.TextAreaFor(x => x.Description, new { @class = "form-control", @id = "content" })
+                        <label>Proje Firması :</label>
+                        @Html.TextBoxFor(x => x.SubName, new { @class = "form-control", @placeholder = "Örn : Ağaoğlu" })
+                        <label>Proje Lokasyonu :</label>
+                        @Html.TextBoxFor(x => x.SSubName, new { @class = "form-control", @placeholder = "Örn: Ataşehir" })
+                        <label>Proje Alanı :</label>
+                        @Html.TextBoxFor(x => x.ProjectA, new { @class = "form-control", @placeholder = "Örn : 12.500 " })
+                        <label>Proje Konut Sayısı :</label>
+                        @Html.TextBoxFor(x => x.HouseN, new { @class = "form-control", @placeholder = "Örn : 25" })
+
+                        <label>Proje Teslim Tarihi :</label>
+                        @Html.TextBoxFor(x => x.DeliveryDate, new { @class = "form-control", @id = "datetimepicker4" })
+                        <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker4').datetimepicker();
+            });
+                        </script>
+
+                        <label>Proje Danışman Adı :</label>
+                        @Html.DropDownListFor(x => x.ExpertID, ViewData["Expert"] as IEnumerable<SelectListItem>, "Danışman Seçiniz", new { @class = "form-control" })
+
+                        <label>İlan Özellikleri:</label> <br />
+
+                        @Html.DropDownList("tags", ViewBag.tags as IList<SelectListItem>, new { @multiple = "multiple", @class = "dropdown-menu", @id = "tags" })
+                        <br />
+                        <label>İlan Sosyal Alan Özellikleri:</label> <br />
+
+                        @Html.DropDownList("socials", ViewBag.socials as IList<SelectListItem>, new { @multiple = "multiple", @class = "dropdown-menu", @id = "socials" })
+
+                        <br />
+                        <label>İlan Güvenlik Özellikleri:</label> <br />
+
+                        @Html.DropDownList("securitys", ViewBag.securitys as IList<SelectListItem>, new { @multiple = "multiple", @class = "dropdown-menu", @id = "securitys" })
+                        <br />
+                        <label>Proje Tanıtım Videosu :</label>
+                        @Html.TextBoxFor(x => x.Video, new { @class = "form-control", @placeholder = "https://www.youtube.com/watch?v=bEPgGIwJIo8" })
+                        <br />
+                        <br />
+                        @Html.Label("Lütfen yüksek çözünürlüklü ya da 393x303 ebatlarında önizleme resmi yükleyiniz!")
+                        @if (Model != null)
+                        {
+                            <input type="file" id="document" name="document" />
+                            <hr />
+                            <img src="@Url.Content(@Model.ImagePath)" width="50" height="50" />
+
+                        }
+                        else
+                        {
+                            <input type="file" id="document" name="document" required="Lütfen resim yükleyiniz"/>
+
+                        }
+                        <br />
+                        @Html.Label("Lütfen fiyat listesi için resim yükleyiniz!")
+                        @if (Model != null)
+                        {
+                            <input type="file" id="pricelist" name="pricelist" />
+                            <hr />
+                            <img src="@Url.Content(@Model.PriceList)" width="50" height="50" />
+
+                        }
+                        else
+                        {
+                            <input type="file" id="pricelist" name="pricelist" required="Lütfen resim yükleyiniz"/>
+
+                        }
+
+                        <br />
+                        <div class="form-group">
+                            @Html.Label("Lütfen galeri için resim yükleyiniz!")
+                            <br />
+                            @Html.Label("Choose Image(s)", new { @class = "control-label col-sm-3" })
+                            <div class="col-sm-5">
+                                @if (Model != null)
+                                {
+                                    <input type="file" id="file" name="files" multiple="multiple" />
+                                }
+                                else
+                                {
+                                    <input type="file" id="file" name="files" multiple="multiple" required="Lütfen resim yükleyiniz"/>
+
+                                }
+                                <hr />
+                                <ul class="attachment">
+                                    @if (Model != null)
+                                    {
+                                        foreach (var item in Model.ProjectFiles)
+                                        {
+                                            <li>
+                                                <img src="~/Areas/Admin/Content/Image/@item.Id@item.Extension" width="60" height="60" />
+                                                <a href="javascript:void(0);" data-id="@item.Id" class="deleteItemp" name="deleteItem" onclick="deleteItemp('/Admin/Projects/DeleteFile/'@item.Id)">X</a>
+                                            </li>
+                                        }
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+
+                        <button type="submit" value="Save" class="btn btn-xs btn-success btn-xs radius-4">
+                            <i class="ace-icon fa fa-floppy-o bigger-160"></i>
+                            Kaydet
+                        </button>
+                        <a href="/Admin/Projects/Index" class="btn btn-xs btn-info btn-xs radius-4"><i class="ace-icon fa fa-undo bigger-150"> Önceki Sayfa</i></a>
+                    </form>
+
+                </div>
+                <!-- /.col-lg-6 (nested) -->
+            </div>
+            <!-- /.row (nested) -->
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+</div>
+<!-- /.col-lg-12 -->

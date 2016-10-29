@@ -1,0 +1,279 @@
+﻿@model Project_UI.Models.ProjectVM.ProjectClass
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_SiteLayout.cshtml";
+
+    string[] adres;
+    adres = Model.Land.Location.Split(',');
+    string semt = adres[0];
+    string ilce = adres[2].Substring(6).Replace("/", ",");
+
+    string lokasyon = semt;
+}
+
+<section class="section ilan-detay">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="gallery wow fadeInUp" data-wow-duration="1s">
+                    @*@Html.Partial("Partial/_ImagePartial")*@
+                    @if (Model.LandFileDetails != null)
+                    {
+                        <div class="galleryBig">
+                            @foreach (var item in Model.LandFileDetails)
+                            {
+                                <div class="item cbp-item">
+
+                                    <a class="cbp-lightbox" data-title="ilk1" data-lightbox="roadtrip" href="~/Areas/Admin/Content/Image/@item.Id@item.Extension">
+
+                                        <img src="~/Areas/Admin/Content/Image/@item.Id@item.Extension" height="546" width="817" alt="ev">
+                                    </a>
+                                </div>
+                            }
+
+                        </div>
+                        <div class="gallerySmall">
+                            @foreach (var item in Model.LandFileDetails)
+                            {
+                                <div class="item">
+                                    <img src="~/Areas/Admin/Content/Image/@item.Id@item.Extension" height="83" width="125" alt="ev">
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+
+                @*@Html.Partial("Partial/_DetayPartial", Model.Lands)*@
+
+                <div class="box info wow fadeInUp" data-wow-duration="1s">
+                    @if (Model.Land.Name != null)
+                    {
+                        <div class="title">
+                            <h2>@Model.Land.Name</h2>
+                        </div>
+                    }
+                    <div class="item">
+                        <!-- addClass kiralik  -->
+                        <div class="row">
+                            @if (Model.Land.StatusID != null)
+                            {
+                                <div class="col-xs-6"><span class="type">@Model.Land.Status.Name</span></div>
+                            }
+                            @if (Model.Land.Price != null)
+                            {
+                                <div class="col-xs-6"><span class="price">@Model.Land.Price @Model.Land.Kurlar.Name</span></div>
+                            }  </div>
+                        <div class="row">
+                            @if (Model.Land.Location != null)
+                            {
+                                <div class="col-md-12 location">
+                                    <p><i class="fa fa-map-marker"></i> @lokasyon </p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="item">
+                        @if (Model.Land.ExpertID != null)
+                        {
+                            <div class="user-img">
+                                <img src="@Model.Land.Expert.ImagePath" width="65" height="65" alt="Necmi Körük">
+                            </div>
+
+                            <ul class="contact-list">
+                                <li><i class="fa fa-user"></i> <strong>@Model.Land.Expert.Name</strong> - @Model.Land.Expert.Title</li>
+                                <li><i class="fa fa-phone"></i> <a href="tel:@Model.Land.Expert.PhoneNumber">@Model.Land.Expert.PhoneNumber</a></li>
+                                <li><i class="fa fa-envelope"></i> <a href="mailto:@Model.Land.Expert.Email">@Model.Land.Expert.Email</a></li>
+                            </ul>
+                        }
+                    </div>
+                    <div class="item info-list">
+                        @if (Model.Land.CreatedDate != null)
+                        {
+                            <div class="row">
+                                <div class="col-xs-6"><strong>İlan Tarihi</strong></div>
+                                <div class="col-xs-6">@Model.Land.CreatedDate.ToString("dd/MM/yyyy")</div>
+                            </div>
+                        }
+                        @*@if (Model.Land.EmlakTipID != null)
+                        {
+                            <div class="row">
+                                <div class="col-xs-6"><strong>Emlak Tipi</strong></div>
+                                <div class="col-xs-6">@Model.Land.EmlakTip.Name</div>
+                            </div>
+                        }*@
+
+                        @if (Model.Land.Size != null)
+                        {
+                            <div class="row">
+                                <div class="col-xs-6"><strong>m2</strong></div>
+                                <div class="col-xs-6">@Model.Land.Size</div>
+                            </div>
+                        }
+                        @if (Model.Land.SizePrice != null)
+                        {
+                            <div class="row">
+                                <div class="col-xs-6"><strong>m2 Fiyat</strong></div>
+                                <div class="col-xs-6">@Model.Land.SizePrice TL</div>
+                            </div>
+                        }
+                      @if (Model.Land.AdaNo != null)
+                      {
+                        <div class="row">
+                            <div class="col-xs-6"><strong>Ada No</strong></div>
+                            <div class="col-xs-6">@Model.Land.AdaNo</div>
+                        </div>
+                      }
+                      @if (Model.Land.Gabari != null)
+                      {
+                        <div class="row">
+                            <div class="col-xs-6"><strong>Gabari</strong></div>
+                            <div class="col-xs-6">@Model.Land.Gabari</div>
+                        </div>
+                      }
+                      @if (Model.Land.ImarID != null)
+                      {
+                        <div class="row">
+                                <div class="col-xs-6"><strong>İmar</strong></div>
+                                <div class="col-xs-6">@Model.Land.Imar.Name</div>
+                            </div>
+                      }
+                       @if (Model.Land.Kaks != null)
+                       {
+                        <div class="row">
+                            <div class="col-xs-6"><strong>Kaks</strong></div>
+                            <div class="col-xs-6">@Model.Land.Kaks</div>
+                        </div>
+                       }
+                      @if (Model.Land.KatKarsiligi != null)
+                      {
+                        <div class="row">
+                            <div class="col-xs-6"><strong>Kat Karşılığı</strong></div>
+                            <div class="col-xs-6">@Model.Land.KatKarsiligi</div>
+                        </div>
+                      }
+                        @if (Model.Land.ParselNo != null)
+                        {
+                            <div class="row">
+                                <div class="col-xs-6"><strong>Parsel No</strong></div>
+                                <div class="col-xs-6">@Model.Land.ParselNo</div>
+                            </div>
+                        }
+                        @if (Model.Land.PaftaNo != null)
+                        {
+                            <div class="row">
+                                <div class="col-xs-6"><strong>Pafta No</strong></div>
+                                <div class="col-xs-6">@Model.Land.PaftaNo</div>
+                            </div>
+                        }
+                       @if (Model.Land.StatusID != null)
+                       {
+                        <div class="row">
+                            <div class="col-xs-6"><strong>Emlak Durumu</strong></div>
+                            <div class="col-xs-6">@Model.Land.Status.Name.ToUpper()</div>
+                        </div>
+                       }
+                       @if (Model.Land.Takas != null)
+                       {
+                        <div class="row">
+                            <div class="col-xs-6"><strong>Takas Durumu</strong></div>
+                            <div class="col-xs-6">@Model.Land.Takas</div>
+                        </div>
+                       }
+                      @if (Model.Land.Tapu != null)
+                      {
+                        <div class="row">
+                            <div class="col-xs-6"><strong>Tapu Durumu</strong></div>
+                            <div class="col-xs-6">@Model.Land.Tapu </div>
+                        </div>
+                      }
+                       @if (Model.Land.KrediID != null)
+                       {
+                        <div class="row">
+                            <div class="col-xs-6"><strong>Krediye Uygun</strong></div>
+                            <div class="col-xs-6">@Model.Land.Kredi.Name.ToUpper()</div>
+                        </div>
+                       }
+                        
+                    </div>
+                </div>
+                <div class="box details proje-tab wow fadeInUp" data-wow-duration="1s">
+                    <div class="tab-menu">
+                        <ul>
+                            <li class="active" rel="aciklama"><a href="#">AÇIKLAMA</a></li>
+                           @* <li rel="ozellikler"><a href="#">ÖZELLİKLER</a></li>*@
+                        </ul>
+                    </div>
+                    <div id="aciklama" class="tab_content">
+                        <article class="article">
+                            @if (Model.Land.Description != null)
+                            {
+                                <p>
+                                    @Html.Raw(Model.Land.Description)
+                                </p>
+                            }
+                        </article>
+                    </div>
+                    @* Properties alanı *@
+                    @*   @Html.Partial("Partial/_PropertiesPartial",Model.AdProps)*@
+
+                    @*<div id="ozellikler" class="tab_content">
+                        <div class="title">
+                            <h2>SOSYAL TESİSLER</h2>
+                        </div>
+                        <div class="list">
+                            <div class="row">
+                                <div class="row">
+                                    @if (Model.Land.socialapps != null)
+                                    {
+                                        foreach (var item in Model.Land.socialapps.Substring(0, Model.Land.socialapps.Length - 1).Split(','))
+                                        {
+                                            <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text">@item.ToString()</span></div>
+                                        }
+                                    }
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="title">
+                            <h2>GÜVENLİK</h2>
+                        </div>
+
+                        <div class="list">
+                            <div class="row">
+                                <div class="row">
+                                    @if (Model.Land.securitys != null)
+                                    {
+                                        foreach (var item in Model.Land.securitys.Substring(0, Model.Land.securitys.Length - 1).Split(','))
+                                        {
+                                            <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text">@item.ToString()</span></div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="title">
+                            <h2>GENEL ÖZELLİKLER</h2>
+                        </div>
+
+                        <div class="list">
+                            <div class="row">
+                                <div class="row">
+                                    @if (Model.Land.properties != null)
+                                    {
+                                        foreach (var item in Model.Land.properties.Substring(0, Model.Land.properties.Length - 1).Split(','))
+                                        {
+                                            <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text">@item.ToString()</span></div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>*@
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</section>

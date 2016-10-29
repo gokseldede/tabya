@@ -1,0 +1,25 @@
+﻿@model List<Project_Entity.FileDetail>
+
+    <div class="galleryBig">
+        @foreach (var item in Model)
+        {
+            <div class="item cbp-item">
+
+                <a class="cbp-lightbox" data-title="ilk1" data-lightbox="roadtrip" href="~/Areas/Admin/Content/Image/@item.Id@item.Extension">
+
+                    <img src="~/Areas/Admin/Content/Image/@item.Id@item.Extension" height="546" width="817" alt="ev">
+                </a>
+            </div>
+        }
+
+    </div>
+    <div class="gallerySmall">
+        @foreach (var item in Model)
+        {
+            <div class="item">
+                <img src="~/Areas/Admin/Content/Image/@item.Id@item.Extension" height="83" width="125" alt="ev">
+            </div>
+        }
+    </div>
+    
+

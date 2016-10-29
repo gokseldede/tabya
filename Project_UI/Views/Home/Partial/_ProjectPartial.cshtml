@@ -1,0 +1,34 @@
+﻿@model List<Project_Entity.Project>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 title">
+            <h2>PROJELER</h2>
+            <p>Hayalini kurduğunuz eve ulaşmak çok kolay! Hemen istediğiniz kriterlerdeki evi aratın, uzmanlarımızdan yardım alın, yeni evinize hemen yerleşin!</p>
+        </div>
+    </div>
+
+    <div class="row proje-owl">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 item">
+                <a href="/Project/Detail/@item.ID">
+                    <div class="image">
+                        <img src="@Html.DisplayFor(modelItem => item.ImagePath)" width="383" height="275" alt="ev">
+                        <div class="over"></div>
+                    </div>
+                    <div class="text">
+                        <h3>@Html.DisplayFor(modelItem => item.Name)</h3>
+                        <h4>@Html.DisplayFor(modelItem => item.SubName) - @Html.DisplayFor(modelItem=>item.SSubName)</h4>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <a class="all-btn" href="/Project/Index">TÜM PROJELERİ GÖRÜNTÜLE</a>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,60 @@
+﻿
+@model Project_Entity.Expert
+
+<div class="col-lg-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            @if (Model != null)
+            {
+                <h5> Danışman Düzenleme</h5>
+            }
+            else
+            {
+                <h5> Danışman Ekleme</h5>
+            }
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-6">
+                    <form method="post" enctype="multipart/form-data" action="#">
+                        <label>Adı :</label>
+                        @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                        <label>Email :</label>
+                        @Html.TextBoxFor(x => x.Email, new { @class = "form-control" })
+                        <label>İletişim Numarası :</label>
+                        @Html.TextBoxFor(x => x.PhoneNumber, new { @class = "form-control" })
+                        <label>Unvanı :</label>
+                        @Html.TextBoxFor(x=>x.Title, new { @class="form-control"})
+
+                        @Html.Label("Image:")
+
+                        @if (Model != null)
+                        {
+                            <div>
+                                <input type="file" name="document" class="form-group" />
+                            </div>
+                                <img src="@Model.ImagePath" width="50" height="50" />
+                        }
+                        else
+                        {
+                            <div>
+                                <input type="file" name="document" class="form-group" />
+                            </div>
+                        }
+                        <br />
+
+                        <button type="submit" value="Save" class="btn btn-xs btn-success btn-xs radius-4">
+                            <i class="ace-icon fa fa-floppy-o bigger-160"></i>
+                            Kaydet
+                        </button>
+                        <a href="/Admin/Experts/Index" class="btn btn-xs btn-info btn-xs radius-4"><i class="ace-icon fa fa-undo bigger-150"> Önceki Sayfa</i></a>
+                </div>
+                <!-- /.col-lg-6 (nested) -->
+            </div>
+            <!-- /.row (nested) -->
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+</div>
+<!-- /.col-lg-12 -->

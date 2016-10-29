@@ -1,0 +1,41 @@
+#chat-box {
+    z-index: 9;
+    opacity:1 !important;
+}
+
+#chat-box-header {
+    z-index: 9;
+    bottom: 300px;
+}
+
+#chat-box textarea {
+    width: 100%;
+
+    padding:5px;
+    font-size:12px;
+}
+
+#chat-box-msg
+{
+height:240px !important;
+}
+#chat-box #chat-box-email {
+    padding:5px;
+    height:26px;
+    font-size:12px;
+}
+
+#chat-box #chat-box-send {
+    margin-top: 5px;
+    width: 100%;
+    line-height: 26px;
+    text-align: center;
+    background: #0159DB;
+    color: #fff;
+    border: 0;
+    font-size:14px;
+    outline: none;
+    border-radius: 3px;
+}
+
+#chat-box p {margin: 5px 0; font-size:12px;}

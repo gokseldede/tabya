@@ -1,0 +1,62 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_SiteLayout.cshtml";
+    if (!Request.QueryString["lang"].IsEmpty())
+    {
+        Culture = UICulture = Request.QueryString["lang"];
+    }
+}
+
+@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<Project_Entity.Expert>
+
+<section class="section danismanlar page-banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 col-sm-6 title wow fadeInUp" data-wow-duration="3s">
+                <h2>DANIŞMANLARIMIZ</h2>
+                <p>Sektörde tecrübe kazanmış uzmanlarımız size ihtiyacınız olan evi bulmaya daima hazırdır.</p>
+            </div>
+        </div>
+    </div>
+    <span class="image wow fadeInUp" data-wow-duration="1s"><img src="Assets/img/uzmanlar-img.png" alt="uzmanlar"></span>
+</section>
+<section class="section danisman-list">
+    <div class="container">
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-3 col-sm-4 col-xs-6 item wow fadeInUp" data-wow-duration="1s">
+
+                    <div class="box">
+                        <div class="user-img">
+                            <img src="@item.ImagePath" width="100" height="100" alt="Necmi Körük">
+                        </div>
+                        <div class="text">
+                            <h2>@item.Name</h2>
+                            <h3>@item.Title</h3>
+                        </div>
+                        <ul class="contact-list">
+                            <li><a href="tel:@item.PhoneNumber">@item.PhoneNumber</a><span class="icon"><i class="fa fa-phone"></i> </span></li>
+                            <li><a href="mailto:@item.Email">@item.Email</a><span class="icon"><i class="fa fa-envelope"></i> </span></li>
+                        </ul>
+                    </div>
+
+
+                </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-md-12 pagination wow fadeInUp" data-wow-duration="1s">
+                <ul>
+                 @Html.PagedListPager(Model, Id => Url.Action("index", new { Id, @class = "active" }))
+                  
+                </ul>
+            </div>
+        </div>
+    
+    </div>
+
+</section>

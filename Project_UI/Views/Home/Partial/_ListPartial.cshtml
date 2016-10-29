@@ -1,0 +1,138 @@
+﻿@model List<Project_Entity.AdDetail>
+@if (!Request.QueryString["lang"].IsEmpty())
+{
+    Culture = UICulture = Request.QueryString["lang"];
+}
+<div class="container">
+    <div class="row title">
+        <div class="col-md-12">
+            <h2>@Resources.Resources.newadded</h2>
+        </div>
+    </div>
+
+
+
+    @for (int i = 0; i < 6; i += 6)
+    {
+
+        <div class="row list-owl">
+            @foreach (var item in Model.Skip(i).Take(6))
+            {
+
+                <div class="col-md-4 col-sm-6 col-xs-6">
+
+                    @{
+                        string[] adres;
+                        adres = item.Location.Split(',');
+                        string semt = adres[0];
+                        string ilce = adres[2].Substring(6).Replace("/", ",");
+
+                        string lokasyon = semt + "," + ilce;
+                    }
+                    @if (item.Status.Name.ToUpper() == "SATILIK" & Model != null)
+                    {
+                        <div class="item satilik">
+                            <a href="/AdDetail/Details/@item.ID">
+                                @if (item.ThumbPath != null)
+                                {
+                                    <div class="image">
+                                        <img src="@item.ThumbPath" width="393" height="303" alt="ev">
+                                        <div class="over"><span>DETAYLI İNCELE</span></div>
+                                    </div>
+                                }
+                                <div class="text">
+                                    <div class="title">
+                                        <div class="row">
+                                            @if (item.StatusID != null)
+                                            {
+                                                <div class="col-sm-6"><span class="type">@item.Status.Name.ToUpper()</span></div>
+                                            }
+                                            @if (item.Price != null)
+                                            {
+                                                <div class="col-sm-6"><span class="price">@item.Price TL</span></div>
+                                            }
+                                            @*   <div class="col-xs-12 distance"><span><i class="fa fa-crosshairs"></i> @item.Location.Substring(0,11).Replace(",","") km</span></div>*@
+                                        </div>
+                                    </div>
+
+                                    <div class="features">
+                                        <ul>
+                                            @if (item.Location != null)
+                                            {
+                                                <li><i class="fa fa-map-marker"></i> @lokasyon</li>
+                                            }
+                                            @if (item.Room != null)
+                                            {
+                                                <li><i class="fa fa-home"></i> @item.Room</li>
+                                            }
+                                            @if (item.Size != null)
+                                            {
+                                                <li><i class="fa fa-arrows-h"></i>@item.Size m2</li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    }
+
+                    @if (item.Status.Name.ToUpper() == "KIRALIK" & Model != null)
+                    {
+                        <div class="item kiralik">
+                            <a href="/AdDetail/Details/@item.ID">
+                                @if (item.ThumbPath != null)
+                                {
+                                    <div class="image">
+                                        <img src="@item.ThumbPath" width="393" height="303" alt="ev">
+                                        <div class="over"><span>DETAYLI İNCELE</span></div>
+                                    </div>
+                                }
+                                <div class="text">
+                                    <div class="title">
+                                        <div class="row">
+                                            @if (item.StatusID != null)
+                                            {
+                                                <div class="col-sm-6"><span class="type">@item.Status.Name.ToUpper()</span></div>
+                                            }
+                                            @if (item.Price != null)
+                                            {
+                                                <div class="col-sm-6"><span class="price">@item.Price TL</span></div>
+                                            }
+                                            @*<div class="col-xs-12 distance"><span><i class="fa fa-crosshairs"></i> @item.Location.Substring(0,11).Replace(",", "") km</span></div>*@
+                                        </div>
+                                    </div>
+                                    <div class="features">
+                                        <ul>
+                                            @if (item.Location != null)
+                                            {
+                                                <li><i class="fa fa-map-marker"></i> @lokasyon</li>
+                                            }
+                                            @if (item.Room != null)
+                                            {
+                                                <li><i class="fa fa-home"></i> @item.Room</li>
+                                            }
+                                            @if (item.Size != null)
+                                            {
+                                                <li><i class="fa fa-arrows-h"></i>@item.Size m2</li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    }
+
+                </div>
+
+                        }
+        </div>
+
+                        }
+
+
+    <div class="row btn-line">
+        <div class="col-md-12">
+            <a class="all-btn" href="/AdDetail/Index">TÜM İLANLARI GÖRÜNTÜLE</a>
+        </div>
+    </div>
+</div>

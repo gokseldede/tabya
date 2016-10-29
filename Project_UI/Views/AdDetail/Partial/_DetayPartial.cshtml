@@ -1,0 +1,184 @@
+﻿@model Project_VM.PageDataVM
+@{
+    string[] adres;
+    adres = Model.AdDetail.Location.Split(',');
+    string semt = adres[0];
+    string ilce = adres[2].Substring(6).Replace("/", ",");
+
+    string lokasyon = semt + "," + ilce;
+}
+    <div class="box info wow fadeInUp" data-wow-duration="1s">
+        <div class="title">
+            <h2>@Model.AdDetail.Name</h2>
+        </div>
+        <div class="item">
+            <!-- addClass kiralik  -->
+            <div class="row">
+                <div class="col-xs-6"><span class="type">@Model.AdDetail.Status.Name</span></div>
+                <div class="col-xs-6"><span class="price">@Model.AdDetail.Price TL</span></div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 location">
+                    <p><i class="fa fa-map-marker"></i> @lokasyon <span><i class="fa fa-crosshairs"></i> </span></p>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="user-img">
+                <img src="@Model.AdDetail.Expert.ImagePath" width="55" height="55" alt="Necmi Körük">
+            </div>
+            <ul class="contact-list">
+                <li><i class="fa fa-user"></i> <strong>@Model.AdDetail.Expert.Name</strong> - @Model.AdDetail.Expert.Title</li>
+                <li><i class="fa fa-phone"></i> <a href="tel:@Model.AdDetail.Expert.PhoneNumber">@Model.AdDetail.Expert.PhoneNumber</a></li>
+                <li><i class="fa fa-envelope"></i> <a href="mailto:@Model.AdDetail.Expert.Email">@Model.AdDetail.Expert.Email</a></li>
+            </ul>
+        </div>
+        <div class="item info-list">
+            <div class="row">
+                <div class="col-xs-6"><strong>İlan Tarihi</strong></div>
+                <div class="col-xs-6">@Model.AdDetail.CreatedDate.ToShortDateString()</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6"><strong>Emlak Tipi</strong></div>
+                <div class="col-xs-6">@Model.AdDetail.Status.Name</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6"><strong>m2</strong></div>
+                <div class="col-xs-6">@Model.AdDetail.Size.Name</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6"><strong>Oda Sayısı</strong></div>
+                <div class="col-xs-6">@Model.AdDetail.Room.Name</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6"><strong>Bina Yaşı</strong></div>
+                <div class="col-xs-6">@Model.AdDetail.BAge</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6"><strong>Bulunduğu Kat</strong></div>
+                <div class="col-xs-6">@Model.AdDetail.Floor</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6"><strong>Kat Sayısı</strong></div>
+                <div class="col-xs-6">@Model.AdDetail.Dues</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6"><strong>Isıtma</strong></div>
+                <div class="col-xs-6">@Model.AdDetail.Isınma.Name.ToUpper()</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6"><strong>Banyo Sayısı</strong></div>
+                <div class="col-xs-6">@Model.AdDetail.Bath</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6"><strong>Eşyalı</strong></div>
+                <div class="col-xs-6">@Model.AdDetail.Esya.Name.ToUpper()</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6"><strong>Kullanım Durumu</strong></div>
+                <div class="col-xs-6">@Model.AdDetail.Kullanım.Name.ToUpper()</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6"><strong>Site İçerisinde</strong></div>
+                <div class="col-xs-6">@Model.AdDetail.Site</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6"><strong>Aidat</strong></div>
+                <div class="col-xs-6">@Model.AdDetail.Dues TL</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6"><strong>Krediye Uygun</strong></div>
+                <div class="col-xs-6">@Model.AdDetail.Kredi.Name.ToUpper()</div>
+            </div>
+        </div>
+    </div>
+    <div class="box details proje-tab wow fadeInUp" data-wow-duration="1s">
+        <div class="tab-menu">
+            <ul>
+                <li class="active" rel="aciklama"><a href="#">AÇIKLAMA</a></li>
+                <li rel="ozellikler"><a href="#">ÖZELLİKLER</a></li>
+            </ul>
+        </div>
+        <div id="aciklama" class="tab_content">
+            <article class="article">
+
+                <p>
+                    @Html.Raw(Model.AdDetail.Description)
+                </p>
+
+            </article>
+        </div>
+        @* Properties alanı *@
+     @*   @Html.Partial("Partial/_PropertiesPartial",Model.AdProps)*@
+
+        <div id="ozellikler" class="tab_content">
+            <div class="title">
+                <h2>SOSYAL TESİSLER</h2>
+            </div>
+            <div class="list">
+                <div class="row">
+
+                    <div class="row">
+                        @*@foreach (var item in Model)
+                            {
+                                <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text">@Html.DisplayFor(model => model.Properties.Name)</span></div>
+                            }*@
+                        <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text"></span></div>
+                        <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text"></span></div>
+                        <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text"></span></div>
+                        <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text"></span></div>
+                        <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text"></span></div>
+                        <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text"></span></div>
+                        <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text"></span></div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="title">
+                <h2>GÜVENLİK</h2>
+            </div>
+
+            <div class="list">
+                <div class="row">
+                    <div class="row">
+
+
+
+                        @*@foreach (var item in Model)
+                            {
+                                <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text">@Html.DisplayFor(x => x.SelectedPropList)</span></div>
+                            }*@
+                        <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text"></span></div>
+                        <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text"></span></div>
+                        <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text"></span></div>
+                        <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text"></span></div>
+                        <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text"></span></div>
+                        <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text"></span></div>
+                        <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text"></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="title">
+                <h2>GENEL ÖZELLİKLER</h2>
+            </div>
+
+            <div class="list">
+                <div class="row">
+                    <div class="row">
+                        @*@foreach (var item in Model.SelectedPropList)
+                            {
+                                 <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text">@Html.DisplayFor(x => x.properties.Name)</span></div>
+                            }*@
+                        <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text"></span></div>
+                        <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text"></span></div>
+                        <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text"></span></div>
+                        <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text"></span></div>
+                        <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text"></span></div>
+                        <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text"></span></div>
+                        <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text"></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>

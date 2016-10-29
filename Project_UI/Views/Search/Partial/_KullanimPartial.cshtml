@@ -1,0 +1,14 @@
+﻿@model List<Project_Entity.Kullanım>
+
+<div class="content">
+    @foreach (var item in Model)
+    {
+        <div class="form-item">
+            <input type="checkbox" name="kullanim" id="@item.ID-kll" value="@item.Name" class="css-checkbox" />
+            <label for="@item.ID-kll" class="css-label radGroup1">@item.Name</label>
+        </div>
+    }
+</div>
+
+
+

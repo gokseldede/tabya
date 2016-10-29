@@ -1,0 +1,60 @@
+﻿
+@model IPagedList<Project_Entity.Il>
+@using PagedList;
+@using PagedList.Mvc;
+<div class="content">
+    <div class="form-item select">
+        <label><strong>ŞEHİR:</strong></label>
+        <select id="il">
+            @foreach (var il in Model)
+            {
+                <option value="@il.ID">@il.Ad</option>
+            }
+        </select>
+
+    </div>
+    <div class="form-item select">
+        <label><strong>İLÇE:</strong></label>
+        <select id="ilce"></select>
+    </div>
+    <div class="form-item select">
+        <label><strong>MAHALLE:</strong></label>
+        <select name="mahalle" id="mahalle">
+            <option value="MECIDIYEKOY">Mecidiyeköy</option>
+            <option value="FERIKOY">Feriköy</option>
+            <option value="GULBAHAR">Gülbahar</option>
+            <option value="FULYA">Fulya</option>
+        </select>
+    </div>
+</div>
+
+<script type="text/javascript">
+        $(document).ready(function () {
+            $.ilID = $("#il").val();
+            GetirIlceler($.ilID);
+
+            $("#il").change(function () {
+                $.ilID = $(this).val();
+                GetirIlceler($.ilID);
+
+            });
+
+
+        });
+        function GetirIlceler(ilID) {
+            $("#ilce").empty();
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetirIlceler", "Home")',
+                data: { ilID: $.ilID },
+                dataType: "json",
+                success: function (ilceler) {
+                    $.each(ilceler, function (index, ilce) {
+                        $("#ilce").append("<option value=" + ilce.ID + ">" + ilce.Ad + "</option>");
+                    });
+                }
+            });
+        }
+
+
+</script>

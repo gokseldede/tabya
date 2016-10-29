@@ -1,0 +1,243 @@
+﻿@model Project_UI.Models.ProjectVM.ProjectClass
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_SiteLayout.cshtml";
+
+    string[] adres;
+    adres = Model.Bina.Location.Split(',');
+    string semt = adres[0];
+    string ilce = adres[2].Substring(6).Replace("/", ",");
+
+    string lokasyon = semt;
+}
+
+<section class="section ilan-detay">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="gallery wow fadeInUp" data-wow-duration="1s">
+                    @*@Html.Partial("Partial/_ImagePartial")*@
+                    @if (Model.BinaFileDetails != null)
+                    {
+                        <div class="galleryBig">
+                            @foreach (var item in Model.BinaFileDetails)
+                            {
+                                <div class="item cbp-item">
+
+                                    <a class="cbp-lightbox" data-title="ilk1" data-lightbox="roadtrip" href="~/Areas/Admin/Content/Image/@item.Id@item.Extension">
+
+                                        <img src="~/Areas/Admin/Content/Image/@item.Id@item.Extension" height="546" width="817" alt="ev">
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                        <div class="gallerySmall">
+                            @foreach (var item in Model.BinaFileDetails)
+                            {
+                                <div class="item">
+                                    <img src="~/Areas/Admin/Content/Image/@item.Id@item.Extension" height="83" width="125" alt="ev">
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+                <div class="box info wow fadeInUp" data-wow-duration="1s">
+                    @if (Model.Bina.Name != null)
+                    {
+                        <div class="title">
+                            <h2>@Model.Bina.Name</h2>
+                        </div>
+                    }
+                    <div class="item">
+                        <!-- addClass kiralik  -->
+                        <div class="row">
+                            @if (Model.Bina.StatusID != null)
+                            {
+                                <div class="col-xs-6"><span class="type">@Model.Bina.Status.Name</span></div>
+                            }
+                            @if (Model.Bina.Price != null)
+                            {
+                                <div class="col-xs-6"><span class="price">@Model.Bina.Price @Model.Bina.Kurlar.Name</span></div>
+                            }
+                        </div>
+                        <div class="row">
+                            @if (Model.Bina.Location != null)
+                            {
+                                <div class="col-md-12 location">
+                                    <p><i class="fa fa-map-marker"></i> @lokasyon </p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="item">
+                        @if (Model.Bina.ExpertID != null)
+                        {
+                            <div class="user-img">
+                                <img src="@Model.Bina.Expert.ImagePath" width="65" height="65" alt="Necmi Körük">
+                            </div>
+
+                            <ul class="contact-list">
+                                <li><i class="fa fa-user"></i> <strong>@Model.Bina.Expert.Name</strong> - @Model.Bina.Expert.Title</li>
+                                <li><i class="fa fa-phone"></i> <a href="tel:@Model.Bina.Expert.PhoneNumber">@Model.Bina.Expert.PhoneNumber</a></li>
+                                <li><i class="fa fa-envelope"></i> <a href="mailto:@Model.Bina.Expert.Email">@Model.Bina.Expert.Email</a></li>
+                            </ul>
+                        }
+                    </div>
+                    <div class="item info-list">
+                        @if (Model.Bina.CreatedDate != null)
+                        {
+                            <div class="row">
+                                <div class="col-xs-6"><strong>İlan Tarihi</strong></div>
+                                <div class="col-xs-6">@Model.Bina.CreatedDate.ToString("dd/MM/yyyy")</div>
+                            </div>
+                        }
+                        @if (Model.Bina.EmlakTipID != null)
+                        {
+                            <div class="row">
+                                <div class="col-xs-6"><strong>Emlak Tipi</strong></div>
+                                <div class="col-xs-6">@Model.Bina.EmlakTip.Name</div>
+                            </div>
+                        }
+
+                        @if (Model.Bina.Size != null)
+                        {
+                            <div class="row">
+                                <div class="col-xs-6"><strong>m2</strong></div>
+                                <div class="col-xs-6">@Model.Bina.Size</div>
+                            </div>
+                        }
+                        @if (Model.Bina.BAge != null)
+                        {
+                            <div class="row">
+                                <div class="col-xs-6"><strong>Bina Yaşı</strong></div>
+                                <div class="col-xs-6">@Model.Bina.BAge</div>
+                            </div>
+                        }
+                      
+                      
+                        @if (Model.Bina.StatusID != null)
+                        {
+                            <div class="row">
+                                <div class="col-xs-6"><strong>Emlak Durumu</strong></div>
+                                <div class="col-xs-6">@Model.Bina.Status.Name.ToUpper()</div>
+                            </div>
+                        }
+                        @if (Model.Bina.Takas != null)
+                        {
+                            <div class="row">
+                                <div class="col-xs-6"><strong>Takas Durumu</strong></div>
+                                <div class="col-xs-6">@Model.Bina.Takas</div>
+                            </div>
+                        }
+                        @if (Model.Bina.Floor != null)
+                        {
+                            <div class="row">
+                                <div class="col-xs-6"><strong>Kat Sayısı</strong></div>
+                                <div class="col-xs-6">@Model.Bina.Floor</div>
+                            </div>
+                        }
+                        @if (Model.Bina.FloorRoom != null)
+                        {
+                            <div class="row">
+                                <div class="col-xs-6"><strong>Daire Sayısı</strong></div>
+                                <div class="col-xs-6">@Model.Bina.FloorRoom</div>
+                            </div>
+                        }
+                        @if (Model.Bina.IsınmaID != null)
+                        {
+                            <div class="row">
+                                <div class="col-xs-6"><strong>Isınma Türü</strong></div>
+                                <div class="col-xs-6">@Model.Bina.Isınma.Name</div>
+                            </div>
+                        }
+                        @if (Model.Bina.KimdenID != null)
+                        {
+                            <div class="row">
+                                <div class="col-xs-6"><strong>Kimden</strong></div>
+                                <div class="col-xs-6">@Model.Bina.Kimden.Name</div>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+                <div class="box details proje-tab wow fadeInUp" data-wow-duration="1s">
+                    <div class="tab-menu">
+                        <ul>
+                            <li class="active" rel="aciklama"><a href="#">AÇIKLAMA</a></li>
+                            <li rel="ozellikler"><a href="#">ÖZELLİKLER</a></li>
+                        </ul>
+                    </div>
+                    <div id="aciklama" class="tab_content">
+                        <article class="article">
+                            @if (Model.Bina.Description != null)
+                            {
+                                <p>
+                                    @Html.Raw(Model.Bina.Description)
+                                </p>
+                            }
+                        </article>
+                    </div>
+                    @* Properties alanı *@
+                    @*   @Html.Partial("Partial/_PropertiesPartial",Model.AdProps)*@
+
+                    <div id="ozellikler" class="tab_content">
+                        <div class="title">
+                            <h2>SOSYAL TESİSLER</h2>
+                        </div>
+                        <div class="list">
+                            <div class="row">
+                                <div class="row">
+                                    @if (Model.Bina.socialapps != null)
+                                    {
+                                        foreach (var item in Model.Bina.socialapps.Substring(0, Model.Bina.socialapps.Length - 1).Split(','))
+                                        {
+                                            <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text">@item.ToString()</span></div>
+                                        }
+                                    }
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="title">
+                            <h2>GÜVENLİK</h2>
+                        </div>
+
+                        <div class="list">
+                            <div class="row">
+                                <div class="row">
+                                    @if (Model.Bina.securitys != null)
+                                    {
+                                        foreach (var item in Model.Bina.securitys.Substring(0, Model.Bina.securitys.Length - 1).Split(','))
+                                        {
+                                            <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text">@item.ToString()</span></div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="title">
+                            <h2>GENEL ÖZELLİKLER</h2>
+                        </div>
+
+                        <div class="list">
+                            <div class="row">
+                                <div class="row">
+                                    @if (Model.Bina.properties != null)
+                                    {
+                                        foreach (var item in Model.Bina.properties.Substring(0, Model.Bina.properties.Length - 1).Split(','))
+                                        {
+                                            <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text">@item.ToString()</span></div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</section>

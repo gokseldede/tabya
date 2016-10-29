@@ -1,0 +1,356 @@
+﻿@{
+    ViewBag.Title = "Query";
+    Layout = "~/Views/Shared/_SiteLayout.cshtml";
+}
+
+@model Project_UI.Models.ProjectVM.ProjectClass
+<section class="section ilan-banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>İLANLAR</h2>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="section ilan-list wow fadeInUp" data-wow-duration="1s">
+    <div class="container">
+        <div class="row">
+
+            @if (Model.AdDetails != null && Model.AdDetails.Count() > 0)
+            {
+                <div class="row list-owl">
+                    @foreach (var item in Model.AdDetails)
+                    {
+
+                    <div class="col-md-4 col-sm-6 col-xs-6">
+
+                        @{
+                                string[] adres;
+                                adres = item.Location.Split(',');
+                                string semt = adres[0];
+                                string ilce = adres[2].Substring(6).Replace("/", ",");
+
+                                string lokasyon = semt + "," + ilce;
+                        }
+                        @if (item.Status.Name.ToUpper() == "SATILIK" & Model != null)
+                        {
+                            <div class="item satilik">
+                                <a href="/AdDetail/Details/@item.ID">
+                                    <div class="image">
+                                        <img src="@item.ThumbPath" width="393" height="303" alt="ev">
+                                        <div class="over"><span>DETAYLI İNCELE</span></div>
+                                    </div>
+                                    <div class="text">
+                                        <div class="title">
+                                            <div class="row">
+                                                <div class="col-sm-6"><span class="type">@item.Status.Name.ToUpper()</span></div>
+                                                <div class="col-sm-6"><span class="price">@item.Price TL</span></div>
+                                                @* <div class="col-xs-12 distance"><span><i class="fa fa-crosshairs"></i> @item.AdDetail.Location km</span></div>*@
+                                            </div>
+                                        </div>
+
+                                        <div class="features">
+                                            <ul>
+                                                <li><i class="fa fa-map-marker"></i> @lokasyon</li>
+                                                <li><i class="fa fa-home"></i> @item.Room</li>
+                                                <li><i class="fa fa-arrows-h"></i>@item.Size m2</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        }
+
+                        @if (item.Status.Name.ToUpper() == "KIRALIK" & Model != null)
+                        {
+                            <div class="item kiralik">
+                                <a href="/AdDetail/Details/@item.ID">
+                                    <div class="image">
+                                        <img src="@item.ThumbPath" width="393" height="303" alt="ev">
+                                        <div class="over"><span>DETAYLI İNCELE</span></div>
+                                    </div>
+                                    <div class="text">
+                                        <div class="title">
+                                            <div class="row">
+                                                <div class="col-sm-6"><span class="type">@item.Status.Name.ToUpper()</span></div>
+                                                <div class="col-sm-6"><span class="price">@item.Price TL</span></div>
+                                                @*<div class="col-xs-12 distance"><span><i class="fa fa-crosshairs"></i> @item.AdDetail.Location km</span></div>*@
+                                            </div>
+                                        </div>
+                                        <div class="features">
+                                            <ul>
+                                                <li><i class="fa fa-map-marker"></i> @lokasyon</li>
+                                                <li><i class="fa fa-home"></i> @item.Room</li>
+                                                <li><i class="fa fa-arrows-h"></i> @item.Size m2</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        }
+
+                    </div>
+
+                                }
+
+                    }
+
+                    @if (Model.Lands.Count() > 0)
+                    {
+
+                        foreach (var item in Model.Lands)
+                        {
+
+                    <div class="col-md-4 col-sm-6 col-xs-6">
+                        @{
+                                    string[] adres;
+                                    adres = item.Location.Split(',');
+                                    string semt = adres[0];
+                                    string ilce = adres[2].Substring(6).Replace("/", ",");
+                                    string lokasyon = semt + "," + ilce;
+                        }
+                        @if (item.Status.Name.ToUpper() == "SATILIK" & Model != null)
+                        {
+                            <div class="item satilik">
+                                <a href="/AdDetail/LandDetail/@item.ID">
+                                    <div class="image">
+                                        <img src="@item.ThumbPath" width="393" height="303" alt="ev">
+                                        <div class="over"><span>DETAYLI İNCELE</span></div>
+                                    </div>
+                                    <div class="text">
+                                        <div class="title">
+                                            <div class="row">
+                                                <div class="col-sm-6"><span class="type">@item.Status.Name.ToUpper()</span></div>
+                                                <div class="col-sm-6"><span class="price">@item.Price TL</span></div>
+                                                @*  <div class="col-xs-12 distance"><span><i class="fa fa-crosshairs"></i> @item.AdDetail.Location km</span></div>*@
+                                            </div>
+                                        </div>
+                                        <div class="features">
+                                            <ul>
+                                                <li><i class="fa fa-map-marker"></i> @lokasyon</li>
+                                                <li><i class="fa fa-arrows-h"></i>@item.Size m2</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        }
+
+                        @if (item.Status.Name.ToUpper() == "KIRALIK" & Model != null)
+                        {
+                            <div class="item kiralik">
+                                <a href="/AdDetail/LandDetail/@item.ID">
+                                    <div class="image">
+                                        <img src="@item.ThumbPath" width="393" height="303" alt="ev">
+                                        <div class="over"><span>DETAYLI İNCELE</span></div>
+                                    </div>
+                                    <div class="text">
+                                        <div class="title">
+                                            <div class="row">
+                                                <div class="col-sm-6"><span class="type">@item.Status.Name.ToUpper()</span></div>
+                                                <div class="col-sm-6"><span class="price">@item.Price TL</span></div>
+                                                @*<div class="col-xs-12 distance"><span><i class="fa fa-crosshairs"></i> @item.AdDetail.Location km</span></div>*@
+                                            </div>
+                                        </div>
+                                        <div class="features">
+                                            <ul>
+                                                <li><i class="fa fa-map-marker"></i> @lokasyon</li>
+                                                <li><i class="fa fa-arrows-h"></i> @item.Size m2</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        }
+                    </div>
+
+                                        }
+
+                                    }
+                    @if (Model.Workplaces.Count() > 0)
+                    {
+
+                        foreach (var item in Model.Workplaces)
+                        {
+
+                    <div class="col-md-4 col-sm-6 col-xs-6">
+
+                        @{
+                                    string[] adres;
+                                    adres = item.Location.Split(',');
+                                    string semt = adres[0];
+                                    string ilce = adres[2].Substring(6).Replace("/", ",");
+                                    string lokasyon = semt + "," + ilce;
+                        }
+                        @if (item.Status.Name.ToUpper() == "SATILIK" & Model != null)
+                        {
+                            <div class="item satilik">
+                                <a href="/AdDetail/WorkDetail/@item.ID">
+                                    <div class="image">
+                                        <img src="@item.ThumbPath" width="393" height="303" alt="ev">
+                                        <div class="over"><span>DETAYLI İNCELE</span></div>
+                                    </div>
+                                    <div class="text">
+                                        <div class="title">
+                                            <div class="row">
+                                                <div class="col-sm-6"><span class="type">@item.Status.Name.ToUpper()</span></div>
+                                                <div class="col-sm-6"><span class="price">@item.Price TL</span></div>
+                                                @* <div class="col-xs-12 distance"><span><i class="fa fa-crosshairs"></i> @item.AdDetail.Location km</span></div>*@
+                                            </div>
+                                        </div>
+
+                                        <div class="features">
+                                            <ul>
+                                                <li><i class="fa fa-map-marker"></i> @lokasyon</li>
+                                                <li><i class="fa fa-home"></i> @item.Room</li>
+                                                <li><i class="fa fa-arrows-h"></i>@item.Size m2</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        }
+
+                        @if (item.Status.Name.ToUpper() == "KIRALIK" & Model != null)
+                        {
+                            <div class="item kiralik">
+                                <a href="/AdDetail/WorkDetail/@item.ID">
+                                    <div class="image">
+                                        <img src="@item.ThumbPath" width="393" height="303" alt="ev">
+                                        <div class="over"><span>DETAYLI İNCELE</span></div>
+                                    </div>
+                                    <div class="text">
+                                        <div class="title">
+                                            <div class="row">
+                                                <div class="col-sm-6"><span class="type">@item.Status.Name.ToUpper()</span></div>
+                                                <div class="col-sm-6"><span class="price">@item.Price TL</span></div>
+                                                @*<div class="col-xs-12 distance"><span><i class="fa fa-crosshairs"></i> @item.AdDetail.Location km</span></div>*@
+                                            </div>
+                                        </div>
+                                        <div class="features">
+                                            <ul>
+                                                <li><i class="fa fa-map-marker"></i> @lokasyon</li>
+                                                <li><i class="fa fa-home"></i> @item.Room</li>
+                                                <li><i class="fa fa-arrows-h"></i> @item.Size m2</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        }
+
+                    </div>
+
+                                        }
+
+                                    }
+
+
+                    @if (Model.Binas.Count() > 0)
+                    {
+
+                        foreach (var item in Model.Binas)
+                        {
+
+                            <div class="col-md-4 col-sm-6 col-xs-6">
+
+                                @{
+                                    string[] adres;
+                                    adres = item.Location.Split(',');
+                                    string semt = adres[0];
+                                    string ilce = adres[2].Substring(6).Replace("/", ",");
+                                    string lokasyon = semt + "," + ilce;
+                                }
+                                @if (item.Status.Name.ToUpper() == "SATILIK" & Model != null)
+                                {
+                                    <div class="item satilik">
+                                        <a href="/AdDetail/BuilDetail/@item.ID">
+                                            <div class="image">
+                                                <img src="@item.ThumbPath" width="393" height="303" alt="ev">
+                                                <div class="over"><span>DETAYLI İNCELE</span></div>
+                                            </div>
+                                            <div class="text">
+                                                <div class="title">
+                                                    <div class="row">
+                                                        <div class="col-sm-6"><span class="type">@item.Status.Name.ToUpper()</span></div>
+                                                        <div class="col-sm-6"><span class="price">@item.Price TL</span></div>
+                                                        @* <div class="col-xs-12 distance"><span><i class="fa fa-crosshairs"></i> @item.AdDetail.Location km</span></div>*@
+                                                    </div>
+                                                </div>
+
+                                                <div class="features">
+                                                    <ul>
+                                                        <li><i class="fa fa-map-marker"></i> @lokasyon</li>
+                                                        <li><i class="fa fa-arrows-h"></i>@item.Size m2</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                }
+
+                                @if (item.Status.Name.ToUpper() == "KIRALIK" & Model != null)
+                                {
+                                    <div class="item kiralik">
+                                        <a href="/AdDetail/BuilDetail/@item.ID">
+                                            <div class="image">
+                                                <img src="@item.ThumbPath" width="393" height="303" alt="ev">
+                                                <div class="over"><span>DETAYLI İNCELE</span></div>
+                                            </div>
+                                            <div class="text">
+                                                <div class="title">
+                                                    <div class="row">
+                                                        <div class="col-sm-6"><span class="type">@item.Status.Name.ToUpper()</span></div>
+                                                        <div class="col-sm-6"><span class="price">@item.Price TL</span></div>
+                                                        @*<div class="col-xs-12 distance"><span><i class="fa fa-crosshairs"></i> @item.AdDetail.Location km</span></div>*@
+                                                    </div>
+                                                </div>
+                                                <div class="features">
+                                                    <ul>
+                                                        <li><i class="fa fa-map-marker"></i> @lokasyon</li>
+                                                        <li><i class="fa fa-arrows-h"></i> @item.Size m2</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                }
+
+                            </div>
+
+                                        }
+
+                                    }
+
+                    @if (Model.Projects.Count() > 0)
+                    {
+
+                        foreach (var item in Model.Projects)
+                        {
+                    <div class="col-md-4 col-sm-6 col-xs-6">
+                        <a href="/Project/Detail/@item.ID">
+                            <div class="image">
+                                <img src="@item.ImagePath" height="303" width="393" alt="ev">
+                                <div class="over"></div>
+                            </div>
+                            <div class="text">
+                                <h3>@item.Name</h3>
+                                <h4>@item.SubName - @item.SSubName</h4>
+                            </div>
+                        </a>
+                    </div>
+                        }
+
+                    }
+
+                </div>
+                            }
+            <div class="row">
+
+            </div>
+
+        </div>
+    </div>
+
+</section>

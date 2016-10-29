@@ -1,0 +1,53 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_SiteLayout.cshtml";
+    if (!Request.QueryString["lang"].IsEmpty())
+    {
+        Culture = UICulture = Request.QueryString["lang"];
+    }
+}
+
+    @model Project_Entity.Message
+    <section class="section map">
+        <div class="top">
+            <div id="map-canvas"><iframe src="https://www.google.com/maps/embed?pb=!1m23!1m12!1m3!1d3008.232234671997!2d28.99778431573699!3d41.06391602394747!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m8!3e1!4m0!4m5!1s0x14cab65566f827c3%3A0x735aab58ca993ec6!2zTWV2bMO8dCBQZWhsaXZhbiBTayBObzoxMSwgRnVseWEgTWFoYWxsZXNpLCAzNDM5NCDFnmnFn2xpL8Swc3RhbmJ1bA!3m2!1d41.063911999999995!2d28.999972999999997!5e0!3m2!1str!2str!4v1453192987159" width="800" height="400" frameborder="0" style="border:0" allowfullscreen></iframe></div>
+        </div>
+
+        <div class="bottom">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-7 col-sm-6">
+                        <div class="box wow fadeInUp" data-wow-duration="1s">
+                            <div class="title">
+                                <h2>İletişim Formu</h2>
+                            </div>
+                            @using (Html.BeginForm())
+                            {
+                                <div class="content form">
+                                    <div class="form-line">
+                                        @Html.TextBoxFor(x => x.Name, new { @class = "form-input", @placeholder = "Adınız" ,@required=""})
+                                    </div>
+                                    <div class="form-line">
+                                        @Html.TextBoxFor(x => x.Email, new { @class = "form-input", @placeholder = "Email", @required = "" })
+                                    </div>
+                                    <div class="form-line">
+                                        @Html.TextBoxFor(x => x.Number, new { @class = "form-input", @placeholder = "Numaranız", @required = "" })
+                                    </div>
+                                    <div class="form-line">
+                                        @Html.TextAreaFor(x => x.Name, new { @class = "form-input", @placeholder = "Mesajınız", @rows = "10", @cols = "30"})
+                                    </div>
+                                    <div class="form-line btn-line">
+                                        <input type="hidden" name="save" value="contact">
+                                        <button type="submit" class="btn btnx">GÖNDER</button>
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                    @Html.Partial("Partial/_ContactPartial")
+                </div>
+            </div>
+        </div>
+    </section>

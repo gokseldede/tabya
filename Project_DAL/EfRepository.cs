@@ -44,21 +44,16 @@ namespace Project_DAL
 
         public void Update(TEntity entity)
         {
-
             entity.UpdatedDate = DateTime.Now;
             _context.Entry(entity).State = EntityState.Modified;
             _context.SaveChanges();
         }
 
-        public void Delete(int id)
+        public void Delete(int Id)
         {
-            var entity = new TEntity
-            {
-                ID = id
-            };
-
-            Entities.Attach(entity);
-            Delete(entity);
+            var entity = GetById(Id);
+            if (entity != null)
+                Delete(entity);
         }
 
         public void Delete(TEntity entity)

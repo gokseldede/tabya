@@ -31,7 +31,7 @@ function Status(url, id) {
         success: function (result) {
             debugger;
             if (result.result == true) {
-                if (result.status == false) {
+                if (result.status == true) {
                     $("#b_" + id).empty();
                     $("#b_" + id).append("<span class='btn btn-info btn-sm'>Aktif</span>")
 

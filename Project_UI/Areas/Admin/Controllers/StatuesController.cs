@@ -1,4 +1,7 @@
-﻿using Project_Entity;
+﻿using Project_BLL.Implementation;
+using Project_BLL.Interfaces;
+using Project_DAL;
+using Project_Entity;
 using Project_UI.Areas.Admin.FilterAttributes;
 using System;
 using System.Collections.Generic;
@@ -9,75 +12,100 @@ using System.Web.Mvc;
 namespace Project_UI.Areas.Admin.Controllers
 {
     [CheckAuth]
-    public class StatuesController : BaseController
+    public class StatuesController : Controller
     {
+        private readonly IStandartService<Status> _service;
+
+        public StatuesController()
+        {
+            _service = new StandartService<Status>(new EfRepository<Status>());
+        }
+
+        public StatuesController(IStandartService<Status> service)
+        {
+            _service = service;
+        }
+
+
         // GET: Admin/Statues
         public ActionResult Index()
         {
-            List<Status> _status = Database.Statues.Where(x => x.IsDelete == false).ToList();
+            List<Status> _status = _service.GetAll().ToList();
             return View(_status);
         }
 
         // GET: Admin/Status/Create
         public ActionResult Create()
         {
-
             return View();
         }
 
         // POST: Admin/Status/Create
         [HttpPost]
-
+        [ValidateAntiForgeryToken]
         public ActionResult Create(Status status)
         {
-
-            status.IsDelete = false;
-            status.CreatedDate = DateTime.Now;
-            status.UpdatedDate = DateTime.Now;
-            status.IsActive = true;
-
-            db.Statues.Add(status);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-
+            try
+            {
+                _service.Create(status);
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         // GET: Admin/Status/Edit/5
         public ActionResult Edit(int ID)
         {
-            Status status = Database.Statues.FirstOrDefault(x => x.ID == ID);
+            Status status = _service.GetById(ID);
             return View(status);
         }
 
         // POST: Admin/Status/Edit/5
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(Status status)
         {
-            Status _status = Database.Statues.FirstOrDefault(x => x.ID == status.ID);
-            _status.Name = status.Name;
-            _status.ID = status.ID;
-            _status.UpdatedDate = DateTime.Now;
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            try
+            {
+                _service.edit(status);
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
         }
+
         public JsonResult Delete(int ID)
         {
-            Status _status = Database.Statues.Find(ID);
-            _status.IsDelete = true;
-            _status.DeletedDate = DateTime.Now;
-            db.SaveChanges();
-            return Json(" ");
-
+            try
+            {
+                _service.DeleteById(ID);
+                return Json(true);
+            }
+            catch (Exception)
+            {
+                return Json(false);
+            }
         }
-
+        
         public JsonResult Status(int ID)
         {
-            Status _status = Database.Statues.Find(ID);
-            _status.IsActive = !_status.IsActive;
-            db.SaveChanges();
-            return Json(_status.IsActive);
+            try
+            {
+                _service.ChangeStatus(ID);
+                var status = _service.GetById(ID);
+                return Json(new { result = true, status = status.IsActive });
+            }
+            catch (Exception)
+            {
+                return Json(new { result = false, status = false });
+            }
         }
     }
 }

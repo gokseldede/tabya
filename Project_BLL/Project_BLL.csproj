@@ -41,8 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Implementation\EmlakTipService.cs" />
-    <Compile Include="Interfaces\IEmlakTipService.cs" />
+    <Compile Include="Implementation\ExpertService.cs" />
+    <Compile Include="Implementation\StandartService.cs" />
+    <Compile Include="Interfaces\IExpertService.cs" />
     <Compile Include="Interfaces\IStandartService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />

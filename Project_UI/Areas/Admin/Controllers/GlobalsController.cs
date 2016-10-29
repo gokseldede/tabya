@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using Project_DAL;
 using Project_Entity;
 using Project_UI.Areas.Admin.FilterAttributes;
 
@@ -15,6 +10,8 @@ namespace Project_UI.Areas.Admin.Controllers
     [CheckAuth]
     public class GlobalsController : BaseController
     {
+        //29.10.2016 ne olduğunu çözemediğimizden bıraktık böylece
+        
 
         // GET: Admin/Globals
         public ActionResult Index()

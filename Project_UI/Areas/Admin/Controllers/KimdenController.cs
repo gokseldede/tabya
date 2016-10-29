@@ -5,16 +5,32 @@ using System.Web;
 using System.Web.Mvc;
 using Project_Entity;
 using Project_UI.Areas.Admin.FilterAttributes;
+using Project_BLL.Interfaces;
+using Project_BLL.Implementation;
+using Project_DAL;
 
 namespace Project_UI.Areas.Admin.Controllers
 {
     [CheckAuth]
     public class KimdenController : BaseController
     {
+
+        private readonly IStandartService<Kimden> _kimdenService;
+
+        public KimdenController()
+        {
+            _kimdenService = new StandartService<Kimden>(new EfRepository<Kimden>());
+        }
+
+        public KimdenController(IStandartService<Kimden> kimdenService)
+        {
+            _kimdenService = kimdenService;
+        }
+
         // GET: Admin/Kimden
         public ActionResult Index()
         {
-            List<Kimden> _kimden = Database.Kimden.Where(x => x.IsDelete == false).ToList();
+            List<Kimden> _kimden = _kimdenService.GetAll().ToList();
             return View(_kimden);
         }
 
@@ -22,57 +38,70 @@ namespace Project_UI.Areas.Admin.Controllers
         {
             return View();
         }
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(Kimden _kimden)
         {
-            _kimden.IsDelete = false;
-            _kimden.CreatedDate = DateTime.Now;
-            _kimden.UpdatedDate = DateTime.Now;
-            _kimden.IsActive = true;
-
-            Database.Kimden.Add(_kimden);
-            Database.SaveChanges();
-            return RedirectToAction("Index");
+            try
+            {
+                _kimdenService.Create(_kimden);
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public ActionResult Edit(int ID)
         {
-            Kimden _kimden = Database.Kimden.FirstOrDefault(x => x.ID == ID);
+            Kimden _kimden = _kimdenService.GetById(ID);
             return View(_kimden);
 
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(Kimden _kimden)
         {
-
-            Kimden kimden = Database.Kimden.FirstOrDefault(x => x.ID == _kimden.ID);
-            kimden.Name = _kimden.Name;
-            kimden.ID = _kimden.ID;
-            kimden.UpdatedDate = DateTime.Now;
-            Database.SaveChanges();
-            return RedirectToAction("Index");
-
-
+            try
+            {
+                _kimdenService.edit(_kimden);
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
 
         public JsonResult Delete(int ID)
         {
-            Kimden _kimden = Database.Kimden.Find(ID);
-            _kimden.IsDelete = true;
-            _kimden.DeletedDate = DateTime.Now;
-            Database.SaveChanges();
-            return Json(" ");
-
+            try
+            {
+                _kimdenService.DeleteById(ID);
+                return Json(true);
+            }
+            catch (Exception)
+            {
+                return Json(false);
+            }
         }
 
         public JsonResult Status(int ID)
         {
-            Kimden _kimden = Database.Kimden.Find(ID);
-            _kimden.IsActive = !_kimden.IsActive;
-            Database.SaveChanges();
-            return Json(_kimden.IsActive);
+            try
+            {
+                _kimdenService.ChangeStatus(ID);
+                var status = _kimdenService.GetById(ID);
+                return Json(new { result = true, status = status.IsActive });
+            }
+            catch (Exception)
+            {
+                return Json(new { result = false, status = false });
+            }
         }
     }
 }

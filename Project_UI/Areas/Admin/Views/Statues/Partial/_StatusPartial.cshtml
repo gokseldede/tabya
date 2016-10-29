@@ -19,6 +19,7 @@
                 <div class="col-lg-6">
                     @using (Html.BeginForm())
                     {
+                        @Html.AntiForgeryToken()
                        <label>Durum Adı :</label>
                         @Html.TextBoxFor(x => x.Name, new { @class = "form-control", @placeholder="Örn : SATILIK , KIRALIK" })
 

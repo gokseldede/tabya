@@ -1,4 +1,7 @@
-﻿using Project_Entity;
+﻿using Project_BLL.Implementation;
+using Project_BLL.Interfaces;
+using Project_DAL;
+using Project_Entity;
 using Project_UI.Areas.Admin.FilterAttributes;
 using System;
 using System.Collections.Generic;
@@ -11,69 +14,93 @@ namespace Project_UI.Areas.Admin.Controllers
     [CheckAuth]
     public class KullanimController : BaseController
     {
+        private readonly IStandartService<Kullanım> _kullanimService;
+
+        public KullanimController()
+        {
+            _kullanimService = new StandartService<Kullanım>(new EfRepository<Kullanım>());
+        }
+
+        public KullanimController(IStandartService<Kullanım> kullanimService)
+        {
+            _kullanimService = kullanimService;
+        }
+
         // GET: Admin/Kullanım
         public ActionResult Index()
         {
-            List<Kullanım> _kullanım = Database.Kullanımlar.Where(x => x.IsDelete == false).ToList();
-            return View(_kullanım);
+            List<Kullanım> _kullanim = _kullanimService.GetAll().ToList();
+            return View(_kullanim);
         }
 
         public ActionResult Create()
         {
             return View();
         }
-        [HttpPost]
-        public ActionResult Create(Kullanım _kullanım)
-        {
-            _kullanım.IsDelete = false;
-            _kullanım.CreatedDate = DateTime.Now;
-            _kullanım.UpdatedDate = DateTime.Now;
-            _kullanım.IsActive = true;
 
-            Database.Kullanımlar.Add(_kullanım);
-            Database.SaveChanges();
-            return RedirectToAction("Index");
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(Kullanım _kullanim)
+        {
+            try
+            {
+                _kullanimService.Create(_kullanim);
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public ActionResult Edit(int ID)
         {
-            Kullanım _kullanım = Database.Kullanımlar.FirstOrDefault(x => x.ID == ID);
-            return View(_kullanım);
+            Kullanım _kullanim = _kullanimService.GetById(ID);
+            return View(_kullanim);
 
         }
 
         [HttpPost]
-        public ActionResult Edit(Kullanım _kullanım)
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(Kullanım _kullanim)
         {
-
-            Kullanım kullanım = Database.Kullanımlar.FirstOrDefault(x => x.ID == _kullanım.ID);
-            
-            kullanım.Name = _kullanım.Name;
-            kullanım.ID = _kullanım.ID;
-            kullanım.UpdatedDate = DateTime.Now;
-            Database.SaveChanges();
-            return RedirectToAction("Index");
-
-
+            try
+            {
+                _kullanimService.edit(_kullanim);
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
 
         public JsonResult Delete(int ID)
         {
-            Kullanım _kullanım = Database.Kullanımlar.Find(ID);
-            _kullanım.IsDelete = true;
-            _kullanım.DeletedDate = DateTime.Now;
-            Database.SaveChanges();
-            return Json(" ");
-
+            try
+            {
+                _kullanimService.DeleteById(ID);
+                return Json(true);
+            }
+            catch (Exception)
+            {
+                return Json(false);
+            }
         }
 
         public JsonResult Status(int ID)
         {
-            Kullanım _kullanım = Database.Kullanımlar.Find(ID);
-            _kullanım.IsActive = !_kullanım.IsActive;
-            Database.SaveChanges();
-            return Json(_kullanım.IsActive);
+            try
+            {
+                _kullanimService.ChangeStatus(ID);
+                var status = _kullanimService.GetById(ID);
+                return Json(new { result = true, status = status.IsActive });
+            }
+            catch (Exception)
+            {
+                return Json(new { result = false, status = false });
+            }
         }
     }
 }

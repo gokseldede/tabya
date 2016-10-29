@@ -1,4 +1,7 @@
-﻿using Project_Entity;
+﻿using Project_BLL.Implementation;
+using Project_BLL.Interfaces;
+using Project_DAL;
+using Project_Entity;
 using Project_UI.Areas.Admin.FilterAttributes;
 using System;
 using System.Collections.Generic;
@@ -11,10 +14,21 @@ namespace Project_UI.Areas.Admin.Controllers
     [CheckAuth]
     public class ImarController : BaseController
     {
-        // GET: Admin/Imar
+        private readonly IStandartService<Imar> _imarService;
+
+        public ImarController()
+        {
+            _imarService = new StandartService<Imar>(new EfRepository<Imar>());
+        }
+
+        public ImarController(IStandartService<Imar> imarService)
+        {
+            _imarService = imarService;
+        }
+
         public ActionResult Index()
         {
-            List<Imar> _imar = Database.Imar.Where(x => x.IsDelete == false).ToList();
+            List<Imar> _imar = _imarService.GetAll().ToList();
             return View(_imar);
         }
 
@@ -22,57 +36,70 @@ namespace Project_UI.Areas.Admin.Controllers
         {
             return View();
         }
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(Imar _imar)
         {
-            _imar.IsDelete = false;
-            _imar.CreatedDate = DateTime.Now;
-            _imar.UpdatedDate = DateTime.Now;
-            _imar.IsActive = true;
-
-            Database.Imar.Add(_imar);
-            Database.SaveChanges();
-            return RedirectToAction("Index");
+            try
+            {
+                _imarService.Create(_imar);
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public ActionResult Edit(int ID)
         {
-            Imar _imar = Database.Imar.FirstOrDefault(x => x.ID == ID);
+            Imar _imar = _imarService.GetById(ID);
             return View(_imar);
 
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(Imar _imar)
         {
-
-            Imar imar = Database.Imar.FirstOrDefault(x => x.ID == _imar.ID);
-            imar.Name = _imar.Name;
-            imar.ID = _imar.ID;
-            imar.UpdatedDate = DateTime.Now;
-            Database.SaveChanges();
-            return RedirectToAction("Index");
-
-
+            try
+            {
+                _imarService.edit(_imar);
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
 
         public JsonResult Delete(int ID)
         {
-            Imar _imar = Database.Imar.Find(ID);
-            _imar.IsDelete = true;
-            _imar.DeletedDate = DateTime.Now;
-            Database.SaveChanges();
-            return Json(" ");
-
+            try
+            {
+                _imarService.DeleteById(ID);
+                return Json(true);
+            }
+            catch (Exception)
+            {
+                return Json(false);
+            }
         }
 
         public JsonResult Status(int ID)
         {
-            Imar _imar = Database.Imar.Find(ID);
-            _imar.IsActive = !_imar.IsActive;
-            Database.SaveChanges();
-            return Json(_imar.IsActive);
+            try
+            {
+                _imarService.ChangeStatus(ID);
+                var status = _imarService.GetById(ID);
+                return Json(new { result = true, status = status.IsActive });
+            }
+            catch (Exception)
+            {
+                return Json(new { result = false, status = false });
+            }
         }
     }
 }

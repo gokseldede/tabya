@@ -37,8 +37,6 @@ namespace Project_Entity
     {
         public string Name { get; set; }
         public int? AdminUserID { get; set; }
-        public virtual AdminUser AdminUser { get; set; }
-        public virtual List<AdDetail> AdDetail { get; set; }
     }
     public class EmlakTip:EntityBase
     {

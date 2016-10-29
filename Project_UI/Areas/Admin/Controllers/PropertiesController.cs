@@ -1,4 +1,7 @@
-﻿using Project_Entity;
+﻿using Project_BLL.Implementation;
+using Project_BLL.Interfaces;
+using Project_DAL;
+using Project_Entity;
 using Project_UI.Areas.Admin.FilterAttributes;
 using System;
 using System.Collections.Generic;
@@ -11,41 +14,51 @@ namespace Project_UI.Areas.Admin.Controllers
     [CheckAuth]
     public class PropertiesController : BaseController
     {
+        private readonly IStandartService<Properties> _service;
+
+        public PropertiesController()
+        {
+            _service = new StandartService<Properties>(new EfRepository<Properties>());
+        }
+
+        public PropertiesController(IStandartService<Properties> service)
+        {
+            _service = service;
+        }
+
         // GET: Admin/Properties
         public ActionResult Index()
         {
-            List<Properties> _properties = Database.Propertiesis.Where(x => x.IsDelete == false).ToList();
+            List<Properties> _properties = _service.GetAll().ToList();
             return View(_properties);
         }
 
         // GET: Admin/Provinces/Create
         public ActionResult Create()
         {
-
             return View();
         }
 
         // POST: Admin/Provinces/Create
         [HttpPost]
-
+        [ValidateAntiForgeryToken]
         public ActionResult Create(Properties properties)
         {
-
-           properties.IsDelete = false;
-           properties.CreatedDate = DateTime.Now;
-           properties.UpdatedDate = DateTime.Now;
-            properties.IsActive = true;
-
-            db.Propertiesis.Add(properties);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-
+            try
+            {
+                _service.Create(properties);
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         // GET: Admin/Provinces/Edit/5
         public ActionResult Edit(int ID)
         {
-            Properties properties = Database.Propertiesis.FirstOrDefault(x => x.ID == ID);
+            Properties properties = _service.GetById(ID);
             return View(properties);
         }
 
@@ -54,30 +67,43 @@ namespace Project_UI.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Edit(Properties properties)
         {
-            Properties _properties = Database.Propertiesis.FirstOrDefault(x => x.ID == properties.ID);
-            _properties.Name = properties.Name;
-            _properties.ID = properties.ID;
-            _properties.UpdatedDate = DateTime.Now;
-            db.SaveChanges();
-            return RedirectToAction("Index");
-
+            try
+            {
+                _service.edit(properties);
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
+
+
         public JsonResult Delete(int ID)
         {
-            Properties _properties = Database.Propertiesis.Find(ID);
-            _properties.IsDelete = true;
-            _properties.DeletedDate = DateTime.Now;
-            Database.SaveChanges();
-            return Json(" ");
-
+            try
+            {
+                _service.DeleteById(ID);
+                return Json(true);
+            }
+            catch (Exception)
+            {
+                return Json(false);
+            }
         }
 
         public JsonResult Status(int ID)
         {
-            Properties _properties = Database.Propertiesis.Find(ID);
-            _properties.IsActive = !_properties.IsActive;
-            Database.SaveChanges();
-            return Json(_properties.IsActive);
+            try
+            {
+                _service.ChangeStatus(ID);
+                var status = _service.GetById(ID);
+                return Json(new { result = true, status = status.IsActive });
+            }
+            catch (Exception)
+            {
+                return Json(new { result = false, status = false });
+            }
         }
     }
 }

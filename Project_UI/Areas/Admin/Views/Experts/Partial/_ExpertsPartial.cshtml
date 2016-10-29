@@ -17,6 +17,7 @@
             <div class="row">
                 <div class="col-lg-6">
                     <form method="post" enctype="multipart/form-data" action="#">
+                        @Html.AntiForgeryToken()
                         <label>Adı :</label>
                         @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
                         <label>Email :</label>
@@ -24,7 +25,7 @@
                         <label>İletişim Numarası :</label>
                         @Html.TextBoxFor(x => x.PhoneNumber, new { @class = "form-control" })
                         <label>Unvanı :</label>
-                        @Html.TextBoxFor(x=>x.Title, new { @class="form-control"})
+                        @Html.TextBoxFor(x => x.Title, new { @class = "form-control" })
 
                         @Html.Label("Image:")
 
@@ -33,7 +34,7 @@
                             <div>
                                 <input type="file" name="document" class="form-group" />
                             </div>
-                                <img src="@Model.ImagePath" width="50" height="50" />
+                            <img src="@Model.ImagePath" width="50" height="50" />
                         }
                         else
                         {
@@ -48,6 +49,7 @@
                             Kaydet
                         </button>
                         <a href="/Admin/Experts/Index" class="btn btn-xs btn-info btn-xs radius-4"><i class="ace-icon fa fa-undo bigger-150"> Önceki Sayfa</i></a>
+                    </form>
                 </div>
                 <!-- /.col-lg-6 (nested) -->
             </div>

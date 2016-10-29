@@ -4,16 +4,31 @@ using System.Linq;
 using System.Web.Mvc;
 using Project_Entity;
 using Project_UI.Areas.Admin.FilterAttributes;
+using Project_BLL.Implementation;
+using Project_BLL.Interfaces;
+using Project_DAL;
 
 namespace Project_UI.Areas.Admin.Controllers
 {
     [CheckAuth]
     public class SecurityController : BaseController
     {
-        // GET: Admin/Security
+
+        private readonly IStandartService<Securitys> _service;
+
+        public SecurityController()
+        {
+            _service = new StandartService<Securitys>(new EfRepository<Securitys>());
+        }
+
+        public SecurityController(IStandartService<Securitys> service)
+        {
+            _service = service;
+        }
+
         public ActionResult Index()
         {
-            List<Securitys> _security = Database.Security.Where(x => x.IsDelete == false).ToList();
+            List<Securitys> _security = _service.GetAll().ToList();
             return View(_security);
         }
 
@@ -25,56 +40,69 @@ namespace Project_UI.Areas.Admin.Controllers
 
         // POST: Admin/Security/Create
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(Securitys security)
         {
-
-            security.IsDelete = false;
-            security.CreatedDate = DateTime.Now;
-            security.UpdatedDate = DateTime.Now;
-            security.IsActive = true;
-
-            db.Security.Add(security);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-
+            try
+            {
+                _service.Create(security);
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         // GET: Admin/Security/Edit/5
         public ActionResult Edit(int ID)
         {
-            Securitys security = Database.Security.FirstOrDefault(x => x.ID == ID);
+            Securitys security = _service.GetById(ID);
             return View(security);
         }
 
         // POST: Admin/Security/Edit/5
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(Securitys security)
         {
-            Securitys _security = Database.Security.FirstOrDefault(x => x.ID == security.ID);
-            _security.Name = security.Name;
-            _security.ID = security.ID;
-            _security.UpdatedDate = DateTime.Now;
-            db.SaveChanges();
-            return RedirectToAction("Index");
-
+            try
+            {
+                _service.edit(security);
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
+
         public JsonResult Delete(int ID)
         {
-            Securitys _security = db.Security.Find(ID);
-            _security.IsDelete = true;
-            _security.DeletedDate = DateTime.Now;
-            Database.SaveChanges();
-            return Json(" ");
-
+            try
+            {
+                _service.DeleteById(ID);
+                return Json(true);
+            }
+            catch (Exception)
+            {
+                return Json(false);
+            }
         }
 
         public JsonResult Status(int ID)
         {
-            Securitys _security = db.Security.Find(ID);
-            _security.IsActive = !_security.IsActive;
-            Database.SaveChanges();
-            return Json(_security.IsActive);
+            try
+            {
+                _service.ChangeStatus(ID);
+                var status = _service.GetById(ID);
+                return Json(new { result = true, status = status.IsActive });
+            }
+            catch (Exception)
+            {
+                return Json(new { result = false, status = false });
+            }
         }
     }
 }

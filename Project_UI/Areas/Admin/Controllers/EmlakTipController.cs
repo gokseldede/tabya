@@ -6,7 +6,6 @@ using Project_UI.Areas.Admin.FilterAttributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Project_UI.Areas.Admin.Controllers
@@ -14,14 +13,14 @@ namespace Project_UI.Areas.Admin.Controllers
     [CheckAuth]
     public class EmlakTipController : Controller
     {
-        private readonly IEmlakTipService _emlakTipService;
+        private readonly IStandartService<EmlakTip> _emlakTipService;
 
         public EmlakTipController()
         {
-            _emlakTipService = new EmlakTipService(new EfRepository<EmlakTip>());
+            _emlakTipService = new StandartService<EmlakTip>(new EfRepository<EmlakTip>());
         }
 
-        public EmlakTipController(IEmlakTipService emlakTipService)
+        public EmlakTipController(IStandartService<EmlakTip> emlakTipService)
         {
             _emlakTipService = emlakTipService;
         }

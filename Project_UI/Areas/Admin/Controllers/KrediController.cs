@@ -1,4 +1,7 @@
-﻿using Project_Entity;
+﻿using Project_BLL.Implementation;
+using Project_BLL.Interfaces;
+using Project_DAL;
+using Project_Entity;
 using Project_UI.Areas.Admin.FilterAttributes;
 using System;
 using System.Collections.Generic;
@@ -11,10 +14,23 @@ namespace Project_UI.Areas.Admin.Controllers
     [CheckAuth]
     public class KrediController : BaseController
     {
+        private readonly IStandartService<Kredi> _krediService;
+
+        public KrediController()
+        {
+            _krediService = new StandartService<Kredi>(new EfRepository<Kredi>());
+        }
+
+        public KrediController(IStandartService<Kredi> krediService)
+        {
+            _krediService = krediService;
+        }
+
+
         // GET: Admin/Kredi
         public ActionResult Index()
         {
-            List<Kredi> _kredi = Database.Krediler.Where(x => x.IsDelete == false).ToList();
+            List<Kredi> _kredi = _krediService.GetAll().ToList();
             return View(_kredi);
         }
 
@@ -23,59 +39,68 @@ namespace Project_UI.Areas.Admin.Controllers
             return View();
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(Kredi _kredi)
         {
-           _kredi.IsDelete = false;
-           _kredi.CreatedDate = DateTime.Now;
-           _kredi.UpdatedDate = DateTime.Now;
-           _kredi.IsActive = true;
-
-            Database.Krediler.Add(_kredi);
-            Database.SaveChanges();
-            return RedirectToAction("Index");
+            try
+            {
+                _krediService.Create(_kredi);
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public ActionResult Edit(int ID)
         {
-            Kredi _kredi = Database.Krediler.FirstOrDefault(x => x.ID == ID);
+            Kredi _kredi = _krediService.GetById(ID);
             return View(_kredi);
 
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(Kredi _kredi)
         {
-
-            Kredi kredi = Database.Krediler.FirstOrDefault(x => x.ID == _kredi.ID);
-
-
-
-            kredi.Name = _kredi.Name;
-            kredi.ID = _kredi.ID;
-            kredi.UpdatedDate = DateTime.Now;
-            Database.SaveChanges();
-            return RedirectToAction("Index");
-
-
+            try
+            {
+                _krediService.edit(_kredi);
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
 
         public JsonResult Delete(int ID)
         {
-            Kredi _kredi = Database.Krediler.Find(ID);
-            _kredi.IsDelete = true;
-            _kredi.DeletedDate = DateTime.Now;
-            Database.SaveChanges();
-            return Json(" ");
-
+            try
+            {
+                _krediService.DeleteById(ID);
+                return Json(true);
+            }
+            catch (Exception)
+            {
+                return Json(false);
+            }
         }
 
         public JsonResult Status(int ID)
         {
-            Kredi _kredi = Database.Krediler.Find(ID);
-            _kredi.IsActive = !_kredi.IsActive;
-            Database.SaveChanges();
-            return Json(_kredi.IsActive);
+            try
+            {
+                _krediService.ChangeStatus(ID);
+                var status = _krediService.GetById(ID);
+                return Json(new { result = true, status = status.IsActive });
+            }
+            catch (Exception)
+            {
+                return Json(new { result = false, status = false });
+            }
         }
     }
 }

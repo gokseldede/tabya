@@ -1,5 +1,4 @@
-﻿
-@model Project_Entity.Esya
+﻿@model Project_Entity.Esya
 <div class="col-lg-12">
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -16,6 +15,7 @@
             <div class="row">
                 <div class="col-lg-6">
                     <form method="post" enctype="multipart/form-data" action="#">
+                        @Html.AntiForgeryToken()
                         <label>Adı :</label>
                         @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
 
@@ -26,6 +26,7 @@
                             Kaydet
                         </button>
                         <a href="/Admin/Esya/Index" class="btn btn-xs btn-info btn-xs radius-4"><i class="ace-icon fa fa-undo bigger-150"> Önceki Sayfa</i></a>
+                    </form>
                 </div>
                 <!-- /.col-lg-6 (nested) -->
             </div>

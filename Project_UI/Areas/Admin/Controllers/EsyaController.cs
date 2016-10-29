@@ -1,9 +1,11 @@
-﻿using Project_Entity;
+﻿using Project_BLL.Implementation;
+using Project_BLL.Interfaces;
+using Project_DAL;
+using Project_Entity;
 using Project_UI.Areas.Admin.FilterAttributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Project_UI.Areas.Admin.Controllers
@@ -11,10 +13,21 @@ namespace Project_UI.Areas.Admin.Controllers
     [CheckAuth]
     public class EsyaController : BaseController
     {
-        // GET: Admin/Esya
+        private readonly IStandartService<Esya> _esyaService;
+
+        public EsyaController()
+        {
+            _esyaService = new StandartService<Esya>(new EfRepository<Esya>());
+        }
+
+        public EsyaController(IStandartService<Esya> emlakTipService)
+        {
+            _esyaService = emlakTipService;
+        }
+
         public ActionResult Index()
         {
-            List<Esya> _esya = Database.Esyalar.Where(x => x.IsDelete == false).ToList();
+            List<Esya> _esya = _esyaService.GetAll().ToList();
             return View(_esya);
         }
 
@@ -22,58 +35,70 @@ namespace Project_UI.Areas.Admin.Controllers
         {
             return View();
         }
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(Esya _esya)
         {
-            _esya.IsDelete = false;
-            _esya.CreatedDate = DateTime.Now;
-            _esya.UpdatedDate = DateTime.Now;
-            _esya.IsActive = true;
-
-            Database.Esyalar.Add(_esya);
-            Database.SaveChanges();
-            return RedirectToAction("Index");
+            try
+            {
+                _esyaService.Create(_esya);
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public ActionResult Edit(int ID)
         {
-            Esya _esya = Database.Esyalar.FirstOrDefault(x => x.ID == ID);
+            Esya _esya = _esyaService.GetById(ID);
             return View(_esya);
 
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(Esya _esya)
         {
-
-            Esya esya = Database.Esyalar.FirstOrDefault(x => x.ID == _esya.ID);
-            
-            esya.Name = _esya.Name;
-            esya.ID = _esya.ID;
-            esya.UpdatedDate = DateTime.Now;
-            Database.SaveChanges();
-            return RedirectToAction("Index");
-
-
+            try
+            {
+                _esyaService.edit(_esya);
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
 
         public JsonResult Delete(int ID)
         {
-            Esya _esya = Database.Esyalar.Find(ID);
-            _esya.IsDelete = true;
-            _esya.DeletedDate = DateTime.Now;
-            Database.SaveChanges();
-            return Json(" ");
-
+            try
+            {
+                _esyaService.DeleteById(ID);
+                return Json(true);
+            }
+            catch (Exception)
+            {
+                return Json(false);
+            }
         }
 
         public JsonResult Status(int ID)
         {
-            Esya _esya = Database.Esyalar.Find(ID);
-            _esya.IsActive = !_esya.IsActive;
-            Database.SaveChanges();
-            return Json(_esya.IsActive);
+            try
+            {
+                _esyaService.ChangeStatus(ID);
+                var status = _esyaService.GetById(ID);
+                return Json(new { result = true, status = status.IsActive });
+            }
+            catch (Exception)
+            {
+                return Json(new { result = false, status = false });
+            }
         }
     }
 }

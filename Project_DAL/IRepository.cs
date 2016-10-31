@@ -13,6 +13,6 @@ namespace Project_DAL
         void Update(TEntity entity);
         void Delete(int id);
         void Delete(TEntity entity);
-        IList<TEntity> Table { get; }
+        IQueryable<TEntity> Table { get; }
     }
 }

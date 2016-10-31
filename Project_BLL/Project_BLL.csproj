@@ -43,9 +43,12 @@
   <ItemGroup>
     <Compile Include="Implementation\ExpertService.cs" />
     <Compile Include="Implementation\StandartService.cs" />
+    <Compile Include="Implementation\WebSiteService.cs" />
     <Compile Include="Interfaces\IExpertService.cs" />
     <Compile Include="Interfaces\IStandartService.cs" />
+    <Compile Include="Interfaces\IWebSiteService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

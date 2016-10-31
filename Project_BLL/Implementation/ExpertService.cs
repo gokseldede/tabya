@@ -43,6 +43,12 @@ namespace Project_BLL.Implementation
                 _expertRepository.Update(model);
         }
 
+        public IList<Expert> Get(System.Linq.Expressions.Expression<Func<Expert, bool>> predicate)
+        {
+            throw new NotImplementedException();
+        }
+        
+
         public IList<Expert> GetAll()
         {
             return _expertRepository.Table.Where(x => x.IsDelete == false).ToList();

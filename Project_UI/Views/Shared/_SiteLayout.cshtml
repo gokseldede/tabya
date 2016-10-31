@@ -60,8 +60,8 @@
                     </ul>
                     <a href="#" class="search-btn"><i class="fa fa-search"></i></a>
                     <a href="#" class="language">EN</a>
-                 
-                   
+
+
                 </div>
             </div>
         </div>
@@ -98,8 +98,6 @@
 
     @Html.Partial("Partial/_ModalPartial")
 
-
-   
     <div class="overlay">
         <div class="mobile-copyright">Copyright © Tabya Gayrimenkul</div>
     </div>
@@ -111,5 +109,7 @@
     <script src="~/Scripts/js/plugin/slick.js"></script>
     <script src="~/Scripts/js/plugin/lightbox.min.js"></script>
     <script src="~/Scripts/js/custom/custom.js"></script>
+
+    @RenderSection("Scripts", false)
 </body>
 </html>

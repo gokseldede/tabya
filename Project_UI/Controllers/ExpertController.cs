@@ -1,4 +1,7 @@
 ﻿using PagedList;
+using Project_BLL.Implementation;
+using Project_BLL.Interfaces;
+using Project_DAL;
 using Project_Entity;
 using System;
 using System.Collections.Generic;
@@ -10,10 +13,16 @@ namespace Project_UI.Controllers
 {
     public class ExpertController : Controller
     {
-        // GET: Expert
-        public ActionResult Index(int? Id)
+        IExpertService _service;
+        public ExpertController()
         {
-            return View();
+            _service = new ExpertService(new EfRepository<Expert>());
+        }
+        // GET: Expert
+        public ActionResult Index()
+        {
+            var experts = _service.GetAll().ToList();
+            return View(experts);
         }
     }
 }

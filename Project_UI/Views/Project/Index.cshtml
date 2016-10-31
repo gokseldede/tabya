@@ -4,9 +4,7 @@
     Layout = "~/Views/Shared/_SiteLayout.cshtml";
    
 }
-@using PagedList;
-@using PagedList.Mvc;
-@model IPagedList<Project_Entity.Project>
+@model List<Project_Entity.Project>
 <section class="section projeler page-banner">
     <div class="container">
         <div class="row">
@@ -38,24 +36,6 @@
                     </a>
                 </div>
             }
-
-
-
-        </div>
-        <div class="row">
-            <div class="col-md-12 pagination wow fadeInUp animated" data-wow-duration="1s">
-                <ul>
-                 
-                    @Html.PagedListPager(Model, Id => Url.Action("index", new { Id }))
-                   
-                </ul>
-            </div>
         </div>
     </div>
 </section>
-<script type="text/javascript" src="~/Scripts/js/custom/wow.js"></script>
-<script type="text/javascript" src="~/Scripts/js/custom/jquery.lazyloadxt.js"></script>
-<script type="text/javascript" src="~/Scripts/js/plugin/owl.carousel.min.js"></script>
-<script type="text/javascript" src="~/Scripts/js/plugin/slick.js"></script>
-@*<script type="text/javascript" src="~/Scripts/js/plugin/lightbox.min.js"></script>*@
-<script type="text/javascript" src="~/Scripts/js/custom/custom.js"></script>

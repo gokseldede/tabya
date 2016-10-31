@@ -48,6 +48,11 @@ namespace Project_BLL.Implementation
             }
         }
 
+        public IList<T> Get(System.Linq.Expressions.Expression<Func<T, bool>> predicate)
+        {
+            return _repository.Table.Where(predicate).ToList();
+        }
+
         public IList<T> GetAll()
         {
             return _repository.Table.Where(x => x.IsDelete == false).ToList();

@@ -8,9 +8,7 @@
     }
 }
 
-@using PagedList;
-@using PagedList.Mvc;
-@model IPagedList<Project_Entity.Expert>
+@model List<Project_Entity.Expert>
 
 <section class="section danismanlar page-banner">
     <div class="container">
@@ -32,7 +30,7 @@
 
                     <div class="box">
                         <div class="user-img">
-                            <img src="@item.ImagePath" width="100" height="100" alt="Necmi Körük">
+                            <img src="@Url.Content(item.ImagePath)" width="100" height="100" alt="Necmi Körük">
                         </div>
                         <div class="text">
                             <h2>@item.Name</h2>
@@ -48,15 +46,5 @@
                 </div>
             }
         </div>
-        <div class="row">
-            <div class="col-md-12 pagination wow fadeInUp" data-wow-duration="1s">
-                <ul>
-                 @Html.PagedListPager(Model, Id => Url.Action("index", new { Id, @class = "active" }))
-                  
-                </ul>
-            </div>
-        </div>
-    
     </div>
-
 </section>

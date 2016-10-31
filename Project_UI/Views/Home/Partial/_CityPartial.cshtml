@@ -1,102 +1,15 @@
-﻿
-@model List<Project_Entity.Il>
+﻿@model List<SelectlistItem>
 
-@*<script src="~/Scripts/jquery-1.10.2.min.js"></script>*@
-<script type="text/javascript">
-        $(document).ready(function () {
-            $.ilID = $("#il").val();
-            GetirIlceler($.ilID);
 
-            $("#il").change(function () {
-                $.ilID = $(this).val();
-                GetirIlceler($.ilID);
-
-            });
-
-         
-        });
-        function GetirIlceler(ilID) {
-            $("#ilce").empty();
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("GetirIlceler", "Home")',
-                data: { ilID: $.ilID },
-                dataType: "json",
-                success: function (ilceler) {
-                    $.each(ilceler, function (index, ilce) {
-                        $("#ilce").append("<option value=" + ilce.ID + ">" + ilce.Ad + "</option>");
-                    });
-                }
-            });
-        }
-       
-
-</script>
-<script type="text/javascript">
-        $(document).ready(function () {
-            $.ilID = $("#il1").val();
-            GetirIlceler1($.ilID);
-
-            $("#il1").change(function () {
-                $.ilID = $(this).val();
-                GetirIlceler1($.ilID);
-
-            });
-
-        });
-        function GetirIlceler1(ilID) {
-            $("#ilce1").empty();
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("GetirIlceler", "Home")',
-                data: { ilID: $.ilID },
-                dataType: "json",
-                success: function (ilceler) {
-                    $.each(ilceler, function (index, ilce) {
-                        $("#ilce1").append("<option value=" + ilce.ID + ">" + ilce.Ad + "</option>");
-                    });
-                }
-            });
-        }
-      
-</script>
-<script type="text/javascript">
-        $(document).ready(function () {
-            $.ilID = $("#il2").val();
-            GetirIlceler2($.ilID);
-
-            $("#il2").change(function () {
-                $.ilID = $(this).val();
-                GetirIlceler2($.ilID);
-
-            });
-
-        });
-        function GetirIlceler2(ilID) {
-            $("#ilce2").empty();
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("GetirIlceler", "Home")',
-                data: { ilID: $.ilID },
-                dataType: "json",
-                success: function (ilceler) {
-                    $.each(ilceler, function (index, ilce) {
-                        $("#ilce2").append("<option value=" + ilce.ID + ">" + ilce.Ad + "</option>");
-                    });
-                }
-            });
-        }
-
-</script>
 
 <div class="container">
-   
-     <div class="row">
-         <div class="col-sm-6 text">
-             <h2>HAYALİNİZDEKİ <br />EVE KAVUŞUN.</h2>
-             <h3>Hayalini kurduğunuz eve ulaşmak çok kolay! Hemen istediğiniz kriterlerdeki evi aratın, uzmanlarımızdan yardım alın, yeni evinize hemen yerleşin!</h3>
-             <p><strong>2 DİLDE HİZMET VERİYORUZ.</strong></p>
-         </div>
+
+    <div class="row">
+        <div class="col-sm-6 text">
+            <h2>HAYALİNİZDEKİ <br />EVE KAVUŞUN.</h2>
+            <h3>Hayalini kurduğunuz eve ulaşmak çok kolay! Hemen istediğiniz kriterlerdeki evi aratın, uzmanlarımızdan yardım alın, yeni evinize hemen yerleşin!</h3>
+            <p><strong>2 DİLDE HİZMET VERİYORUZ.</strong></p>
+        </div>
 
 
         <div class="col-sm-6 form-wrapper">
@@ -120,7 +33,7 @@
                             <select id="il">
                                 @foreach (var il in Model)
                                 {
-                                <option value="@il.ID">@il.Ad</option>
+                                    <option value="@il.Id">@il.Value</option>
                                 }
                             </select>
 
@@ -160,7 +73,7 @@
                             </select>
                         </div>
                         <div class="form-line btn-line">
-                            <a href="/Search/Index" ><input type="button" class="btnx" value="ARA" /></a>
+                            <a href="/Search/Index"><input type="button" class="btnx" value="ARA" /></a>
                         </div>
                     </div>
                     <div id="mustakil" class="select-box tab_content" style="display: none;">
@@ -170,7 +83,7 @@
                             <select id="il1">
                                 @foreach (var il in Model)
                                 {
-                                <option value="@il.ID">@il.Ad</option>
+                                    <option value="@il.Id">@il.Value</option>
                                 }
                             </select>
 
@@ -210,7 +123,7 @@
                             </select>
                         </div>
                         <div class="form-line btn-line">
-                            <a href="/Search/Index" ><input type="button" class="btnx" value="ARA" /></a>
+                            <a href="/Search/Index"><input type="button" class="btnx" value="ARA" /></a>
                         </div>
                     </div>
                     <div id="ofis" class="select-box tab_content" style="display: none;">
@@ -220,7 +133,7 @@
                             <select id="il2">
                                 @foreach (var il in Model)
                                 {
-                                <option value="@il.ID">@il.Ad</option>
+                                    <option value="@il.Id">@il.Value</option>
                                 }
                             </select>
 
@@ -260,7 +173,7 @@
                             </select>
                         </div>
                         <div class="form-line btn-line">
-                            <a href="/Search/Index" ><input type="button" class="btnx" value="ARA" /></a>
+                            <a href="/Search/Index"><input type="button" class="btnx" value="ARA" /></a>
                         </div>
                     </div>
                 </form>

@@ -67,9 +67,12 @@ namespace Project_DAL
             _context.SaveChanges();
         }
 
-        public IList<TEntity> Table
+        IQueryable<TEntity> IRepository<TEntity>.Table
         {
-            get { return Entities.ToList(); }
+            get
+            {
+                return Entities;
+            }
         }
     }
 }

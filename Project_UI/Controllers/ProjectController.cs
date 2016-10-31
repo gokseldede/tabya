@@ -1,4 +1,7 @@
 ﻿using PagedList;
+using Project_BLL.Implementation;
+using Project_BLL.Interfaces;
+using Project_DAL;
 using Project_Entity;
 using System;
 using System.Collections.Generic;
@@ -10,16 +13,23 @@ namespace Project_UI.Controllers
 {
     public class ProjectController : Controller
     {
-        // GET: Project
+        IStandartService<Project> _projectService;
 
-        public ActionResult Index(int? Id)
+        public ProjectController()
         {
-            return View();
+            _projectService = new StandartService<Project>(new EfRepository<Project>());
+        }
+
+        public ActionResult Index()
+        {
+            var projects = _projectService.GetAll().ToList();
+            return View(projects);
         }
 
         public ActionResult Detail(int ID)
         {
-            return View();
+            var project = _projectService.GetById(ID);
+            return View(project);
         }
     }
 }

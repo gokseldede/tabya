@@ -1,4 +1,4 @@
-﻿@model List<Project_Entity.Project>
+﻿@model List<NewProject>
 <div class="container">
     <div class="row">
         <div class="col-md-12 title">
@@ -11,14 +11,14 @@
         @foreach (var item in Model)
         {
             <div class="col-md-4 item">
-                <a href="/Project/Detail/@item.ID">
+                <a href="/Project/Detail/@item.Id">
                     <div class="image">
-                        <img src="@Html.DisplayFor(modelItem => item.ImagePath)" width="383" height="275" alt="ev">
+                        <img src="@item.Photo" width="383" height="275" alt="ev">
                         <div class="over"></div>
                     </div>
                     <div class="text">
-                        <h3>@Html.DisplayFor(modelItem => item.Name)</h3>
-                        <h4>@Html.DisplayFor(modelItem => item.SubName) - @Html.DisplayFor(modelItem=>item.SSubName)</h4>
+                        <h3>@item.Name</h3>
+                        <h4>@item.Company - @item.Address</h4>
                     </div>
                 </a>
             </div>

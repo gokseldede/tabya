@@ -53,102 +53,81 @@
 
                         <br />
                         <label> Lokasyonu:</label>
-                        <div class="form-horizontal">
-                            <div class="form-group">
+                        @Html.TextBoxFor(x => x.Location, new { @class = "form-control", @id = "us3-address" })
 
-                                @Html.TextBoxFor(x => x.Location, new { @class = "form-control", @id = "us3-address" })
+                        <label> Danışmanı:</label>
+                        @Html.DropDownListFor(x => x.ExpertID, ViewData["Expert"] as IEnumerable<SelectListItem>, "Danışman Seçiniz", new { @class = "form-control" })
+                        <br />
 
-                            </div>
+                        <label> Diğer Özellikler:</label> <br />
 
-                            <div id="us3" style="width: 500px; height: 400px;"></div>
+                        @Html.DropDownList("tags", ViewBag.tags as IList<SelectListItem>, new { @multiple = "multiple", @class = "dropdown-menu", @id = "tags" })
+                        <br />
+                        <label> Sosyal Alan Özellikleri:</label> <br />
 
-                            <div class="clearfix">&nbsp;</div>
-                            <div class="m-t-small">
-                                <label class="p-r-small col-sm-1 control-label">Lat.:</label>
-                                @Html.TextBoxFor(x => x.Latitude, new { @class = "form-control", @id = "us3-lat" })
+                        @Html.DropDownList("socials", ViewBag.socials as IList<SelectListItem>, new { @multiple = "multiple", @class = "dropdown-menu", @id = "socials" })
 
-                                <label class="p-r-small col-sm-1 control-label">Long.:</label>
+                        <br />
+                        <label> Güvenlik Özellikleri:</label> <br />
 
-                                @Html.TextBoxFor(x => x.Longitude, new { @class = "form-control", @id = "us3-lon" })
+                        @Html.DropDownList("securitys", ViewBag.securitys as IList<SelectListItem>, new { @multiple = "multiple", @class = "dropdown-menu", @id = "securitys" })
+                        <br />
+                        <label> Kimden Durumu:</label>
+                        @Html.DropDownListFor(x => x.KimdenID, ViewData["Kimden"] as IEnumerable<SelectListItem>, " Mülk Sahibi Seçiniz", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.Kimden, "", new { @class = "text-danger" })
 
-                            </div>
-                            <label> Danışmanı:</label>
-                            @Html.DropDownListFor(x => x.ExpertID, ViewData["Expert"] as IEnumerable<SelectListItem>, "Danışman Seçiniz", new { @class = "form-control" })
-                            <br />
-
-                            <label> Diğer Özellikler:</label> <br />
-
-                            @Html.DropDownList("tags", ViewBag.tags as IList<SelectListItem>, new { @multiple = "multiple", @class = "dropdown-menu", @id = "tags" })
-                            <br />
-                            <label> Sosyal Alan Özellikleri:</label> <br />
-
-                            @Html.DropDownList("socials", ViewBag.socials as IList<SelectListItem>, new { @multiple = "multiple", @class = "dropdown-menu", @id = "socials" })
-
-                            <br />
-                            <label> Güvenlik Özellikleri:</label> <br />
-
-                            @Html.DropDownList("securitys", ViewBag.securitys as IList<SelectListItem>, new { @multiple = "multiple", @class = "dropdown-menu", @id = "securitys" })
-                            <br />
-                            <label> Kimden Durumu:</label>
-                            @Html.DropDownListFor(x => x.KimdenID, ViewData["Kimden"] as IEnumerable<SelectListItem>, " Mülk Sahibi Seçiniz", new { @class = "form-control" })
-                            @Html.ValidationMessageFor(x => x.Kimden, "", new { @class = "text-danger" })
-
-                            <br />
-                            <label>Emlak Tipi :</label>
-                            @Html.DropDownListFor(x => x.EmlakTipID, ViewData["EmlakTipi"] as IEnumerable<SelectListItem>, "Emlak Tipi Seçiniz", new { @class = "form-control" })
-                            @Html.ValidationMessageFor(x => x.EmlakTip, "", new { @class = "text-danger" })
-                            <br />
+                        <br />
+                        <hr />
+                        @Html.Label("Lütfen yüksek çözünürlüklü ya da 393x303 ebatlarında önizleme resmi yükleyiniz!")
+                        @if (Model != null)
+                        {
+                            <input type="file" id="document" name="document" />
                             <hr />
-                            @Html.Label("Lütfen yüksek çözünürlüklü ya da 393x303 ebatlarında önizleme resmi yükleyiniz!")
-                            @if (Model != null)
-                            {
-                                <input type="file" id="document" name="document" />
-                                    <hr />
-                                    <img src="@Url.Content(@Model.ThumbPath)" width="50" height="50" />
+                                <img src="@Url.Content(@Model.ThumbPath)" width="50" height="50" />
 
-                            }
-                            else
-                            {
-                                <input type="file" id="document" name="document" required="Lütfen resim ekleyiniz" />
+                        }
+                        else
+                        {
+                            <input type="file" id="document" name="document" required="Lütfen resim ekleyiniz" />
 
-                            }
-                            <hr />
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    @Html.Label("Lütfen galeri için resim yükleyiniz!")
-                                    <br />
-                                    @Html.Label("Choose Image(s)", new { @class = "control-label col-sm-3" })
-                                    <div class="col-sm-5">
-                                        @if (Model != null)
-                                        {
-                                            <input type="file" id="file" name="files" multiple="multiple" accept=".jpg, .png, .gif" />
-                                        }
-                                        else
-                                        {
-                                            <input type="file" id="file" name="files" multiple="multiple" accept=".jpg, .png, .gif" required="Lütfen resim ekleyiniz" />
+                        }
+                        <hr />
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                @Html.Label("Lütfen galeri için resim yükleyiniz!")
+                                <br />
+                                @Html.Label("Choose Image(s)", new { @class = "control-label col-sm-3" })
+                                <div class="col-sm-5">
+                                    @if (Model != null)
+                                    {
+                                        <input type="file" id="file" name="files" multiple="multiple" accept=".jpg, .png, .gif" />
+                                    }
+                                    else
+                                    {
+                                        <input type="file" id="file" name="files" multiple="multiple" accept=".jpg, .png, .gif" required="Lütfen resim ekleyiniz" />
 
-                                        }
-                                    </div>
-                                    <hr />
-                                    <div class="form-group">
-                                        <div class="col-md-12">
-                                            <ul class="attachment">
-                                                @if (Model != null)
+                                    }
+                                </div>
+                                <hr />
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <ul class="attachment">
+                                            @if (Model != null)
+                                            {
+                                                foreach (var item in Model.BinaFileDetails)
                                                 {
-                                                    foreach (var item in Model.BinaFileDetails)
-                                                    {
-                                                        <li>
-                                                            <img src="~/Areas/Admin/Content/Image/@item.Id@item.Extension" width="60" height="60" />
-                                                            <a href="javascript:void(0);" data-id="@item.Id" class="deleteItemb" name="deleteItem" onclick="deleteItemb('/Admin/Building/DeleteFile/'@item.Id)">X</a>
-                                                        </li>
-                                                    }
+                                                    <li>
+                                                        <img src="~/Areas/Admin/Content/Image/@item.Id@item.Extension" width="60" height="60" />
+                                                        <a href="javascript:void(0);" data-id="@item.Id" class="deleteItemb" name="deleteItem" onclick="deleteItemb('/Admin/Building/DeleteFile/'@item.Id)">X</a>
+                                                    </li>
                                                 }
-                                            </ul>
-                                        </div>
+                                            }
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                         <br />
 
                         <button type="submit" value="Save" class="btn btn-xs btn-success btn-xs radius-4">

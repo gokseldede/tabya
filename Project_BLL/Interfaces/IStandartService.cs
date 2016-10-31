@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace Project_BLL.Interfaces
 {
@@ -10,5 +12,6 @@ namespace Project_BLL.Interfaces
         void DeleteById(int Id);
         void ChangeStatus(int Id);
         IList<T> GetAll();
+        IList<T> Get(Expression<Func<T, bool>> predicate);
     }
 }

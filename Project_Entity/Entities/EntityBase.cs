@@ -2,7 +2,7 @@
 
 namespace Project_Entity
 {
-    public class EntityBase
+    public class EntityBase 
     {
         public int ID { get; set; }
         public DateTime CreatedDate { get; set; }
@@ -13,4 +13,6 @@ namespace Project_Entity
         public bool IsDelete { get; set; }
         public bool Vitrin { get; set; }
     }
+    
+    
 }

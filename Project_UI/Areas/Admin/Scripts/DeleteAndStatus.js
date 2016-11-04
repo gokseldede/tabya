@@ -9,19 +9,21 @@
         closeOnConfirm: false,
         cancelButtonText: "Hayır",
     },
-    function () {
-        $.ajax({
-            type: 'POST',
-            url: url + id,
-            success: function () {
-                swal("Silindi!", " Kaydınız başarıyla silindi", "success");
-
-                $("#a_" + id).fadeOut(2000);
-            }
-        })
-
-    });
-
+        function () {
+            $.ajax({
+                type: 'POST',
+                url: url + id,
+                success: function (result) {
+                    debugger;
+                    if (result.result == true) {
+                        swal("Silindi!", " Kaydınız başarıyla silindi", "success");
+                        $("#a_" + id).fadeOut(2000);
+                    } else {
+                        console.log("Silinemedi");
+                    }
+                }
+            });
+        });
 }
 
 function Status(url, id) {
@@ -33,17 +35,15 @@ function Status(url, id) {
             if (result.result == true) {
                 if (result.status == true) {
                     $("#b_" + id).empty();
-                    $("#b_" + id).append("<span class='btn btn-info btn-sm'>Aktif</span>")
-
+                    $("#b_" + id).append("<span class='btn btn-info btn-sm'>Aktif</span>");
                 }
                 else {
                     $("#b_" + id).empty();
-                    $("#b_" + id).append("<span class='btn btn-default btn-sm'>Pasif</span>")
+                    $("#b_" + id).append("<span class='btn btn-default btn-sm'>Pasif</span>");
                 }
             }
         }
-    })
-
+    });
 }
 
 function Vitrin(url, id) {
@@ -51,19 +51,19 @@ function Vitrin(url, id) {
         type: 'POST',
         url: url + id,
         success: function (result) {
-
-            if (result == true) {
-                $("#c_" + id).empty();
-                $("#c_" + id).append("<span class='btn btn-info btn-sm'>Vitrine Eklendi</span>")
-
-            }
-            else {
-                $("#c_" + id).empty();
-                $("#c_" + id).append("<span class='btn btn-default btn-sm'>Vitrine Ekle</span>")
+            debugger;
+            if (result.result == true) {
+                if (result.status == true) {
+                    $("#c_" + id).empty();
+                    $("#c_" + id).append("<span class='btn btn-info btn-sm'>Vitrine Eklendi</span>");
+                } else {
+                    $("#c_" + id).empty();
+                    $("#c_" + id).append("<span class='btn btn-default btn-sm'>Vitrine Ekle</span>");
+                }
             }
         }
 
-    })
+    });
 
 }
 
@@ -85,8 +85,7 @@ $('.deleteItem').click(function (e) {
             }
         }).fail(function () {
             alert("Silme işleminde hata oluştu.");
-        })
-
+        });
     }
 });
 
@@ -107,8 +106,7 @@ $('.deleteIteml').click(function (e) {
             }
         }).fail(function () {
             alert("Silme işleminde hata oluştu.");
-        })
-
+        });
     }
 });
 
@@ -121,16 +119,15 @@ $('.deleteItemw').click(function (e) {
             type: 'POST',
             data: { id: $(this).data('id') }
         }).done(function (data) {
-            if (data.Result == "OK") {
+            if (data.Result == true) {
                 $ctrl.closest('li').remove();
             }
-            else if (data.Result.Message) {
-                alert(data.Result.Message);
+            else {
+                alert(data.Message);
             }
         }).fail(function () {
             alert("Silme işleminde hata oluştu.");
-        })
-
+        });
     }
 });
 
@@ -143,16 +140,15 @@ $('.deleteItemb').click(function (e) {
             type: 'POST',
             data: { id: $(this).data('id') }
         }).done(function (data) {
-            if (data.Result == "OK") {
+            if (data.Result == true) {
                 $ctrl.closest('li').remove();
             }
-            else if (data.Result.Message) {
-                alert(data.Result.Message);
+            else {
+                alert(data.Message);
             }
         }).fail(function () {
             alert("Silme işleminde hata oluştu.");
-        })
-
+        });
     }
 });
 
@@ -165,15 +161,14 @@ $('.deleteItemp').click(function (e) {
             type: 'POST',
             data: { id: $(this).data('id') }
         }).done(function (data) {
-            if (data.Result == "OK") {
+            if (data.Result == true) {
                 $ctrl.closest('li').remove();
             }
-            else if (data.Result.Message) {
-                alert(data.Result.Message);
+            else {
+                alert(data.Message);
             }
         }).fail(function () {
             alert("Silme işleminde hata oluştu.");
-        })
-
+        });
     }
 });

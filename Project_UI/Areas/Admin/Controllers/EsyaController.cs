@@ -17,7 +17,7 @@ namespace Project_UI.Areas.Admin.Controllers
 
         public EsyaController()
         {
-            _esyaService = new StandartService<Esya>(new EfRepository<Esya>());
+            _esyaService = new StandartService<Esya>(new EfRepositoryForEntityBase<Esya>());
         }
 
         public EsyaController(IStandartService<Esya> emlakTipService)
@@ -64,7 +64,7 @@ namespace Project_UI.Areas.Admin.Controllers
         {
             try
             {
-                _esyaService.edit(_esya);
+                _esyaService.Edit(_esya);
                 return RedirectToAction("Index");
             }
             catch (Exception)

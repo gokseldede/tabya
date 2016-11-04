@@ -18,7 +18,7 @@ namespace Project_UI.Areas.Admin.Controllers
 
         public StatuesController()
         {
-            _service = new StandartService<Status>(new EfRepository<Status>());
+            _service = new StandartService<Status>(new EfRepositoryForEntityBase<Status>());
         }
 
         public StatuesController(IStandartService<Status> service)
@@ -71,7 +71,7 @@ namespace Project_UI.Areas.Admin.Controllers
         {
             try
             {
-                _service.edit(status);
+                _service.Edit(status);
                 return RedirectToAction("Index");
             }
             catch (Exception)

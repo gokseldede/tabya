@@ -18,7 +18,7 @@ namespace Project_UI.Areas.Admin.Controllers
 
         public ImarController()
         {
-            _imarService = new StandartService<Imar>(new EfRepository<Imar>());
+            _imarService = new StandartService<Imar>(new EfRepositoryForEntityBase<Imar>());
         }
 
         public ImarController(IStandartService<Imar> imarService)
@@ -65,7 +65,7 @@ namespace Project_UI.Areas.Admin.Controllers
         {
             try
             {
-                _imarService.edit(_imar);
+                _imarService.Edit(_imar);
                 return RedirectToAction("Index");
             }
             catch (Exception)

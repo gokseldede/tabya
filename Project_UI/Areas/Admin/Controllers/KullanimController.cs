@@ -18,7 +18,7 @@ namespace Project_UI.Areas.Admin.Controllers
 
         public KullanimController()
         {
-            _kullanimService = new StandartService<Kullanım>(new EfRepository<Kullanım>());
+            _kullanimService = new StandartService<Kullanım>(new EfRepositoryForEntityBase<Kullanım>());
         }
 
         public KullanimController(IStandartService<Kullanım> kullanimService)
@@ -66,7 +66,7 @@ namespace Project_UI.Areas.Admin.Controllers
         {
             try
             {
-                _kullanimService.edit(_kullanim);
+                _kullanimService.Edit(_kullanim);
                 return RedirectToAction("Index");
             }
             catch (Exception)

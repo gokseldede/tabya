@@ -18,7 +18,7 @@ namespace Project_UI.Areas.Admin.Controllers
 
         public PropertiesController()
         {
-            _service = new StandartService<Properties>(new EfRepository<Properties>());
+            _service = new StandartService<Properties>(new EfRepositoryForEntityBase<Properties>());
         }
 
         public PropertiesController(IStandartService<Properties> service)
@@ -69,7 +69,7 @@ namespace Project_UI.Areas.Admin.Controllers
         {
             try
             {
-                _service.edit(properties);
+                _service.Edit(properties);
                 return RedirectToAction("Index");
             }
             catch (Exception)

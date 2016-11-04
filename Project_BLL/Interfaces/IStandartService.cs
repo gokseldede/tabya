@@ -7,11 +7,12 @@ namespace Project_BLL.Interfaces
     public interface IStandartService<T>
     {
         void Create(T model);
-        void edit(T model);
-        T GetById(int Id);
-        void DeleteById(int Id);
-        void ChangeStatus(int Id);
+        void Edit(T model);
+        T GetById(int id);
+        void DeleteById(int id);
+        void ChangeStatus(int id);
         IList<T> GetAll();
         IList<T> Get(Expression<Func<T, bool>> predicate);
+        void ChangeVitrin(int id);
     }
 }

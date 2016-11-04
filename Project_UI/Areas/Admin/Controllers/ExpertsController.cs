@@ -22,7 +22,7 @@ namespace Project_UI.Areas.Admin.Controllers
         private readonly IExpertService _expertService;
         public ExpertsController()
         {
-            _expertService = new ExpertService(new EfRepository<Expert>());
+            _expertService = new ExpertService(new EfRepositoryForEntityBase<Expert>());
         }
         public ExpertsController(IExpertService expertService)
         {
@@ -75,7 +75,7 @@ namespace Project_UI.Areas.Admin.Controllers
                     var imagePath = Functions.UploadImage(document);
                     _expert.ImagePath = imagePath;
                 }
-                _expertService.edit(_expert);
+                _expertService.Edit(_expert);
                 return RedirectToAction("Index");
             }
             catch (Exception)

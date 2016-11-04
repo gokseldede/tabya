@@ -1,83 +1,90 @@
 ﻿using Project_Entity;
 using Project_UI.Areas.Admin.FilterAttributes;
-using Project_UI.Areas.Admin.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Project_BLL.Implementation;
+using Project_BLL.Interfaces;
+using Project_BLL.ViewModels;
+using Project_UI.Areas.Admin.Models;
 
 namespace Project_UI.Areas.Admin.Controllers
 {
     [CheckAuth]
-    public class WorkplaceController : BaseController
+    public class WorkplaceController : Controller
     {
-        public ActionResult Index()
-        {
-            List<Workplace> _work = Database.Workplace.Where(x => x.IsDelete == false && x.IsActive == true).ToList();
-            return View(_work);
-        }
-
-        [HttpGet]
-        // GET: Admin/AdDetails/Create
-        public ActionResult Create()
-        {
-            GetExpert();
-            GetStatus();
-            GetIsınma();
-            GetKredi();
-            GetEmlak();
-            GetKimden();
-            GetKur();
-            GetProperties();
-            GetSocialApps();
-            GetSecurity();
-            return View();
-        }
-
         //Çoklu resim yükleme
         //http://www.advancesharp.com/blog/1130/image-gallery-in-asp-net-mvc-with-multiple-file-and-size
 
-        // POST: Admin/AdDetails/Create
-        [HttpPost, ValidateInput(false)]
-        public ActionResult Create(Workplace work, string[] tags, string[] socials, string[] securitys, HttpPostedFileBase document)
+        private readonly IStandartService<WorkplaceServiceModel> _workPlaceService;
+        private readonly IFileService<WorkFileDetail> _workFileService;
+        private readonly IOptionService _optionService;
+
+        public WorkplaceController()
         {
-            GetExpert();
-            GetStatus();
-            GetIsınma();
-            GetKimden();
-            GetKredi();
-            GetEmlak();
-            GetProperties();
-            GetSocialApps();
-            GetSecurity();
-            work.IsDelete = false;
-            work.CreatedDate = DateTime.Now;
-            work.UpdatedDate = DateTime.Now;
-            work.IsActive = true;
-            work.Vitrin = false;
-            var imagePath = Functions.UploadImage(document);
-            work.ThumbPath = imagePath;
-            foreach (var b in tags)
+            _workPlaceService = new WorkPlaceService();
+            _optionService = new OptionsService();
+            _workFileService = new FileDetailService<WorkFileDetail>();
+        }
+        public ActionResult Index()
+        {
+            List<WorkplaceServiceModel> work = _workPlaceService.GetAll().ToList();
+            return View(work);
+        }
+
+        [HttpGet]
+        public ActionResult Create()
+        {
+            var viewModel = GetModel();
+            return View(viewModel);
+        }
+
+        private WorkPlaceViewModel GetModel()
+        {
+            var viewModel = new WorkPlaceViewModel()
             {
-                work.properties += b + ",";
-            }
-            foreach (var c in securitys)
-            {
-                work.securitys = string.Empty;
-                work.securitys += c + ",";
-            }
-            foreach (var a in socials)
-            {
-                work.socialapps += a + ",";
-            }
+                ExpertList = _optionService.GetExpertList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
+                IsinmaList = _optionService.GetIsinmaList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
+                KimdenList = _optionService.GetKimdenList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
+                KrediList = _optionService.GetKrediList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
+                KurlarList = _optionService.GetKurlarList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
+                PropertiesList = _optionService.GetPropertiesList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
+                SecuritiesList = _optionService.GetSecurityList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
+                SocialList = _optionService.GetSocialAppsList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
+                StatusList = _optionService.GetStatuslist().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
+                IlList = _optionService.GetIllerList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
+                WorkFileDetails = new List<FileDetailServiceModel>()
+            };
+            return viewModel;
+        }
+
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult Create(WorkPlaceViewModel work, string[] tags, string[] socials, string[] securitys, HttpPostedFileBase document)
+        {
+
+            //foreach (var b in tags)
+            //{
+            //    work.properties += b + ",";
+            //}
+            //foreach (var c in securitys)
+            //{
+            //    work.securitys += c + ",";
+            //}
+            //foreach (var a in socials)
+            //{
+            //    work.socialapps += a + ",";
+            //}
+
+
             if (ModelState.IsValid)
             {
-                #region Çoklu resim kaydetme 
-                List<WorkFileDetail> fileDetails = new List<WorkFileDetail>();
+                List<FileDetailServiceModel> fileDetails = new List<FileDetailServiceModel>();
+
                 for (int i = 1; i < Request.Files.Count; i++)
                 {
                     var file = Request.Files[i];
@@ -85,105 +92,86 @@ namespace Project_UI.Areas.Admin.Controllers
                     if (file != null && file.ContentLength > 0)
                     {
                         var fileName = Path.GetFileName(file.FileName);
-                        WorkFileDetail fileDetail = new WorkFileDetail()
+                        FileDetailServiceModel fileDetail = new FileDetailServiceModel()
                         {
                             FileName = fileName,
                             Extension = Path.GetExtension(fileName),
                             Id = Guid.NewGuid()
                         };
-                        fileDetails.Add(fileDetail);
 
                         var path = Path.Combine(Server.MapPath("~/Areas/Admin/Content/Image/"), fileDetail.Id + fileDetail.Extension);
                         file.SaveAs(path);
+                        fileDetails.Add(fileDetail);
                     }
                 }
-                work.WorkFileDetails = fileDetails;
-                db.Workplace.Add(work);
-                #endregion              
-                db.SaveChanges();
+
+                work.ThumbPath = Functions.UploadImage(document);
+
+                WorkplaceServiceModel model = new WorkplaceServiceModel()
+                {
+                    BAge = work.BAge,
+                    Description = work.Description,
+                    Dues = work.Dues,
+                    ExpertId = work.ExpertId,
+                    IsinmaId = work.IsinmaId,
+                    KimdenId = work.KimdenId,
+                    KrediId = work.KrediId,
+                    KurlarId = work.KurlarId,
+                    Name = work.Name,
+                    Price = work.Price,
+                    Room = work.Room,
+                    Size = work.Size,
+                    ThumbPath = work.ThumbPath,
+                    StatusId = work.StatusId,
+                    IlceId = work.IlceId,
+                    WorkFileDetails = fileDetails
+                };
+                _workPlaceService.Create(model);
+
+                return Redirect("/Admin/AdDetails/Index");
             }
-            return Redirect("/Admin/AdDetails/Index");
-        }
-        // GET: Admin/AdDetails/Edit/5
-        public ActionResult Edit(int ID, HttpPostedFileBase document)
-        {
-            GetExpert(ID);
-            GetStatus(ID);
-            GetIsınma(ID);
-            GetKimden(ID);
-            GetEmlak(ID);
-            GetKredi(ID);
-            GetKur(ID);
-            GetProperties();
-            GetSecurity();
-            GetSocialApps();
-            GetProp();
-            Workplace _work = Database.Workplace.FirstOrDefault(x => x.ID == ID);
-            TempData["ImagePath"] = _work.ThumbPath;
-            return View(_work);
+            return View(work);
         }
 
-        // POST: Admin/AdDetails/Edit/5
+
+        public ActionResult Edit(int id)
+        {
+            var work = _workPlaceService.GetById(id);
+            var vm = GetModel();
+
+            vm.BAge = work.BAge;
+            vm.Description = work.Description;
+            vm.Dues = work.Dues;
+            vm.ExpertId = work.ExpertId;
+            vm.IsinmaId = work.IsinmaId;
+            vm.KimdenId = work.KimdenId;
+            vm.KrediId = work.KrediId;
+            vm.KurlarId = work.KurlarId;
+            vm.Name = work.Name;
+            vm.Price = work.Price;
+            vm.Room = work.Room;
+            vm.Size = work.Size;
+            vm.ThumbPath = work.ThumbPath;
+            vm.StatusId = work.StatusId;
+            vm.IlceId = work.IlceId;
+            vm.Id = work.Id;
+            vm.WorkFileDetails = work.WorkFileDetails;
+            return View(vm);
+        }
+
 
         [HttpPost, ValidateInput(false)]
-
-        public ActionResult Edit(Workplace work, string[] tags, string[] socials, string[] securitys, HttpPostedFileBase document)
+        public ActionResult Edit(WorkPlaceViewModel work, string[] tags, string[] socials, string[] securitys, HttpPostedFileBase document)
         {
-
-            Workplace _work = Database.Workplace.FirstOrDefault(x => x.ID == work.ID);
-
-            _work.Name = work.Name;
-            _work.Description = work.Description;
-            _work.Price = work.Price;
-            _work.Location = work.Location;
-            _work.Latitude = work.Latitude;
-            _work.Longitude = work.Longitude;
-            _work.Size = work.Size;
-            _work.Room = work.Room;
-            _work.BAge = work.BAge;
-            _work.IsınmaID = work.IsınmaID;
-            _work.EmlakTipID = work.EmlakTipID;
-            _work.StatusID = work.StatusID;
-            _work.Dues = work.Dues;
-            _work.Takas = work.Takas;
-            _work.KrediID = work.KrediID;
-            _work.KurlarID = work.KurlarID;
-            if (tags != null)
-            {
-                _work.properties = string.Empty;
-                foreach (var b in tags)
-                {
-                    _work.properties += b + ",";
-                }
-            }
-
-            if (securitys != null)
-            {
-                _work.securitys = string.Empty;
-                foreach (var c in securitys)
-                {
-                    _work.securitys += c + ",";
-                }
-            }
-            if (socials != null)
-            {
-                _work.socialapps = string.Empty;
-                foreach (var a in socials)
-                {
-                    _work.socialapps += a + ",";
-                }
-            }
-            if (document != null)
-            {
-                var imagePath = Functions.UploadImage(document);
-                _work.ThumbPath = imagePath;
-            }
-            else
-            {
-                _work.ThumbPath = TempData["ImagePath"].ToString();
-            }
             if (ModelState.IsValid)
             {
+                if (document != null)
+                {
+                    var imagePath = Functions.UploadImage(document);
+                    work.ThumbPath = imagePath;
+                }
+
+                List<FileDetailServiceModel> fileDetails = new List<FileDetailServiceModel>();
                 //New Files
                 for (int i = 1; i < Request.Files.Count; i++)
                 {
@@ -192,38 +180,60 @@ namespace Project_UI.Areas.Admin.Controllers
                     if (file != null && file.ContentLength > 0)
                     {
                         var fileName = Path.GetFileName(file.FileName);
-                        WorkFileDetail fileDetail = new WorkFileDetail()
+                        FileDetailServiceModel fileDetail = new FileDetailServiceModel()
                         {
                             FileName = fileName,
                             Extension = Path.GetExtension(fileName),
-                            Id = Guid.NewGuid(),
-                            WorkplaceID = _work.ID
+                            Id = Guid.NewGuid()
                         };
-                        var path = Path.Combine(Server.MapPath("~/Areas/Admin/Content/Image/"), fileDetail.Id + fileDetail.Extension);
+                        var path = Path.Combine(Server.MapPath("~/Areas/Admin/Content/Image/"),
+                            fileDetail.Id + fileDetail.Extension);
                         file.SaveAs(path);
+                        fileDetails.Add(fileDetail);
 
-                        Database.Entry(fileDetail).State = EntityState.Added;
                     }
                 }
-                Database.Entry(_work).State = EntityState.Modified;
-                _work.ID = work.ID;
-                _work.UpdatedDate = DateTime.Now;
-                Database.SaveChanges();
+
+                WorkplaceServiceModel model = new WorkplaceServiceModel()
+                {
+                    Id = work.Id,
+                    BAge = work.BAge,
+                    Description = work.Description,
+                    Dues = work.Dues,
+                    ExpertId = work.ExpertId,
+                    IsinmaId = work.IsinmaId,
+                    KimdenId = work.KimdenId,
+                    KrediId = work.KrediId,
+                    KurlarId = work.KurlarId,
+                    Name = work.Name,
+                    Price = work.Price,
+                    Room = work.Room,
+                    Size = work.Size,
+                    ThumbPath = work.ThumbPath,
+                    StatusId = work.StatusId,
+                    IlceId = work.IlceId,
+                    WorkFileDetails = fileDetails
+                };
+                _workPlaceService.Edit(model);
+
                 return Redirect("/Admin/AdDetails/Index");
             }
+
             return View(work);
         }
 
-
         // GET: Admin/AdDetails/Delete/5
-        public JsonResult Delete(int ID)
+        public JsonResult Delete(int id)
         {
-            Workplace _work = Database.Workplace.Find(ID);
-            _work.IsDelete = true;
-            _work.DeletedDate = DateTime.Now;
-            Database.SaveChanges();
-            return Json(" ");
-
+            try
+            {
+                _workPlaceService.DeleteById(id);
+                return Json(new { result = true });
+            }
+            catch (Exception)
+            {
+                return Json(new { result = false });
+            }
         }
 
         [HttpPost]
@@ -232,49 +242,51 @@ namespace Project_UI.Areas.Admin.Controllers
             if (String.IsNullOrEmpty(id))
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return Json(new { Result = "Error" });
+                return Json(new { Result = false, Message = "Bad Request" });
             }
             try
             {
-                Guid guid = new Guid(id);
-                WorkFileDetail fileDetail = db.WorkFileDetails.Find(guid);
-                if (fileDetail == null)
-                {
-                    Response.StatusCode = (int)HttpStatusCode.NotFound;
-                    return Json(new { Result = "Error" });
-                }
-
-                //Remove from database
-                db.WorkFileDetails.Remove(fileDetail);
-                db.SaveChanges();
-
+                FileDetailServiceModel fileDetail = _workFileService.GetById(Guid.Parse(id));
                 //Delete file from the file system
                 var path = Path.Combine(Server.MapPath("~/Areas/Admin/Content/Image/"), fileDetail.Id + fileDetail.Extension);
                 if (System.IO.File.Exists(path))
                 {
                     System.IO.File.Delete(path);
                 }
-                return Json(new { Result = "OK" });
+                _workFileService.DeleteById(Guid.Parse(id));
+                return Json(new { Result = true });
             }
             catch (Exception ex)
             {
-                return Json(new { Result = "ERROR", Message = ex.Message });
+                return Json(new { Result = false, Message = ex.Message });
             }
         }
 
-        public JsonResult Status(int ID)
+        public JsonResult Status(int id)
         {
-            Workplace _work = Database.Workplace.Find(ID);
-            _work.IsActive = !_work.IsActive;
-            Database.SaveChanges();
-            return Json(_work.IsActive);
+            try
+            {
+                _workPlaceService.ChangeStatus(id);
+                var status = _workPlaceService.GetById(id);
+                return Json(new { result = true, status = status.IsActive });
+            }
+            catch (Exception)
+            {
+                return Json(new { result = false, status = false });
+            }
         }
-        public JsonResult Vitrin(int ID)
+        public JsonResult Vitrin(int id)
         {
-            Workplace _work = Database.Workplace.Find(ID);
-            _work.Vitrin = !_work.Vitrin;
-            Database.SaveChanges();
-            return Json(_work.Vitrin);
+            try
+            {
+                _workPlaceService.ChangeVitrin(id);
+                var status = _workPlaceService.GetById(id);
+                return Json(new { result = true, status = status.IsInVitrin });
+            }
+            catch (Exception)
+            {
+                return Json(new { result = false, status = false });
+            }
         }
     }
 }

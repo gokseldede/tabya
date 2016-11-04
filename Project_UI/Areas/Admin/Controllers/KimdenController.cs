@@ -19,7 +19,7 @@ namespace Project_UI.Areas.Admin.Controllers
 
         public KimdenController()
         {
-            _kimdenService = new StandartService<Kimden>(new EfRepository<Kimden>());
+            _kimdenService = new StandartService<Kimden>(new EfRepositoryForEntityBase<Kimden>());
         }
 
         public KimdenController(IStandartService<Kimden> kimdenService)
@@ -67,7 +67,7 @@ namespace Project_UI.Areas.Admin.Controllers
         {
             try
             {
-                _kimdenService.edit(_kimden);
+                _kimdenService.Edit(_kimden);
                 return RedirectToAction("Index");
             }
             catch (Exception)

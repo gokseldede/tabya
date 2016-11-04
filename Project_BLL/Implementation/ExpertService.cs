@@ -16,9 +16,9 @@ namespace Project_BLL.Implementation
             _expertRepository = expertRepository;
         }
 
-        public void ChangeStatus(int Id)
+        public void ChangeStatus(int id)
         {
-            Expert expert = GetById(Id);
+            Expert expert = GetById(id);
             if (expert != null)
             {
                 expert.IsActive = !expert.IsActive;
@@ -32,12 +32,12 @@ namespace Project_BLL.Implementation
                 _expertRepository.Insert(model);
         }
 
-        public void DeleteById(int Id)
+        public void DeleteById(int id)
         {
-            _expertRepository.Delete(Id);
+            _expertRepository.Delete(id);
         }
 
-        public void edit(Expert model)
+        public void Edit(Expert model)
         {
             if (model != null)
                 _expertRepository.Update(model);
@@ -47,16 +47,21 @@ namespace Project_BLL.Implementation
         {
             throw new NotImplementedException();
         }
-        
+
+        public void ChangeVitrin(int id)
+        {
+            throw new NotImplementedException();
+        }
+
 
         public IList<Expert> GetAll()
         {
             return _expertRepository.Table.Where(x => x.IsDelete == false).ToList();
         }
 
-        public Expert GetById(int Id)
+        public Expert GetById(int id)
         {
-            return _expertRepository.GetById(Id);
+            return _expertRepository.GetById(id);
         }
     }
 }

@@ -1,22 +1,22 @@
-﻿using System;
+﻿using Project_Entity;
+using System;
 using System.Data.Entity;
 using System.Linq;
-using Project_Entity;
 
 namespace Project_DAL
 {
-    public class EfRepository<TEntity> : IRepository<TEntity>
-        where TEntity : class, new()
+    public class EfRepositoryForEntityBase<TEntity> : IRepository<TEntity>
+        where TEntity : EntityBase, new()
     {
         private readonly DbContext _context;
         private IDbSet<TEntity> _entities;
 
-        public EfRepository()
+        public EfRepositoryForEntityBase()
         {
             _context = new ProjectContext();
         }
 
-        public EfRepository(DbContext context)
+        public EfRepositoryForEntityBase(DbContext context)
         {
             _context = context;
         }
@@ -33,12 +33,18 @@ namespace Project_DAL
 
         public void Insert(TEntity entity)
         {
+            entity.IsActive = true;
+            entity.IsDelete = false;
+            entity.UpdatedDate = DateTime.Now;
+            entity.CreatedDate = DateTime.Now;
             Entities.Add(entity);
             _context.SaveChanges();
         }
 
         public void Update(TEntity entity)
         {
+            entity.UpdatedDate = DateTime.Now;
+            _context.Entry(entity).State = EntityState.Modified;
             _context.SaveChanges();
         }
 
@@ -51,7 +57,12 @@ namespace Project_DAL
 
         public void Delete(TEntity entity)
         {
-            _context.Entry(entity).State = EntityState.Deleted;
+            entity.IsActive = false;
+            entity.Vitrin = false;
+            entity.IsDelete = true;
+            entity.DeletedDate = DateTime.Now;
+
+            _context.Entry(entity).State = EntityState.Modified;
             _context.SaveChanges();
         }
 

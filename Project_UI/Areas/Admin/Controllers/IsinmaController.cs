@@ -18,7 +18,7 @@ namespace Project_UI.Areas.Admin.Controllers
 
         public IsinmaController()
         {
-            _isinmaService = new StandartService<Isinma>(new EfRepository<Isinma>());
+            _isinmaService = new StandartService<Isinma>(new EfRepositoryForEntityBase<Isinma>());
         }
 
         public IsinmaController(IStandartService<Isinma> isinmaService)
@@ -66,7 +66,7 @@ namespace Project_UI.Areas.Admin.Controllers
         {
             try
             {
-                _isinmaService.edit(_isinma);
+                _isinmaService.Edit(_isinma);
                 return RedirectToAction("Index");
             }
             catch (Exception)

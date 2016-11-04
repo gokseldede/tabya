@@ -18,7 +18,7 @@ namespace Project_UI.Areas.Admin.Controllers
 
         public KrediController()
         {
-            _krediService = new StandartService<Kredi>(new EfRepository<Kredi>());
+            _krediService = new StandartService<Kredi>(new EfRepositoryForEntityBase<Kredi>());
         }
 
         public KrediController(IStandartService<Kredi> krediService)
@@ -66,7 +66,7 @@ namespace Project_UI.Areas.Admin.Controllers
         {
             try
             {
-                _krediService.edit(_kredi);
+                _krediService.Edit(_kredi);
                 return RedirectToAction("Index");
             }
             catch (Exception)

@@ -1,4 +1,4 @@
-﻿@model List<Project_Entity.Project>
+﻿@model List<ProjectViewModel>
 
 @{
     ViewBag.Title = "Index";
@@ -30,30 +30,30 @@
                     <tbody>
                         @foreach (var item in Model)
                         {
-                            <tr id="a_@item.ID">
+                            <tr id="a_@item.Id">
                                 <td>@item.Name</td>
-                                <td class="hidden-480">@item.SubName</td>
-                                <td>@item.DeliveryDate</td>
+                                <td class="hidden-480">@item.ProjectFirm</td>
+                                <td>@item.ProjectDeliveryDate</td>
                                 @if (item.IsActive)
                                 {
-                                    <td id="b_@item.ID" onclick="Status('/Admin/Projects/Status/',@item.ID)"><span class="btn btn-info btn-sm">Aktif</span></td>
+                                    <td id="b_@item.Id" onclick="Status('/Admin/Projects/Status/',@item.Id)"><span class="btn btn-info btn-sm">Aktif</span></td>
                                 }
                                 else
                                 {
-                                    <td id="b_@item.ID" onclick="Status('/Admin/Projects/Status/',@item.ID)"><span class="btn btn-default btn-sm">Pasif</span></td>
+                                    <td id="b_@item.Id" onclick="Status('/Admin/Projects/Status/',@item.Id)"><span class="btn btn-default btn-sm">Pasif</span></td>
                                 }
 
-                                <td class="hidden-480">@item.CreatedDate.ToShortDateString()</td>
-                                <td class="hidden-480">@item.UpdatedDate</td>
+                                <td class="hidden-480">@item.CreatedDateTime.ToShortDateString()</td>
+                                <td class="hidden-480">@item.UpdatedDateTime</td>
                                 <td>
                                     <div class="hidden-sm hidden-xs action-buttons">
 
-                                        <a class="btn btn-xs btn-primary no-radius" href="/Admin/Projects/Edit/@item.ID">
+                                        <a class="btn btn-xs btn-primary no-radius" href="/Admin/Projects/Edit/@item.Id">
                                             <i class="ace-icon fa fa-pencil-square-o smaller-100"></i>
                                             Düzenle
                                         </a>
 
-                                        <a class="btn btn-xs btn-danger btn-sm" onclick="Delete('/Admin/Projects/Delete/',@item.ID)">
+                                        <a class="btn btn-xs btn-danger btn-sm" onclick="Delete('/Admin/Projects/Delete/',@item.Id)">
                                             <i class="ace-icon fa fa-trash-o smaller-100"></i>
                                             Sil
                                         </a>
@@ -69,7 +69,7 @@
 
 
                                                 <li>
-                                                    <a href="/Admin/Projects/Edit/@item.ID" class="btn btn-info btn-sm">
+                                                    <a href="/Admin/Projects/Edit/@item.Id" class="btn btn-info btn-sm">
 
                                                         <i class="ace-icon fa fa-pencil-square-o smaller-100"></i>
                                                         Düzenle
@@ -78,7 +78,7 @@
                                                 </li>
 
                                                 <li>
-                                                    <a class="btn btn-xs btn-danger btn-sm" onclick="Delete('/Admin/Projects/Delete/',@item.ID)" data-rel="tooltip" title="" data-original-title="Delete">
+                                                    <a class="btn btn-xs btn-danger btn-sm" onclick="Delete('/Admin/Projects/Delete/',@item.Id)" data-rel="tooltip" title="" data-original-title="Delete">
 
                                                         <i class="ace-icon fa fa-trash-o smaller-100"></i>
                                                         Sil

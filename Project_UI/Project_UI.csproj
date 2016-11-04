@@ -571,6 +571,8 @@
     <Compile Include="Areas\Admin\FilterAttributes\_LoginControl.cs" />
     <Compile Include="Areas\Admin\Models\Functions.cs" />
     <Compile Include="Areas\Admin\Models\PageViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\ProjectViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\WorkPlaceViewModel.cs" />
     <Compile Include="Controllers\AdDetailController.cs" />
     <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\ExpertController.cs" />
@@ -583,6 +585,7 @@
     <Compile Include="LCSK\Agent.cs" />
     <Compile Include="LCSK\ChatHub.cs" />
     <Compile Include="LCSK\Startup.cs" />
+    <Compile Include="ModelBinders\DecimalModelBinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -706,6 +709,7 @@
     <Folder Include="Areas\Admin\Content\Videos\" />
     <Folder Include="Areas\Admin\Views\Base\" />
     <Folder Include="Areas\Admin\Views\Message\" />
+    <Folder Include="Areas\Admin\Views\Shared\EditorTemplates\" />
     <Folder Include="Models\" />
     <Folder Include="Views\LocalizationAttribute\" />
   </ItemGroup>

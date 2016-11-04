@@ -17,7 +17,7 @@ namespace Project_UI.Controllers
 
         public ProjectController()
         {
-            _projectService = new StandartService<Project>(new EfRepository<Project>());
+            _projectService = new StandartService<Project>(new EfRepositoryForEntityBase<Project>());
         }
 
         public ActionResult Index()

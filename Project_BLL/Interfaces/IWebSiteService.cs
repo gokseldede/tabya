@@ -1,9 +1,5 @@
 ﻿using Project_BLL.ViewModels;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Project_BLL.Interfaces
 {
@@ -11,6 +7,6 @@ namespace Project_BLL.Interfaces
     {
         HomeViewModel GetMainPageData();
         List<SelectlistItem> GetCities();
-        List<SelectlistItem> GetCounties(int CityId);
+        List<SelectlistItem> GetCounties(int cityId);
     }
 }

@@ -27,12 +27,14 @@ namespace Project_BLL.ViewModels
         public string Address { get; set; }
         public int SquareMetre { get; set; }
         public int Id { get; set; }
+        public string AdType { get; set; }
     }
 
     public class SelectlistItem
     {
         public int Id { get; set; }
         public string Value { get; set; }
+        public bool Selected { get; set; }
     }
 
 }

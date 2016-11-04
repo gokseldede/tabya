@@ -16,7 +16,7 @@ namespace Project_UI.Controllers
         IExpertService _service;
         public ExpertController()
         {
-            _service = new ExpertService(new EfRepository<Expert>());
+            _service = new ExpertService(new EfRepositoryForEntityBase<Expert>());
         }
         // GET: Expert
         public ActionResult Index()

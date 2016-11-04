@@ -17,7 +17,7 @@ namespace Project_UI.Areas.Admin.Controllers
 
         public EmlakTipController()
         {
-            _emlakTipService = new StandartService<EmlakTip>(new EfRepository<EmlakTip>());
+            _emlakTipService = new StandartService<EmlakTip>(new EfRepositoryForEntityBase<EmlakTip>());
         }
 
         public EmlakTipController(IStandartService<EmlakTip> emlakTipService)
@@ -64,7 +64,7 @@ namespace Project_UI.Areas.Admin.Controllers
         {
             try
             {
-                _emlakTipService.edit(_emlak);
+                _emlakTipService.Edit(_emlak);
                 return RedirectToAction("Index");
             }
             catch (Exception)

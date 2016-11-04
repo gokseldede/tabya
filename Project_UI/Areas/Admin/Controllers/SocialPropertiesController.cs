@@ -17,7 +17,7 @@ namespace Project_UI.Areas.Admin.Controllers
 
         public SocialPropertiesController()
         {
-            _service = new StandartService<SocialApps>(new EfRepository<SocialApps>());
+            _service = new StandartService<SocialApps>(new EfRepositoryForEntityBase<SocialApps>());
         }
 
         public SocialPropertiesController(IStandartService<SocialApps> service)
@@ -69,7 +69,7 @@ namespace Project_UI.Areas.Admin.Controllers
         {
             try
             {
-                _service.edit(socialapps);
+                _service.Edit(socialapps);
                 return RedirectToAction("Index");
             }
             catch (Exception)

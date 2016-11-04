@@ -18,7 +18,7 @@ namespace Project_UI.Areas.Admin.Controllers
 
         public SiteController()
         {
-            _siteService = new StandartService<Site>(new EfRepository<Site>());
+            _siteService = new StandartService<Site>(new EfRepositoryForEntityBase<Site>());
         }
 
         public SiteController(IStandartService<Site> siteService)
@@ -66,7 +66,7 @@ namespace Project_UI.Areas.Admin.Controllers
         {
             try
             {
-                _siteService.edit(_site);
+                _siteService.Edit(_site);
                 return RedirectToAction("Index");
             }
             catch (Exception)

@@ -18,7 +18,7 @@ namespace Project_UI.Areas.Admin.Controllers
 
         public SecurityController()
         {
-            _service = new StandartService<Securitys>(new EfRepository<Securitys>());
+            _service = new StandartService<Securitys>(new EfRepositoryForEntityBase<Securitys>());
         }
 
         public SecurityController(IStandartService<Securitys> service)
@@ -69,7 +69,7 @@ namespace Project_UI.Areas.Admin.Controllers
         {
             try
             {
-                _service.edit(security);
+                _service.Edit(security);
                 return RedirectToAction("Index");
             }
             catch (Exception)

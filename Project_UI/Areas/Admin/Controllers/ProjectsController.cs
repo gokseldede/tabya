@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using Project_DAL;
 using Project_Entity;
 using Project_UI.Areas.Admin.Models;
 using System.IO;
+using Project_BLL.Implementation;
+using Project_BLL.Interfaces;
+using Project_BLL.ViewModels;
 using Project_UI.Areas.Admin.FilterAttributes;
 
 namespace Project_UI.Areas.Admin.Controllers
@@ -17,12 +18,31 @@ namespace Project_UI.Areas.Admin.Controllers
     [CheckAuth]
     public class ProjectsController : BaseController
     {
-      
+
+        private readonly IFileService<ProjectFile> _workFileService;
+        private readonly IOptionService _optionService;
+        private readonly IStandartService<ProjectServiceModel> _projectService;
+
+        public ProjectsController()
+        {
+            _optionService = new OptionsService();
+            _workFileService = new FileDetailService<ProjectFile>();
+            _projectService = new ProjectService();
+        }
 
         // GET: Admin/Projects
         public ActionResult Index()
         {
-            List<Project> _project = Database.Projects.Where(x => x.IsDelete == false).ToList();
+            List<ProjectViewModel> _project = _projectService.GetAll().Select(x => new ProjectViewModel()
+            {
+                Id=x.Id,
+                Name=x.Name,
+                ProjectFirm=x.ProjectFirm,
+                ProjectDeliveryDate = x.ProjectDeliveryDate,
+                IsActive=x.IsActive,
+                CreatedDateTime=x.CreatedDateTime,
+                UpdatedDateTime=x.UpdatedDateTime
+            }).ToList();
             return View(_project);
         }
 
@@ -30,52 +50,62 @@ namespace Project_UI.Areas.Admin.Controllers
         // GET: Admin/Projects/Create
         public ActionResult Create()
         {
-            GetExpert();
-            GetProperties();
-            GetSecurity();
-            GetSocialApps();
-            return View();
+            var model = GetModel();
+            return View(model);
+        }
+
+        private ProjectViewModel GetModel()
+        {
+            var viewModel = new ProjectViewModel()
+            {
+                ExpertList = _optionService.GetExpertList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
+                PropertiesList = _optionService.GetPropertiesList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
+                SecuritiesList = _optionService.GetSecurityList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
+                SocialList = _optionService.GetSocialAppsList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
+                ProjectFiles = new List<FileDetailServiceModel>()
+            };
+            return viewModel;
         }
 
         // POST: Admin/Projects/Create
 
         [HttpPost, ValidateInput(false)]
 
-        public ActionResult Create(Project project, string[] tags, string[] socials, string[] securitys, HttpPostedFileBase document, HttpPostedFileBase pricelist)
+        public ActionResult Create(ProjectViewModel project, string[] tags, string[] socials, string[] securitys, HttpPostedFileBase document, HttpPostedFileBase pricelist)
         {
 
-            GetExpert();
-            GetProperties();
-            GetSecurity();
-            GetSocialApps();
-            project.IsDelete = false;
-            project.CreatedDate = DateTime.Now;
-            project.UpdatedDate = DateTime.Now;
-            project.IsActive = true;
+            //GetExpert();
+            //GetProperties();
+            //GetSecurity();
+            //GetSocialApps();
+            //project.IsDelete = false;
+            //project.CreatedDate = DateTime.Now;
+            //project.UpdatedDate = DateTime.Now;
+            //project.IsActive = true;
 
 
-            var imagePath = Functions.UploadImage(document);
+            //var imagePath = Functions.UploadImage(document);
 
-            project.ImagePath = imagePath;
-            var price = Functions.UploadImage(pricelist);
-            project.PriceList = price;
+            //project.ImagePath = imagePath;
+            //var price = Functions.UploadImage(pricelist);
+            //project.PriceList = price;
 
-            foreach (var b in tags)
-            {
-                project.properties += b + ",";
-            }
-            foreach (var c in securitys)
-            {
-                project.securitys += c + ",";
-            }
-            foreach (var a in socials)
-            {
-                project.socialapps += a + ",";
-            }
+            //foreach (var b in tags)
+            //{
+            //    project.properties += b + ",";
+            //}
+            //foreach (var c in securitys)
+            //{
+            //    project.securitys += c + ",";
+            //}
+            //foreach (var a in socials)
+            //{
+            //    project.socialapps += a + ",";
+            //}
 
             if (ModelState.IsValid)
             {
-                List<ProjectFile> fileDetails = new List<ProjectFile>();
+                List<FileDetailServiceModel> fileDetails = new List<FileDetailServiceModel>();
                 for (int i = 2; i < Request.Files.Count; i++)
                 {
                     var file = Request.Files[i];
@@ -83,7 +113,7 @@ namespace Project_UI.Areas.Admin.Controllers
                     if (file != null && file.ContentLength > 0)
                     {
                         var fileName = Path.GetFileName(file.FileName);
-                        ProjectFile fileDetail = new ProjectFile()
+                        FileDetailServiceModel fileDetail = new FileDetailServiceModel()
                         {
                             FileName = fileName,
                             Extension = Path.GetExtension(fileName),
@@ -95,25 +125,56 @@ namespace Project_UI.Areas.Admin.Controllers
                         file.SaveAs(path);
                     }
                 }
-                project.ProjectFiles = fileDetails;
-                db.Projects.Add(project);
-                db.SaveChanges();
+
+                var imagePath = Functions.UploadImage(document);
+                var price = Functions.UploadImage(pricelist);
+                project.ThumbPath = imagePath;
+                project.PriceList = price;
+
+                ProjectServiceModel model = new ProjectServiceModel()
+                {
+                    Description = project.Description,
+                    ExpertId = project.ExpertId,
+                    FlatCount = project.FlatCount,
+                    Name = project.Name,
+                    PriceList = project.PriceList,
+                    ProjectArea = project.ProjectArea,
+                    ProjectDeliveryDate = project.ProjectDeliveryDate,
+                    ProjectFileDetails = fileDetails,
+                    ProjectFirm = project.ProjectFirm,
+                    ProjectLocation = project.ProjectLocation,
+                    ThumbPath = project.ThumbPath,
+                    ProjectPromotionVideo = project.ProjectPromotionVideo
+                };
+
+                _projectService.Create(model);
             }
 
 
             return Redirect("Index");
         }
 
-        // GET: Admin/Projects/Edit/5
-        public ActionResult Edit(int ID, HttpPostedFileBase document)
+        public ActionResult Edit(int id)
         {
-            GetExpert(ID);
-            GetProperties();
-            GetSecurity();
-            GetSocialApps();
-            Project _project = Database.Projects.FirstOrDefault(x => x.ID == ID);
-            TempData["ImagePath"] = _project.ImagePath;
-            return View(_project);
+            var model = GetModel();
+            var vm = _projectService.GetById(id);
+
+            model.Id = vm.Id;
+            model.PriceList = vm.PriceList;
+            model.ProjectPromotionVideo = vm.ProjectPromotionVideo;
+            model.ThumbPath = vm.ThumbPath;
+            model.CreatedDateTime = vm.CreatedDateTime;
+            model.Description = vm.Description;
+            model.ExpertId = vm.ExpertId;
+            model.FlatCount = vm.FlatCount;
+            model.Name = vm.Name;
+            model.ProjectFirm = vm.ProjectFirm;
+            model.ProjectLocation = vm.ProjectLocation;
+            model.ProjectFiles = vm.ProjectFileDetails;
+            model.ProjectDeliveryDate = vm.ProjectDeliveryDate;
+            model.ProjectArea = vm.ProjectArea;
+
+            return View(model);
 
         }
 
@@ -124,144 +185,143 @@ namespace Project_UI.Areas.Admin.Controllers
         public ActionResult Edit(Project project, string[] tags, string[] socials, string[] securitys, HttpPostedFileBase document, HttpPostedFileBase pricelist)
         {
 
-            Project _project = Database.Projects.FirstOrDefault(x => x.ID == project.ID);
+            //Project _project = Database.Projects.FirstOrDefault(x => x.ID == project.ID);
 
-            if (document != null)
-            {
-                var imagePath = Functions.UploadImage(document);
-                _project.ImagePath = imagePath;
-            }
-            else
-            {
-                _project.ImagePath = TempData["ImagePath"].ToString();
-            }
-            if (pricelist != null)
-            {
-                var price = Functions.UploadImage(pricelist);
-                _project.PriceList = price;
-            }
-            else
-            {
-                _project.PriceList = TempData["PriceList"].ToString();
-            }
+            //if (document != null)
+            //{
+            //    var imagePath = Functions.UploadImage(document);
+            //    _project.ImagePath = imagePath;
+            //}
+            //else
+            //{
+            //    _project.ImagePath = TempData["ImagePath"].ToString();
+            //}
+            //if (pricelist != null)
+            //{
+            //    var price = Functions.UploadImage(pricelist);
+            //    _project.PriceList = price;
+            //}
+            //else
+            //{
+            //    _project.PriceList = TempData["PriceList"].ToString();
+            //}
 
-            _project.Name = project.Name;
-            _project.SubName = project.SubName;
-            _project.SSubName = project.SSubName;
-            _project.Description = project.Description;
-            _project.ProjectA = project.ProjectA;
-            _project.HouseN = project.HouseN;
-            _project.DeliveryDate = project.DeliveryDate;
-            _project.ExpertID = project.ExpertID;
-            _project.Video = project.Video;
-            if (tags != null)
-            {
-                _project.properties = string.Empty;
-                foreach (var b in tags)
-                {
-                    _project.properties += b + ",";
-                }
-            }
-            if (securitys != null)
-            {
-                _project.securitys = string.Empty;
-                foreach (var c in securitys)
-                {
-                    _project.securitys += c + ",";
-                }
-            }
-            if (socials != null)
-            {
-                _project.socialapps = string.Empty;
-                foreach (var a in socials)
-                {
-                    _project.socialapps += a + ",";
-                }
-            }
-            if (ModelState.IsValid)
-            {
-                for (int i = 2; i < Request.Files.Count; i++)
-                {
-                    var file = Request.Files[i];
+            //_project.Name = project.Name;
+            //_project.SubName = project.SubName;
+            //_project.SSubName = project.SSubName;
+            //_project.Description = project.Description;
+            //_project.ProjectA = project.ProjectA;
+            //_project.HouseN = project.HouseN;
+            //_project.DeliveryDate = project.DeliveryDate;
+            //_project.ExpertID = project.ExpertID;
+            //_project.Video = project.Video;
+            //if (tags != null)
+            //{
+            //    _project.properties = string.Empty;
+            //    foreach (var b in tags)
+            //    {
+            //        _project.properties += b + ",";
+            //    }
+            //}
+            //if (securitys != null)
+            //{
+            //    _project.securitys = string.Empty;
+            //    foreach (var c in securitys)
+            //    {
+            //        _project.securitys += c + ",";
+            //    }
+            //}
+            //if (socials != null)
+            //{
+            //    _project.socialapps = string.Empty;
+            //    foreach (var a in socials)
+            //    {
+            //        _project.socialapps += a + ",";
+            //    }
+            //}
+            //if (ModelState.IsValid)
+            //{
+            //    for (int i = 2; i < Request.Files.Count; i++)
+            //    {
+            //        var file = Request.Files[i];
 
-                    if (file != null && file.ContentLength > 0)
-                    {
-                        var fileName = Path.GetFileName(file.FileName);
-                        ProjectFile fileDetail = new ProjectFile()
-                        {
-                            FileName = fileName,
-                            Extension = Path.GetExtension(fileName),
-                            Id = Guid.NewGuid(),
-                            ProjectID = project.ID
-                        };
-                        var path = Path.Combine(Server.MapPath("~/Areas/Admin/Content/Image/"), fileDetail.Id + fileDetail.Extension);
-                        file.SaveAs(path);
+            //        if (file != null && file.ContentLength > 0)
+            //        {
+            //            var fileName = Path.GetFileName(file.FileName);
+            //            ProjectFile fileDetail = new ProjectFile()
+            //            {
+            //                FileName = fileName,
+            //                Extension = Path.GetExtension(fileName),
+            //                Id = Guid.NewGuid(),
+            //                ProjectID = project.ID
+            //            };
+            //            var path = Path.Combine(Server.MapPath("~/Areas/Admin/Content/Image/"), fileDetail.Id + fileDetail.Extension);
+            //            file.SaveAs(path);
 
-                        Database.Entry(fileDetail).State = EntityState.Added;
-                    }
-                }
-                Database.Entry(_project).State = EntityState.Modified;
-                _project.ID = project.ID;
-                _project.UpdatedDate = DateTime.Now;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(project);
+            //            Database.Entry(fileDetail).State = EntityState.Added;
+            //        }
+            //    }
+            //    Database.Entry(_project).State = EntityState.Modified;
+            //    _project.ID = project.ID;
+            //    _project.UpdatedDate = DateTime.Now;
+            //    db.SaveChanges();
+            //    return RedirectToAction("Index");
+            //}
+            return View();
         }
-        // GET: Admin/Projects/Delete/5
-        public JsonResult Delete(int ID)
+
+        public JsonResult Delete(int id)
         {
-            Project _project = Database.Projects.Find(ID);
-            _project.IsDelete = true;
-            _project.DeletedDate = DateTime.Now;
-            Database.SaveChanges();
-            return Json(" ");
-
+            try
+            {
+                _projectService.DeleteById(id);
+                return Json(new { result = true });
+            }
+            catch (Exception)
+            {
+                return Json(new { result = false });
+            }
         }
 
-        //Galeri resim silme
+
         [HttpPost]
         public JsonResult DeleteFile(string id)
         {
-            if (String.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(id))
             {
-                Response.StatusCode = (int) HttpStatusCode.BadRequest;
-                return Json(new { Result = "Error" });
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new { Result = false, Message = "Bad Request" });
             }
             try
             {
-                Guid guid = new Guid(id);
-                FileDetail fileDetail = db.FileDetails.Find(guid);
-                if (fileDetail == null)
-                {
-                    Response.StatusCode = (int) HttpStatusCode.NotFound;
-                    return Json(new { Result = "Error" });
-                }
-
-                //Remove from database
-                db.FileDetails.Remove(fileDetail);
-                db.SaveChanges();
-
+                FileDetailServiceModel fileDetail = _workFileService.GetById(Guid.Parse(id));
                 //Delete file from the file system
                 var path = Path.Combine(Server.MapPath("~/Areas/Admin/Content/Image/"), fileDetail.Id + fileDetail.Extension);
                 if (System.IO.File.Exists(path))
                 {
                     System.IO.File.Delete(path);
                 }
-                return Json(new { Result = "OK" });
+                _workFileService.DeleteById(Guid.Parse(id));
+                return Json(new { Result = true });
             }
             catch (Exception ex)
             {
-                return Json(new { Result = "ERROR", Message = ex.Message });
+                return Json(new { Result = false, Message = ex.Message });
             }
         }
 
-        public JsonResult Status(int ID)
+        public JsonResult Status(int id)
         {
-            Project _project = Database.Projects.Find(ID);
-            _project.IsActive = !_project.IsActive;
-            Database.SaveChanges();
-            return Json(_project.IsActive);
+            try
+            {
+                _projectService.ChangeStatus(id);
+                var status = _projectService.GetById(id);
+                return Json(new { result = true, status = status.IsActive });
+            }
+            catch (Exception)
+            {
+                return Json(new { result = false, status = false });
+            }
         }
     }
 }

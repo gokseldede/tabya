@@ -1,7 +1,5 @@
-﻿
-@model IPagedList<Project_Entity.Il>
+﻿@model IPagedList<Project_Entity.Il>
 @using PagedList;
-@using PagedList.Mvc;
 <div class="content">
     <div class="form-item select">
         <label><strong>ŞEHİR:</strong></label>
@@ -29,32 +27,32 @@
 </div>
 
 <script type="text/javascript">
-        $(document).ready(function () {
-            $.ilID = $("#il").val();
+    $(document).ready(function () {
+        $.ilID = $("#il").val();
+        GetirIlceler($.ilID);
+
+        $("#il").change(function () {
+            $.ilID = $(this).val();
             GetirIlceler($.ilID);
 
-            $("#il").change(function () {
-                $.ilID = $(this).val();
-                GetirIlceler($.ilID);
-
-            });
-
-
         });
-        function GetirIlceler(ilID) {
-            $("#ilce").empty();
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("GetirIlceler", "Home")',
-                data: { ilID: $.ilID },
-                dataType: "json",
-                success: function (ilceler) {
-                    $.each(ilceler, function (index, ilce) {
-                        $("#ilce").append("<option value=" + ilce.ID + ">" + ilce.Ad + "</option>");
-                    });
-                }
-            });
-        }
+
+
+    });
+    function GetirIlceler(ilId) {
+        $("#ilce").empty();
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetirIlceler", "Home")',
+            data: { ilID: ilId },
+            dataType: "json",
+            success: function (ilceler) {
+                $.each(ilceler, function (index, ilce) {
+                    $("#ilce").append("<option value=" + ilce.ID + ">" + ilce.Ad + "</option>");
+                });
+            }
+        });
+    }
 
 
 </script>

@@ -7,42 +7,36 @@ using System.Threading.Tasks;
 
 namespace Project_Entity
 {
-    public class FileDetail
+    public class BaseFileDetail
     {
         public Guid Id { get; set; }
         public string FileName { get; set; }
-        public string Extension { get; set; }      
+        public string Extension { get; set; }
+    }
+    public class FileDetail : BaseFileDetail
+    {
         public int AdDetailID { get; set; }
         public virtual AdDetail AdDetail { get; set; }
 
     }
 
-    public class BinaFileDetail
+    public class BinaFileDetail : BaseFileDetail
     {
-        public Guid Id { get; set; }
-        public string FileName { get; set; }
-        public string Extension { get; set; }
         public int BinaID { get; set; }
         public virtual Bina Bina { get; set; }
 
     }
 
-    public class WorkFileDetail
+    public class WorkFileDetail : BaseFileDetail
     {
-        public Guid Id { get; set; }
-        public string FileName { get; set; }
-        public string Extension { get; set; }
         public int WorkplaceID { get; set; }
         public virtual Workplace Workplace { get; set; }
 
     }
 
 
-    public class LandFileDetail
+    public class LandFileDetail : BaseFileDetail
     {
-        public Guid Id { get; set; }
-        public string FileName { get; set; }
-        public string Extension { get; set; }
         public int LandID { get; set; }
         public virtual Land Land { get; set; }
 

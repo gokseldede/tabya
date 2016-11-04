@@ -4,8 +4,6 @@ using Project_Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Project_BLL.Implementation
 {
@@ -16,9 +14,9 @@ namespace Project_BLL.Implementation
         {
             _repository = repository;
         }
-        public void ChangeStatus(int Id)
+        public void ChangeStatus(int id)
         {
-            T entity = GetById(Id);
+            T entity = GetById(id);
             if (entity != null)
             {
                 entity.IsActive = !entity.IsActive;
@@ -32,12 +30,12 @@ namespace Project_BLL.Implementation
                 _repository.Insert(model);
         }
 
-        public void DeleteById(int Id)
+        public void DeleteById(int id)
         {
-            _repository.Delete(Id);
+            _repository.Delete(id);
         }
 
-        public void edit(T model)
+        public void Edit(T model)
         {
             if (model != null)
             {
@@ -53,14 +51,19 @@ namespace Project_BLL.Implementation
             return _repository.Table.Where(predicate).ToList();
         }
 
+        public void ChangeVitrin(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public IList<T> GetAll()
         {
             return _repository.Table.Where(x => x.IsDelete == false).ToList();
         }
 
-        public T GetById(int Id)
+        public T GetById(int id)
         {
-            return _repository.GetById(Id);
+            return _repository.GetById(id);
         }
     }
 }

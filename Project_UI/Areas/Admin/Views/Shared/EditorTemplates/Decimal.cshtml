@@ -1,0 +1,11 @@
+﻿@model Decimal
+    
+@{
+    IFormatProvider formatProvider =
+        new System.Globalization.CultureInfo("tr-TR");
+}
+@Html.TextBox(
+    "",
+   Model.ToString("f2",formatProvider),
+    new { @class = "form-control", @placeholder = "Örn: 10.5" }
+)

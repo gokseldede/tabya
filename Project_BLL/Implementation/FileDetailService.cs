@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Project_BLL.Interfaces;
-using Project_BLL.ViewModels;
+using Project_BLL.ServiceModels;
 using Project_DAL;
 using Project_Entity;
 

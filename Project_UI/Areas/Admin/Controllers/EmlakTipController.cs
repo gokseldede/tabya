@@ -14,7 +14,7 @@ namespace Project_UI.Areas.Admin.Controllers
     public class EmlakTipController : Controller
     {
         private readonly IStandartService<EmlakTip> _emlakTipService;
-
+        
         public EmlakTipController()
         {
             _emlakTipService = new StandartService<EmlakTip>(new EfRepositoryForEntityBase<EmlakTip>());
@@ -28,8 +28,8 @@ namespace Project_UI.Areas.Admin.Controllers
 
         public ActionResult Index()
         {
-            List<EmlakTip> _emlak = _emlakTipService.GetAll().ToList();
-            return View(_emlak);
+            List<EmlakTip> emlak = _emlakTipService.GetAll().ToList();
+            return View(emlak);
         }
 
         public ActionResult Create()
@@ -39,11 +39,11 @@ namespace Project_UI.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(EmlakTip _emlak)
+        public ActionResult Create(EmlakTip emlak)
         {
             try
             {
-                _emlakTipService.Create(_emlak);
+                _emlakTipService.Create(emlak);
                 return RedirectToAction("Index");
             }
             catch (Exception)
@@ -52,19 +52,19 @@ namespace Project_UI.Areas.Admin.Controllers
             }
         }
 
-        public ActionResult Edit(int ID)
+        public ActionResult Edit(int id)
         {
-            EmlakTip _emlak = _emlakTipService.GetById(ID);
-            return View(_emlak);
+            EmlakTip emlak = _emlakTipService.GetById(id);
+            return View(emlak);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(EmlakTip _emlak)
+        public ActionResult Edit(EmlakTip emlak)
         {
             try
             {
-                _emlakTipService.Edit(_emlak);
+                _emlakTipService.Edit(emlak);
                 return RedirectToAction("Index");
             }
             catch (Exception)
@@ -74,11 +74,11 @@ namespace Project_UI.Areas.Admin.Controllers
         }
 
 
-        public JsonResult Delete(int ID)
+        public JsonResult Delete(int id)
         {
             try
             {
-                _emlakTipService.DeleteById(ID);
+                _emlakTipService.DeleteById(id);
                 return Json(true);
             }
             catch (Exception)
@@ -87,12 +87,12 @@ namespace Project_UI.Areas.Admin.Controllers
             }
         }
 
-        public JsonResult Status(int ID)
+        public JsonResult Status(int id)
         {
             try
             {
-                _emlakTipService.ChangeStatus(ID);
-                var status = _emlakTipService.GetById(ID);
+                _emlakTipService.ChangeStatus(id);
+                var status = _emlakTipService.GetById(id);
                 return Json(new { result = true, status = status.IsActive });
             }
             catch (Exception)

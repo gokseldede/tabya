@@ -1,9 +1,9 @@
-﻿@model Project_Entity.Bina
+﻿@model BuildingViewModel
 
 <div class="col-lg-12">
     <div class="panel panel-default">
         <div class="panel-heading">
-            @if (Model != null)
+            @if (Model.Id != 0)
             {
                 <h5> Bina Düzenleme Tablosu</h5>
             }
@@ -21,12 +21,12 @@
                         <label> Adı:</label>
                         @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
                         <label> Satış Durumu:</label>
-                        @Html.DropDownListFor(x => x.StatusID, ViewData["Status"] as IEnumerable<SelectListItem>, "Satış Durumu Seçiniz", new { @class = "form-control" })
+                        @Html.DropDownListFor(x => x.StatusId, Model.StatusList, "Satış Durumu Seçiniz", new { @class = "form-control" })
                         <label> Fiyatı:</label>
-                        @Html.TextBoxFor(x => x.Price, new { @class = "form-control", @id = "money-bank", @placeholder = "Örn: 10.5" })
+                        @Html.EditorFor(x => x.Price)
                         <label>Döviz Tipi</label>
-                        @Html.DropDownListFor(x => x.KurlarID, ViewData["Kur"] as IEnumerable<SelectListItem>, "Döviz Tipi Seçiniz", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(x => x.Kurlar, "", new { @class = "text-danger" })
+                        @Html.DropDownListFor(x => x.KurlarId, Model.KurlarList, "Döviz Tipi Seçiniz", new { @class = "form-control" })
+
                         <label> Açıklaması:</label>
                         @Html.TextAreaFor(x => x.Description, new { @class = "form-control", @id = "content" })
                         <label> Ölçüleri(m2):</label>
@@ -43,47 +43,43 @@
                         <br />
                         <label> Kat Sayısı:</label>
                         <br />
-                        @Html.EditorFor(x => x.Floor, new { @class = "ui-spinner-input " })
-                        @Html.ValidationMessageFor(x => x.Floor, "", new { @class = "text-danger" })
+                        @Html.EditorFor(x => x.FloorCount, new { @class = "ui-spinner-input " })
+                        @Html.ValidationMessageFor(x => x.FloorCount, "", new { @class = "text-danger" })
                         <br />
                         <label> Kattaki Daire Sayısı:</label>
                         <br />
-                        @Html.EditorFor(x => x.FloorRoom, new { @class = "ui-spinner-input " })
-                        @Html.ValidationMessageFor(x => x.FloorRoom, "", new { @class = "text-danger" })
+                        @Html.EditorFor(x => x.FloorFlatCount, new { @class = "ui-spinner-input " })
+                        @Html.ValidationMessageFor(x => x.FloorFlatCount, "", new { @class = "text-danger" })
 
-                        <br />
-                        <label> Lokasyonu:</label>
-                        @Html.TextBoxFor(x => x.Location, new { @class = "form-control", @id = "us3-address" })
-
+                        </br>
                         <label> Danışmanı:</label>
-                        @Html.DropDownListFor(x => x.ExpertID, ViewData["Expert"] as IEnumerable<SelectListItem>, "Danışman Seçiniz", new { @class = "form-control" })
+                        @Html.DropDownListFor(x => x.ExpertId, Model.ExpertList, "Danışman Seçiniz", new { @class = "form-control" })
                         <br />
 
                         <label> Diğer Özellikler:</label> <br />
-
-                        @Html.DropDownList("tags", ViewBag.tags as IList<SelectListItem>, new { @multiple = "multiple", @class = "dropdown-menu", @id = "tags" })
+                        @Html.DropDownList("tags", Model.PropertiesList, new { @multiple = "multiple", @class = "dropdown-menu", @id = "tags" })
                         <br />
-                        <label> Sosyal Alan Özellikleri:</label> <br />
 
-                        @Html.DropDownList("socials", ViewBag.socials as IList<SelectListItem>, new { @multiple = "multiple", @class = "dropdown-menu", @id = "socials" })
+                        <label> Sosyal Alan Özellikleri:</label> <br />
+                        @Html.DropDownList("socials", Model.SocialList, new { @multiple = "multiple", @class = "dropdown-menu", @id = "socials" })
 
                         <br />
                         <label> Güvenlik Özellikleri:</label> <br />
+                        @Html.DropDownList("securitys", Model.SecuritiesList, new { @multiple = "multiple", @class = "dropdown-menu", @id = "securitys" })
 
-                        @Html.DropDownList("securitys", ViewBag.securitys as IList<SelectListItem>, new { @multiple = "multiple", @class = "dropdown-menu", @id = "securitys" })
                         <br />
                         <label> Kimden Durumu:</label>
-                        @Html.DropDownListFor(x => x.KimdenID, ViewData["Kimden"] as IEnumerable<SelectListItem>, " Mülk Sahibi Seçiniz", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(x => x.Kimden, "", new { @class = "text-danger" })
+                        @Html.DropDownListFor(x => x.KimdenId, Model.KimdenList, " Mülk Sahibi Seçiniz", new { @class = "form-control" })
+                        @*@Html.ValidationMessageFor(x => x.Kimden, "", new { @class = "text-danger" })*@
 
                         <br />
                         <hr />
                         @Html.Label("Lütfen yüksek çözünürlüklü ya da 393x303 ebatlarında önizleme resmi yükleyiniz!")
-                        @if (Model != null)
+                        @if (Model.ThumbPath != null)
                         {
                             <input type="file" id="document" name="document" />
                             <hr />
-                                <img src="@Url.Content(@Model.ThumbPath)" width="50" height="50" />
+                            <img src="@Url.Content(@Model.ThumbPath)" width="50" height="50" />
 
                         }
                         else
@@ -114,7 +110,7 @@
                                         <ul class="attachment">
                                             @if (Model != null)
                                             {
-                                                foreach (var item in Model.BinaFileDetails)
+                                                foreach (var item in Model.FileDetails)
                                                 {
                                                     <li>
                                                         <img src="~/Areas/Admin/Content/Image/@item.Id@item.Extension" width="60" height="60" />

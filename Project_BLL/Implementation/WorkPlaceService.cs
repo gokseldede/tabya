@@ -1,9 +1,9 @@
-ï»¿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Project_BLL.Interfaces;
-using Project_BLL.ViewModels;
+using Project_BLL.ServiceModels;
 using Project_DAL;
 using Project_Entity;
 
@@ -23,21 +23,21 @@ namespace Project_BLL.Implementation
             Workplace workplace = new Workplace
             {
                 ThumbPath = model.ThumbPath,
-                IsÄ±nmaID = model.IsinmaId,
+                IsýnmaID = model.IsinmaId,
                 KimdenID = model.KimdenId,
                 KrediID = model.KrediId,
                 KurlarID = model.KurlarId,
                 Name = model.Name,
                 Room = model.Room,
-                Size = model.Size.ToString(),
+                Size = model.Size,
                 BAge = model.BAge,
                 Description = model.Description,
                 Dues = model.Dues.ToString(),
                 StatusID = model.StatusId,
                 ExpertID = model.ExpertId,
-                Price = model.Price.ToString("##.###"),
+                Price = model.Price,
                 WorkFileDetails = model.WorkFileDetails.Select(x => new WorkFileDetail() { Id = x.Id, Extension = x.Extension, FileName = x.FileName }).ToList(),
-                EmlakTipID = 2, //TODO: dÃ¼zelt
+                EmlakTipID = 2, //TODO: düzelt
 
             };
 
@@ -52,21 +52,21 @@ namespace Project_BLL.Implementation
                 if (db != null)
                 {
                     db.ThumbPath = model.ThumbPath;
-                    db.IsÄ±nmaID = model.IsinmaId;
+                    db.IsýnmaID = model.IsinmaId;
                     db.KimdenID = model.KimdenId;
                     db.KrediID = model.KrediId;
                     db.KurlarID = model.KurlarId;
                     db.Name = model.Name;
                     db.Room = model.Room;
-                    db.Size = model.Size.ToString();
+                    db.Size = model.Size;
                     db.BAge = model.BAge;
                     db.Description = model.Description;
                     db.Dues = model.Dues.ToString();
                     db.StatusID = model.StatusId;
                     db.ExpertID = model.ExpertId;
-                    db.Price = model.Price.ToString("##.###");
+                    db.Price = model.Price;
                     db.WorkFileDetails = model.WorkFileDetails.Select(x => new WorkFileDetail() { Id = x.Id, Extension = x.Extension, FileName = x.FileName }).ToList();
-                    db.EmlakTipID = 2; //TODO: dÃ¼zelt
+                    db.EmlakTipID = 2; //TODO: düzelt
                     
                     _workPlaceRepository.Update(db);
                 }
@@ -91,12 +91,12 @@ namespace Project_BLL.Implementation
                 UpdatedDateTime = data.UpdatedDate,
                 IsActive = data.IsActive,
                 StatusId = data.StatusID,
-                Price = decimal.Parse(data.Price),
+                Price = data.Price,
                 Name = data.Name,
                 KurlarId = data.KurlarID,
                 Room = data.Room,
-                Size = int.Parse(data.Size),
-                IsinmaId = data.IsÄ±nmaID,
+                Size = data.Size,
+                IsinmaId = data.IsýnmaID,
                 KimdenId = data.KimdenID,
                 KrediId = data.KrediID,
                 WorkFileDetails = data.WorkFileDetails.Select(

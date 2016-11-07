@@ -12,72 +12,72 @@ namespace Project_UI.Areas.Admin.Controllers
     public class IlController : BaseController
     {
         // GET: Admin/Il
-        public ActionResult Index()
-        {
-            List<Il> _iller = Database.Iller.Where(x => x.IsDelete == false).ToList();
-            return View(_iller);
-        }
+        //public ActionResult Index()
+        //{
+        //    List<Il> _iller = Database.Iller.Where(x => x.IsDelete == false).ToList();
+        //    return View(_iller);
+        //}
 
-        // GET: Admin/Iller/Create
-        public ActionResult Create()
-        {
+        //// GET: Admin/Iller/Create
+        //public ActionResult Create()
+        //{
 
-            return View();
-        }
+        //    return View();
+        //}
 
-        // POST: Admin/Iller/Create
-        [HttpPost]
+        //// POST: Admin/Iller/Create
+        //[HttpPost]
 
-        public ActionResult Create(Il iller)
-        {
+        //public ActionResult Create(Il iller)
+        //{
 
-            iller.IsDelete = false;
-            iller.CreatedDate = DateTime.Now;
-            iller.UpdatedDate = DateTime.Now;
-            iller.IsActive = true;
+        //    iller.IsDelete = false;
+        //    iller.CreatedDate = DateTime.Now;
+        //    iller.UpdatedDate = DateTime.Now;
+        //    iller.IsActive = true;
 
-            db.Iller.Add(iller);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+        //    db.Iller.Add(iller);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
 
-        }
+        //}
 
-        // GET: Admin/Iller/Edit/5
-        public ActionResult Edit(int ID)
-        {
-            Il iller = Database.Iller.FirstOrDefault(x => x.ID == ID);
-            return View(iller);
-        }
+        //// GET: Admin/Iller/Edit/5
+        //public ActionResult Edit(int ID)
+        //{
+        //    Il iller = Database.Iller.FirstOrDefault(x => x.ID == ID);
+        //    return View(iller);
+        //}
 
-        // POST: Admin/Iller/Edit/5
+        //// POST: Admin/Iller/Edit/5
 
-        [HttpPost]
-        public ActionResult Edit(Il iller)
-        {
-            Il _iller = Database.Iller.FirstOrDefault(x => x.ID == iller.ID);
-            _iller.Ad = iller.Ad;
-            _iller.ID = iller.ID;
-            _iller.UpdatedDate = DateTime.Now;
-            db.SaveChanges();
-            return RedirectToAction("Index");
+        //[HttpPost]
+        //public ActionResult Edit(Il iller)
+        //{
+        //    Il _iller = Database.Iller.FirstOrDefault(x => x.ID == iller.ID);
+        //    _iller.Ad = iller.Ad;
+        //    _iller.ID = iller.ID;
+        //    _iller.UpdatedDate = DateTime.Now;
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
 
-        }
-        public JsonResult Delete(int ID)
-        {
-            Il _iller = Database.Iller.Find(ID);
-            _iller.IsDelete = true;
-            _iller.DeletedDate = DateTime.Now;
-            Database.SaveChanges();
-            return Json(" ");
+        //}
+        //public JsonResult Delete(int ID)
+        //{
+        //    Il _iller = Database.Iller.Find(ID);
+        //    _iller.IsDelete = true;
+        //    _iller.DeletedDate = DateTime.Now;
+        //    Database.SaveChanges();
+        //    return Json(" ");
 
-        }
+        //}
 
-        public JsonResult Status(int ID)
-        {
-            Il _iller = Database.Iller.Find(ID);
-            _iller.IsActive = !_iller.IsActive;
-            Database.SaveChanges();
-            return Json(_iller.IsActive);
-        }
+        //public JsonResult Status(int ID)
+        //{
+        //    Il _iller = Database.Iller.Find(ID);
+        //    _iller.IsActive = !_iller.IsActive;
+        //    Database.SaveChanges();
+        //    return Json(_iller.IsActive);
+        //}
     }
 }

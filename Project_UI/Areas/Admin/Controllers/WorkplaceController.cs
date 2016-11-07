@@ -9,13 +9,13 @@ using System.Web;
 using System.Web.Mvc;
 using Project_BLL.Implementation;
 using Project_BLL.Interfaces;
-using Project_BLL.ViewModels;
+using Project_BLL.ServiceModels;
 using Project_UI.Areas.Admin.Models;
 
 namespace Project_UI.Areas.Admin.Controllers
 {
     [CheckAuth]
-    public class WorkplaceController : Controller
+    public class WorkplaceController : BaseController
     {
         //Çoklu resim yükleme
         //http://www.advancesharp.com/blog/1130/image-gallery-in-asp-net-mvc-with-multiple-file-and-size
@@ -57,7 +57,7 @@ namespace Project_UI.Areas.Admin.Controllers
                 SocialList = _optionService.GetSocialAppsList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
                 StatusList = _optionService.GetStatuslist().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
                 IlList = _optionService.GetIllerList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                WorkFileDetails = new List<FileDetailServiceModel>()
+                FileDetails = new List<FileDetailServiceModel>()
             };
             return viewModel;
         }
@@ -83,27 +83,7 @@ namespace Project_UI.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                List<FileDetailServiceModel> fileDetails = new List<FileDetailServiceModel>();
-
-                for (int i = 1; i < Request.Files.Count; i++)
-                {
-                    var file = Request.Files[i];
-
-                    if (file != null && file.ContentLength > 0)
-                    {
-                        var fileName = Path.GetFileName(file.FileName);
-                        FileDetailServiceModel fileDetail = new FileDetailServiceModel()
-                        {
-                            FileName = fileName,
-                            Extension = Path.GetExtension(fileName),
-                            Id = Guid.NewGuid()
-                        };
-
-                        var path = Path.Combine(Server.MapPath("~/Areas/Admin/Content/Image/"), fileDetail.Id + fileDetail.Extension);
-                        file.SaveAs(path);
-                        fileDetails.Add(fileDetail);
-                    }
-                }
+                List<FileDetailServiceModel> fileDetails = UploadFiles();
 
                 work.ThumbPath = Functions.UploadImage(document);
 
@@ -155,7 +135,10 @@ namespace Project_UI.Areas.Admin.Controllers
             vm.StatusId = work.StatusId;
             vm.IlceId = work.IlceId;
             vm.Id = work.Id;
-            vm.WorkFileDetails = work.WorkFileDetails;
+            vm.FileDetails = work.WorkFileDetails;
+
+            TempData["ThumbPath"] = work.ThumbPath;
+
             return View(vm);
         }
 
@@ -170,29 +153,10 @@ namespace Project_UI.Areas.Admin.Controllers
                     var imagePath = Functions.UploadImage(document);
                     work.ThumbPath = imagePath;
                 }
+                else
+                    work.ThumbPath = TempData["ThumbPath"].ToString();
 
-                List<FileDetailServiceModel> fileDetails = new List<FileDetailServiceModel>();
-                //New Files
-                for (int i = 1; i < Request.Files.Count; i++)
-                {
-                    var file = Request.Files[i];
-
-                    if (file != null && file.ContentLength > 0)
-                    {
-                        var fileName = Path.GetFileName(file.FileName);
-                        FileDetailServiceModel fileDetail = new FileDetailServiceModel()
-                        {
-                            FileName = fileName,
-                            Extension = Path.GetExtension(fileName),
-                            Id = Guid.NewGuid()
-                        };
-                        var path = Path.Combine(Server.MapPath("~/Areas/Admin/Content/Image/"),
-                            fileDetail.Id + fileDetail.Extension);
-                        file.SaveAs(path);
-                        fileDetails.Add(fileDetail);
-
-                    }
-                }
+                List<FileDetailServiceModel> fileDetails = UploadFiles();
 
                 WorkplaceServiceModel model = new WorkplaceServiceModel()
                 {

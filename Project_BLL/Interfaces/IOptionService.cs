@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Project_BLL.ViewModels;
+﻿using System.Collections.Generic;
+using Project_BLL.ServiceModels;
 
 namespace Project_BLL.Interfaces
 {
@@ -21,5 +17,10 @@ namespace Project_BLL.Interfaces
         List<SelectlistItem> GetIllerList();
         List<SelectlistItem> GetIlcelerList(int ilId);
         List<SelectlistItem> GetSemtList(int ilceId);
+        List<SelectlistItem> GetImarList();
+        List<SelectlistItem> GetEmlakTipList();
+        List<SelectlistItem> GetEsyaList();
+        List<SelectlistItem> GetSiteList();
+        List<SelectlistItem> GetKullanimList();
     }
 }

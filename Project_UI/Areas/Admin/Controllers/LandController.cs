@@ -8,6 +8,9 @@ using Project_UI.Areas.Admin.Models;
 using System.IO;
 using System.Data.Entity;
 using System.Net;
+using Project_BLL.Implementation;
+using Project_BLL.Interfaces;
+using Project_BLL.ServiceModels;
 using Project_UI.Areas.Admin.FilterAttributes;
 
 namespace Project_UI.Areas.Admin.Controllers
@@ -15,227 +18,225 @@ namespace Project_UI.Areas.Admin.Controllers
     [CheckAuth]
     public class LandController : BaseController
     {
+        private readonly IStandartService<LandServiceModel> _landService;
+        private readonly IFileService<LandFileDetail> _landFileService;
+        private readonly IOptionService _optionService;
+
+        public LandController()
+        {
+            _landService=new LandService();
+            _optionService = new OptionsService();
+            _landFileService = new FileDetailService<LandFileDetail>();
+        }
+
         public ActionResult Index()
         {
-            List<Land> _land = Database.Land.Where(x => x.IsDelete == false).ToList();
-            return View(_land);
+            List<LandServiceModel> land = _landService.GetAll().ToList();
+            return View(land);
         }
 
         [HttpGet]
-
         public ActionResult Create()
         {
-            GetExpert();
-            GetStatus();
-            GetKredi();
-            // GetEmlak();
-            GetKimden();
-            GetKur();
-            GetImar();
-            //GetProperties();
-            //GetSocialApps();
-            //GetSecurity();
-            return View();
+            var vm = GetModel();
+            return View(vm);
         }
 
-        //Çoklu resim yükleme
-        //http://www.advancesharp.com/blog/1130/image-gallery-in-asp-net-mvc-with-multiple-file-and-size
-
-        // POST: Admin/AdDetails/Create
-        [HttpPost, ValidateInput(false)]
-        public ActionResult Create(Land land, HttpPostedFileBase document)
+        private LandViewModel GetModel()
         {
-            GetExpert();
-            GetStatus();
-            GetKimden();
-            GetKredi();
-            GetKur();
-            GetImar();
-            //   GetEmlak();
-            //GetProperties();
-            //GetSocialApps();
-            //GetSecurity();
-            land.IsDelete = false;
-            land.CreatedDate = DateTime.Now;
-            land.UpdatedDate = DateTime.Now;
-            land.IsActive = true;
-            land.Vitrin = false;
+            var viewModel = new LandViewModel()
+            {
+                ExpertList = _optionService.GetExpertList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
+                StatusList = _optionService.GetStatuslist().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
+                KimdenList = _optionService.GetKimdenList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
+                KurlarList = _optionService.GetKurlarList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
+                KrediList = _optionService.GetKrediList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
+                IlList = _optionService.GetIllerList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
+                ImarStatusList = _optionService.GetImarList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
+                FileDetails = new List<FileDetailServiceModel>()
+            };
+            return viewModel;
+        }
 
-            var imagePath = Functions.UploadImage(document);
-            land.ThumbPath = imagePath;
 
-            //foreach (var b in tags)
-            //{
-            //    land.properties += b + ",";
-            //}
-            //foreach (var c in securitys)
-            //{
-            //    land.securitys = string.Empty;
-            //    land.securitys += c + ",";
-            //}
-            //foreach (var a in socials)
-            //{
-            //    land.socialapps += a + ",";
-            //}
+        [HttpPost, ValidateInput(false)]
+        public ActionResult Create(LandViewModel land, HttpPostedFileBase document)
+        {
+
+            ////foreach (var b in tags)
+            ////{
+            ////    land.properties += b + ",";
+            ////}
+            ////foreach (var c in securitys)
+            ////{
+            ////    land.securitys = string.Empty;
+            ////    land.securitys += c + ",";
+            ////}
+            ////foreach (var a in socials)
+            ////{
+            ////    land.socialapps += a + ",";
+            ////}
             if (ModelState.IsValid)
             {
-                #region Çoklu resim kaydetme 
-                List<LandFileDetail> fileDetails = new List<LandFileDetail>();
-                for (int i = 1; i < Request.Files.Count; i++)
+                var imagePath = Functions.UploadImage(document);
+                land.ThumbPath = imagePath;
+
+                var fileDetails = UploadFiles();
+
+                LandServiceModel model = new LandServiceModel()
                 {
-                    var file = Request.Files[i];
-
-                    if (file != null && file.ContentLength > 0)
-                    {
-                        var fileName = Path.GetFileName(file.FileName);
-                        LandFileDetail fileDetail = new LandFileDetail()
-                        {
-                            FileName = fileName,
-                            Extension = Path.GetExtension(fileName),
-                            Id = Guid.NewGuid()
-                        };
-                        fileDetails.Add(fileDetail);
-
-                        var path = Path.Combine(Server.MapPath("~/Areas/Admin/Content/Image/"), fileDetail.Id + fileDetail.Extension);
-                        file.SaveAs(path);
-                    }
-                }
-                land.LandFileDetails = fileDetails;
-                db.Land.Add(land);
-                #endregion              
-                db.SaveChanges();
+                    Id = land.Id,
+                    AdaNo = land.AdaNo,
+                    Description = land.Description,
+                    Emsal = land.Emsal,
+                    ExpertId = land.ExpertId,
+                    Gabari = land.Gabari,
+                    ImarId = land.ImarId,
+                    KatKarsiligi = land.KatKarsiligi,
+                    KimdenId = land.KimdenId,
+                    KrediId = land.KrediId,
+                    KurlarId = land.KurlarId,
+                    Name = land.Name,
+                    PaftaNo = land.PaftaNo,
+                    ParselNo = land.ParselNo,
+                    Price = land.Price,
+                    PriceForM2 = land.PriceForM2,
+                    Size = land.Size,
+                    StatusId = land.StatusId,
+                    Takas = land.Takas,
+                    TapuDurumu = land.TapuDurumu,
+                    ThumbPath = land.ThumbPath,
+                    FileDetails = fileDetails
+                };
+                _landService.Create(model);
             }
             return Redirect("/Admin/AdDetails/Index");
         }
-        // GET: Admin/AdDetails/Edit/5
-        public ActionResult Edit(int ID, HttpPostedFileBase document)
-        {
-            GetExpert(ID);
-            GetStatus(ID);
-            GetKimden(ID);
-            //   GetEmlak(ID);
-            GetKredi(ID);
-            GetImar(ID);
-            GetKur(ID);
-            //GetProperties();
-            //GetSecurity();
-            //GetSocialApps();
-            GetProp();
-            Land _land = Database.Land.FirstOrDefault(x => x.ID == ID);
-            TempData["ImagePath"] = _land.ThumbPath;
 
-            return View(_land);
+       
+
+        public ActionResult Edit(int id)
+        {
+            LandViewModel vm = GetModel();
+            var land = _landService.GetById(id);
+
+            LandViewModel model = new LandViewModel()
+            {
+                Id = land.Id,
+                AdaNo = land.AdaNo,
+                Description = land.Description,
+                Emsal = land.Emsal,
+                ExpertId = land.ExpertId,
+                Gabari = land.Gabari,
+                ImarId = land.ImarId,
+                KatKarsiligi = land.KatKarsiligi,
+                KimdenId = land.KimdenId,
+                KrediId = land.KrediId,
+                KurlarId = land.KurlarId,
+                Name = land.Name,
+                PaftaNo = land.PaftaNo,
+                ParselNo = land.ParselNo,
+                Price = land.Price,
+                PriceForM2 = land.PriceForM2,
+                Size = land.Size,
+                StatusId = land.StatusId,
+                Takas = land.Takas,
+                TapuDurumu = land.TapuDurumu,
+                ThumbPath = land.ThumbPath
+            };
+
+            TempData["ThumbPath"] = land.ThumbPath;
+
+            return View(model);
         }
 
-        // POST: Admin/AdDetails/Edit/5
+       
 
         [HttpPost, ValidateInput(false)]
-
-        public ActionResult Edit(Land land, HttpPostedFileBase document)
+        public ActionResult Edit(LandViewModel land, HttpPostedFileBase document)
         {
+            ////if (tags != null)
+            ////{
+            ////    _land.properties = string.Empty;
+            ////    foreach (var b in tags)
+            ////    {
+            ////        _land.properties += b + ",";
+            ////    }
+            ////}
 
-            Land _land = Database.Land.FirstOrDefault(x => x.ID == land.ID);
-
-            _land.Name = land.Name;
-            _land.Description = land.Description;
-            _land.ImarID = land.ImarID;
-            _land.SizePrice = land.SizePrice;
-            _land.AdaNo = land.AdaNo;
-            _land.ParselNo = land.ParselNo;
-            _land.PaftaNo = land.PaftaNo;
-            _land.Kaks = land.Kaks;
-            _land.Gabari = land.Gabari;
-            _land.Tapu = land.Tapu;
-            _land.Takas = land.Takas;
-            _land.KatKarsiligi = land.KatKarsiligi;
-            _land.Price = land.Price;
-            _land.Location = land.Location;
-            _land.Latitude = land.Latitude;
-            _land.Longitude = land.Longitude;
-            _land.Size = land.Size;
-            // _land.EmlakTipID = land.EmlakTipID;
-            _land.StatusID = land.StatusID;
-            _land.KrediID = land.KrediID;
-            _land.KimdenID = land.KimdenID;
-            _land.ImarID = land.ImarID;
-            _land.ExpertID = land.ExpertID;
-            _land.KurlarID = land.KurlarID;
-            //if (tags != null)
-            //{
-            //    _land.properties = string.Empty;
-            //    foreach (var b in tags)
-            //    {
-            //        _land.properties += b + ",";
-            //    }
-            //}
-
-            //if (securitys != null)
-            //{
-            //    _land.securitys = string.Empty;
-            //    foreach (var c in securitys)
-            //    {
-            //        _land.securitys += c + ",";
-            //    }
-            //}
-            //if (socials != null)
-            //{
-            //    _land.socialapps = string.Empty;
-            //    foreach (var a in socials)
-            //    {
-            //        _land.socialapps += a + ",";
-            //    }
-            //}
-            if (document != null)
-            {
-                var imagePath = Functions.UploadImage(document);
-                _land.ThumbPath = imagePath;
-            }
-            else
-            {
-                _land.ThumbPath = TempData["ImagePath"].ToString();
-            }
+            ////if (securitys != null)
+            ////{
+            ////    _land.securitys = string.Empty;
+            ////    foreach (var c in securitys)
+            ////    {
+            ////        _land.securitys += c + ",";
+            ////    }
+            ////}
+            ////if (socials != null)
+            ////{
+            ////    _land.socialapps = string.Empty;
+            ////    foreach (var a in socials)
+            ////    {
+            ////        _land.socialapps += a + ",";
+            ////    }
+            ////}
+          
             if (ModelState.IsValid)
             {
-                //New Files
-                for (int i = 1; i < Request.Files.Count; i++)
+                if (document != null)
                 {
-                    var file = Request.Files[i];
-
-                    if (file != null && file.ContentLength > 0)
-                    {
-                        var fileName = Path.GetFileName(file.FileName);
-                        LandFileDetail fileDetail = new LandFileDetail()
-                        {
-                            FileName = fileName,
-                            Extension = Path.GetExtension(fileName),
-                            Id = Guid.NewGuid(),
-                            LandID = land.ID
-                        };
-                        var path = Path.Combine(Server.MapPath("~/Areas/Admin/Content/Image/"), fileDetail.Id + fileDetail.Extension);
-                        file.SaveAs(path);
-
-                        Database.Entry(fileDetail).State = EntityState.Added;
-                    }
+                    var imagePath = Functions.UploadImage(document);
+                    land.ThumbPath = imagePath;
                 }
-                Database.Entry(_land).State = EntityState.Modified;
-                _land.ID = land.ID;
-                _land.UpdatedDate = DateTime.Now;
-                Database.SaveChanges();
+                else
+                    land.ThumbPath = TempData["ThumbPath"].ToString();
+
+                var fileDetails = UploadFiles();
+
+                LandServiceModel model = new LandServiceModel()
+                {
+                    Id = land.Id,
+                    AdaNo = land.AdaNo,
+                    Description = land.Description,
+                    Emsal = land.Emsal,
+                    ExpertId = land.ExpertId,
+                    Gabari = land.Gabari,
+                    ImarId = land.ImarId,
+                    KatKarsiligi = land.KatKarsiligi,
+                    KimdenId = land.KimdenId,
+                    KrediId = land.KrediId,
+                    KurlarId = land.KurlarId,
+                    Name = land.Name,
+                    PaftaNo = land.PaftaNo,
+                    ParselNo = land.ParselNo,
+                    Price = land.Price,
+                    PriceForM2 = land.PriceForM2,
+                    Size = land.Size,
+                    StatusId = land.StatusId,
+                    Takas = land.Takas,
+                    TapuDurumu = land.TapuDurumu,
+                    ThumbPath = land.ThumbPath,
+                    FileDetails = fileDetails
+                };
+                _landService.Edit(model);
+
                 return Redirect("/Admin/AdDetails/Index");
             }
             return View(land);
         }
 
 
-        // GET: Admin/AdDetails/Delete/5
-        public JsonResult Delete(int ID)
+        public JsonResult Delete(int id)
         {
-            Land _land = Database.Land.Find(ID);
-            _land.IsDelete = true;
-            _land.DeletedDate = DateTime.Now;
-            Database.SaveChanges();
-            return Json(" ");
-
+            try
+            {
+                _landService.DeleteById(id);
+                return Json(new { result = true });
+            }
+            catch (Exception)
+            {
+                return Json(new { result = false });
+            }
         }
 
         [HttpPost]
@@ -243,50 +244,52 @@ namespace Project_UI.Areas.Admin.Controllers
         {
             if (String.IsNullOrEmpty(id))
             {
-                Response.StatusCode = (int) HttpStatusCode.BadRequest;
-                return Json(new { Result = "Error" });
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new { Result = false, Message = "Bad Request" });
             }
             try
             {
-                Guid guid = new Guid(id);
-                LandFileDetail fileDetail = db.LandFileDetails.Find(guid);
-                if (fileDetail == null)
-                {
-                    Response.StatusCode = (int) HttpStatusCode.NotFound;
-                    return Json(new { Result = "Error" });
-                }
-
-                //Remove from database
-                db.LandFileDetails.Remove(fileDetail);
-                db.SaveChanges();
-
+                FileDetailServiceModel fileDetail = _landFileService.GetById(Guid.Parse(id));
                 //Delete file from the file system
                 var path = Path.Combine(Server.MapPath("~/Areas/Admin/Content/Image/"), fileDetail.Id + fileDetail.Extension);
                 if (System.IO.File.Exists(path))
                 {
                     System.IO.File.Delete(path);
                 }
-                return Json(new { Result = "OK" });
+                _landFileService.DeleteById(Guid.Parse(id));
+                return Json(new { Result = true });
             }
             catch (Exception ex)
             {
-                return Json(new { Result = "ERROR", Message = ex.Message });
+                return Json(new { Result = false, Message = ex.Message });
             }
         }
 
-        public JsonResult Status(int ID)
+        public JsonResult Status(int id)
         {
-            Land _land = Database.Land.Find(ID);
-            _land.IsActive = !_land.IsActive;
-            Database.SaveChanges();
-            return Json(_land.IsActive);
+            try
+            {
+                _landService.ChangeStatus(id);
+                var status = _landService.GetById(id);
+                return Json(new { result = true, status = status.IsActive });
+            }
+            catch (Exception)
+            {
+                return Json(new { result = false, status = false });
+            }
         }
-        public JsonResult Vitrin(int ID)
+        public JsonResult Vitrin(int id)
         {
-            Land _land = Database.Land.Find(ID);
-            _land.Vitrin = !_land.Vitrin;
-            Database.SaveChanges();
-            return Json(_land.Vitrin);
+            try
+            {
+                _landService.ChangeVitrin(id);
+                var status = _landService.GetById(id);
+                return Json(new { result = true, status = status.IsInVitrin });
+            }
+            catch (Exception)
+            {
+                return Json(new { result = false, status = false });
+            }
         }
     }
 }

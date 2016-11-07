@@ -11,12 +11,12 @@ namespace Project_Entity
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public string Price { get; set; }
+        public int Price { get; set; }
         public string Location { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
         public string Room { get; set; }
-        public string Size { get; set; }
+        public int Size { get; set; }
         public int BAge { get; set; }
         public int Floor { get; set; }
         public int Bath { get; set; }
@@ -34,14 +34,14 @@ namespace Project_Entity
         public int? StatusID { get; set; }
 
         public int? AdminUserID { get; set; }
-        public int? IsınmaID { get; set; }
+        public int? IsinmaID { get; set; }
         public int? KrediID { get; set; }
         public int? EmlakTipID { get; set; }
         public virtual EmlakTip EmlakTip { get; set; }
         public int? KimdenID { get; set; }
         public virtual Kimden Kimden { get; set; }
-        public int? KullanımID { get; set; }
-        public virtual Kullanım Kullanım { get; set; }
+        public int? KullanimID { get; set; }
+        public virtual Kullanim Kullanim { get; set; }
         public virtual List<FileDetail> FileDetails { get; set; }
 
         public int? EsyaID { get; set; }
@@ -88,11 +88,11 @@ namespace Project_Entity
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public string Price { get; set; }
+        public int Price { get; set; }
         public string Location { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
-        public string Size { get; set; }
+        public int Size { get; set; }
         public string Room { get; set; }
         public int BAge { get; set; }
         public string Dues { get; set; }
@@ -136,9 +136,9 @@ namespace Project_Entity
         public virtual Expert Expert { get; set; }
         public int? ImarID { get; set; }
         public virtual Imar Imar { get; set; }
-        public string Price { get; set; }
-        public string Size { get; set; }
-        public string SizePrice { get; set; }
+        public int Price { get; set; }
+        public int Size { get; set; }
+        public int SizePrice { get; set; }
         public int AdaNo { get; set; }
         public int ParselNo { get; set; }
         public int PaftaNo { get; set; }
@@ -169,7 +169,7 @@ namespace Project_Entity
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public string Price { get; set; }
+        public int Price { get; set; }
         public int BAge { get; set; }
         public int? ExpertID { get; set; }
         public virtual Expert Expert { get; set; }

@@ -1,31 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using Project_DAL;
+using Project_BLL.Implementation;
+using Project_BLL.Interfaces;
 using Project_Entity;
 using Project_UI.Areas.Admin.FilterAttributes;
+using Project_UI.Areas.Admin.Models;
 
 namespace Project_UI.Areas.Admin.Controllers
 {
     [CheckAuth]
-    public class AdminUsersController : BaseController
+    public class AdminUsersController : Controller
     {
+        private readonly IStandartService<AdminUser> _adminUserService;
 
-
-        // GET: Admin/AdminUsers
-        public ActionResult Index()
+        public AdminUsersController()
         {
-            List<AdminUser> _AdminUsers = Database.AdminUsers.Where(x => x.IsDelete == false).ToList();
-            return View(_AdminUsers);
-
+            _adminUserService = new AdminUserService();
         }
 
-
+        public ActionResult Index()
+        {
+            List<AdminUserViewModel> adminUsers = _adminUserService.GetAll().Select(adminUser => new AdminUserViewModel()
+            {
+                Id = adminUser.ID,
+                IsActive = adminUser.IsActive,
+                Name = adminUser.Name,
+                CreatedDate = adminUser.CreatedDate,
+                UpdatedDate = adminUser.UpdatedDate,
+                ImagePath = adminUser.ImagePath,
+                Email = adminUser.Email,
+                PhoneNumber = adminUser.PhoneNumber,
+                Surname = adminUser.Surname
+            }).ToList();
+            return View(adminUsers);
+        }
 
         public ActionResult Create()
         {
@@ -34,60 +44,108 @@ namespace Project_UI.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public ActionResult Create(AdminUser adminUser)
+        public ActionResult Create(AdminUserViewModel adminUser)
         {
-            adminUser.IsDelete = false;
-            adminUser.CreatedDate = DateTime.Now;
-            adminUser.UpdatedDate = DateTime.Now;
-            adminUser.IsActive = true;
+            try
+            {
+                var user = new AdminUser()
+                {
+                    ID = adminUser.Id,
+                    Name = adminUser.Name,
+                    ImagePath = adminUser.ImagePath,
+                    Email = adminUser.Email,
+                    PhoneNumber = adminUser.PhoneNumber,
+                    Surname = adminUser.Surname
+                };
+                _adminUserService.Create(user);
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
 
-            db.AdminUsers.Add(adminUser);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-
+                throw;
+            }
         }
 
         // GET: Admin/AdminUsers/Edit/5
-        public ActionResult Edit(int ID)
+        public ActionResult Edit(int id)
         {
-
-            AdminUser adminUser = Database.AdminUsers.FirstOrDefault(x => x.ID == ID);
-
-            return View(adminUser);
+            try
+            {
+                var adminUser = _adminUserService.GetById(id);
+                var viewModel = new AdminUserViewModel()
+                {
+                    Id = adminUser.ID,
+                    IsActive = adminUser.IsActive,
+                    Name = adminUser.Name,
+                    CreatedDate = adminUser.CreatedDate,
+                    UpdatedDate = adminUser.UpdatedDate,
+                    ImagePath = adminUser.ImagePath,
+                    Email = adminUser.Email,
+                    PhoneNumber = adminUser.PhoneNumber,
+                    Surname = adminUser.Surname
+                };
+                return View(viewModel);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
 
         [HttpPost]
-        public ActionResult Edit(AdminUser adminUser)
+        public ActionResult Edit(AdminUserViewModel adminUser)
         {
-            AdminUser _adminUser = Database.AdminUsers.FirstOrDefault(x => x.ID == adminUser.ID);
-            _adminUser.Name = adminUser.Name;
-            _adminUser.PhoneNumber = adminUser.PhoneNumber;
-            _adminUser.Password = adminUser.Password;
-            _adminUser.ID = adminUser.ID;
-            _adminUser.UpdatedDate = DateTime.Now;
-            db.SaveChanges();
+            try
+            {
+                var user = new AdminUser()
+                {
+                    ID = adminUser.Id,
+                    IsActive = adminUser.IsActive,
+                    Name = adminUser.Name,
+                    CreatedDate = adminUser.CreatedDate,
+                    UpdatedDate = adminUser.UpdatedDate,
+                    ImagePath = adminUser.ImagePath,
+                    Email = adminUser.Email,
+                    PhoneNumber = adminUser.PhoneNumber,
+                    Surname = adminUser.Surname
+                };
+                _adminUserService.Edit(user);
                 return RedirectToAction("Index");
-           
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
-        // GET: Admin/AdminUsers/Delete/5
-        public JsonResult Delete(int ID)
+        public JsonResult Delete(int id)
         {
-            AdminUser _adminUser = Database.AdminUsers.Find(ID);
-            _adminUser.IsDelete = true;
-            _adminUser.DeletedDate = DateTime.Now;
-            Database.SaveChanges();
-            return Json(" ");
-
+            try
+            {
+                _adminUserService.DeleteById(id);
+                return Json(true);
+            }
+            catch (Exception)
+            {
+                return Json(false);
+            }
         }
 
-        public JsonResult Status(int ID)
+        public JsonResult Status(int id)
         {
-            AdminUser _adminUser = Database.AdminUsers.Find(ID);
-            _adminUser.IsActive = !_adminUser.IsActive;
-            Database.SaveChanges();
-            return Json(_adminUser.IsActive);
+            try
+            {
+                _adminUserService.ChangeStatus(id);
+                var status = _adminUserService.GetById(id);
+                return Json(new { result = true, status = status.IsActive });
+            }
+            catch (Exception)
+            {
+                return Json(new { result = false, status = false });
+            }
         }
     }
 }

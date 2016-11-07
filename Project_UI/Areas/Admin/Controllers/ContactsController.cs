@@ -1,27 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using Project_DAL;
+using Project_BLL.Implementation;
+using Project_BLL.Interfaces;
 using Project_Entity;
 using Project_UI.Areas.Admin.FilterAttributes;
 
 namespace Project_UI.Areas.Admin.Controllers
 {
     [CheckAuth]
-    public class ContactsController : BaseController
+    public class ContactsController : Controller
     {
 
-        //İletişim
-        // GET: Admin/Contacts
+        private readonly IStandartService<Contact> _contanctService;
+
+        public ContactsController()
+        {
+            _contanctService = new ContanctService();
+        }
+        
         public ActionResult Index()
         {
-            List<Contact> _contacs = Database.Contacts.Where(x => x.IsDelete == false).ToList();
-            return View(_contacs);
+            List<Contact> contacs = _contanctService.GetAll().ToList();
+            return View(contacs);
         }
 
 
@@ -34,56 +37,73 @@ namespace Project_UI.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Create(Contact contact)
         {
-            contact.IsDelete = false;
-            contact.CreatedDate = DateTime.Now;
-            contact.UpdatedDate = DateTime.Now;
-            contact.IsActive = true;
-            db.Contacts.Add(contact);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            try
+            {
+                _contanctService.Create(contact);
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
 
-
+                throw;
+            }
         }
 
         // GET: Admin/Contacts/Edit/5
-        public ActionResult Edit(int ID)
+        public ActionResult Edit(int id)
         {
-            Contact contact = Database.Contacts.FirstOrDefault(x => x.ID == ID);
-            return View(contact);
+            try
+            {
+                Contact contact = _contanctService.GetById(id);
+                return View(contact);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
 
         [HttpPost]
         public ActionResult Edit(Contact contact)
         {
-            Contact _contact = Database.Contacts.FirstOrDefault(x => x.ID == contact.ID);
-            _contact.Name = contact.Name;
-            _contact.Number = contact.Number;
-            _contact.Maps = contact.Maps;
-            _contact.ID = contact.ID;
-            _contact.UpdatedDate = DateTime.Now;
-            db.SaveChanges();
-            return RedirectToAction("Index");
-
+            try
+            {
+                _contanctService.Edit(contact);
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
-        // GET: Admin/Contacts/Delete/5
-        public JsonResult Delete(int ID)
+        public JsonResult Delete(int id)
         {
-            Contact _contact = Database.Contacts.Find(ID);
-            _contact.IsDelete = true;
-            _contact.DeletedDate = DateTime.Now;
-            Database.SaveChanges();
-            return Json(" ");
-
+            try
+            {
+                _contanctService.DeleteById(id);
+                return Json(new { result = true});
+            }
+            catch (Exception)
+            {
+                return Json(new { result = true });
+            }
         }
 
-        public JsonResult Status(int ID)
+        public JsonResult Status(int id)
         {
-            Contact _contact = Database.Contacts.Find(ID);
-            _contact.IsActive = !_contact.IsActive;
-            Database.SaveChanges();
-            return Json(_contact.IsActive);
+            try
+            {
+                _contanctService.ChangeStatus(id);
+                var status = _contanctService.GetById(id);
+                return Json(new { result = true, status = status.IsActive });
+            }
+            catch (Exception)
+            {
+                return Json(new { result = false, status = false });
+            }
         }
     }
 }

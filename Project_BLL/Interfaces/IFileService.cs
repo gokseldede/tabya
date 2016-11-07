@@ -1,5 +1,5 @@
 ﻿using System;
-using Project_BLL.ViewModels;
+using Project_BLL.ServiceModels;
 
 namespace Project_BLL.Interfaces
 {

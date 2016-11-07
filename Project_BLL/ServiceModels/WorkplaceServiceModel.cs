@@ -1,13 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
-namespace Project_BLL.ViewModels
+namespace Project_BLL.ServiceModels
 {
     public class WorkplaceServiceModel
     {
         public string Name { get; set; }
         public int? StatusId { get; set; }
-        public decimal Price { get; set; }
+        public int Price { get; set; }
         public int? KurlarId { get; set; }
         public string Description { get; set; }
         public string Room { get; set; }
@@ -27,6 +27,4 @@ namespace Project_BLL.ViewModels
         public DateTime? UpdatedDateTime { get; set; }
         public List<FileDetailServiceModel> WorkFileDetails { get; set; }
     }
-
-
 }

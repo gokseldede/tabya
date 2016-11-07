@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Project_BLL.ViewModels
+namespace Project_BLL.ServiceModels
 {
     public class FileDetailServiceModel
     {

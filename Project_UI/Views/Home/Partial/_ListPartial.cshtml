@@ -1,4 +1,5 @@
-﻿@model List<NewAdvertisement>
+﻿@using System.Globalization
+@model List<Project_BLL.ServiceModels.NewAdvertisement>
 @if (!Request.QueryString["lang"].IsEmpty())
 {
     Culture = UICulture = Request.QueryString["lang"];
@@ -22,7 +23,7 @@
                     <div class="item satilik">
                         <a href="/AdDetail/Details/@item.Id">
                             <div class="image">
-                                <img src="/@item.Photo" width="393" height="303" alt="ev">
+                                <img src="@item.Photo" width="393" height="303" alt="ev">
                                 <div class="over"><span>DETAYLI İNCELE</span></div>
                             </div>
                             <div class="text">

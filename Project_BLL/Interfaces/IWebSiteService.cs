@@ -1,5 +1,5 @@
-﻿using Project_BLL.ViewModels;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Project_BLL.ServiceModels;
 
 namespace Project_BLL.Interfaces
 {

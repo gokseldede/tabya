@@ -1,4 +1,4 @@
-﻿@model List<ProjectViewModel>
+﻿@model List<Project_BLL.ServiceModels.ProjectServiceModel>
 
 @{
     ViewBag.Title = "Index";
@@ -21,6 +21,7 @@
                             <th class="hidden-480">Firma</th>
                             <th>Teslim Tarihi</th>
                             <th>Durumu</th>
+                            <th>Vitrin</th>
                             <th class="hidden-480">Oluşturma Tarihi</th>
                             <th class="hidden-480">Güncelleme Tarihi</th>
                             <th>İşlem</th>
@@ -42,7 +43,14 @@
                                 {
                                     <td id="b_@item.Id" onclick="Status('/Admin/Projects/Status/',@item.Id)"><span class="btn btn-default btn-sm">Pasif</span></td>
                                 }
-
+                                @if (item.IsInVitrin)
+                                {
+                                    <td id="c_@item.Id" onclick="Vitrin('/Admin/Projects/Vitrin/',@item.Id)"><span class="btn btn-info btn-sm">Vitrine Eklendi</span></td>
+                                }
+                                else
+                                {
+                                    <td id="c_@item.Id" onclick="Vitrin('/Admin/Projects/Vitrin/',@item.Id)"><span class="btn btn-default btn-sm">Vitrine Ekle</span></td>
+                                }
                                 <td class="hidden-480">@item.CreatedDateTime.ToShortDateString()</td>
                                 <td class="hidden-480">@item.UpdatedDateTime</td>
                                 <td>

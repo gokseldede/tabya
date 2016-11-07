@@ -66,16 +66,17 @@ namespace Project_UI.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Expert _expert, HttpPostedFileBase document)
+        public ActionResult Edit(Expert expert, HttpPostedFileBase document)
         {
             try
             {
                 if (document != null)
                 {
                     var imagePath = Functions.UploadImage(document);
-                    _expert.ImagePath = imagePath;
+                    expert.ImagePath = imagePath;
                 }
-                _expertService.Edit(_expert);
+
+                _expertService.Edit(expert);
                 return RedirectToAction("Index");
             }
             catch (Exception)

@@ -34,11 +34,11 @@
                         <label>Proje Teslim Tarihi :</label>
                         @Html.TextBoxFor(x => x.ProjectDeliveryDate, new { @class = "form-control", @id = "datetimepicker4" })
                         <script type="text/javascript">
-            $(function () {
-                $('#datetimepicker4').datetimepicker({
-                    format: "d/MM/YYYY"
-                });
-            });
+                            $(function () {
+                                $('#datetimepicker4').datetimepicker({
+                                    format: "d/MM/YYYY"
+                                });
+                            });
                         </script>
 
                         <label>Proje Danışman Adı :</label>
@@ -71,7 +71,7 @@
                         }
                         else
                         {
-                            <input type="file" id="document" name="document" required="Lütfen resim yükleyiniz"/>
+                            <input type="file" id="document" name="document" required="Lütfen resim yükleyiniz" />
 
                         }
                         <br />
@@ -85,7 +85,7 @@
                         }
                         else
                         {
-                            <input type="file" id="pricelist" name="pricelist" required="Lütfen resim yükleyiniz"/>
+                            <input type="file" id="pricelist" name="pricelist" required="Lütfen resim yükleyiniz" />
 
                         }
 
@@ -101,14 +101,14 @@
                                 }
                                 else
                                 {
-                                    <input type="file" id="file" name="files" multiple="multiple" required="Lütfen resim yükleyiniz"/>
+                                    <input type="file" id="file" name="files" multiple="multiple" required="Lütfen resim yükleyiniz" />
 
                                 }
                                 <hr />
                                 <ul class="attachment">
                                     @if (Model != null)
                                     {
-                                        foreach (var item in Model.ProjectFiles)
+                                        foreach (var item in Model.FileDetails)
                                         {
                                             <li>
                                                 <img src="~/Areas/Admin/Content/Image/@item.Id@item.Extension" width="60" height="60" />

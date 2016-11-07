@@ -4,5 +4,5 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-@model Project_Entity.Bina
-    @Html.Partial("Partial/_BuildingPartial",Model)
+@model BuildingViewModel
+@Html.Partial("Partial/_BuildingPartial", Model)

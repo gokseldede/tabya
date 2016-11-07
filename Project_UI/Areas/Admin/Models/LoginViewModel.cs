@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Project_BLL.ViewModels
+namespace Project_UI.Areas.Admin.Models
 {
     public class LoginViewModel
     {

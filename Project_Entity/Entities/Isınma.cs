@@ -25,7 +25,7 @@ namespace Project_Entity
         public virtual List<Land> Land { get; set; }
     }
 
-    public class Kullanım:EntityBase
+    public class Kullanim:EntityBase
     {
         public string Name { get; set; }
         public int? AdminUserID { get; set; }

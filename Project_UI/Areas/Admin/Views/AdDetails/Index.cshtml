@@ -1,4 +1,4 @@
-﻿@model Project_UI.Areas.Admin.Models.PageViewModel
+﻿@model Project_UI.Areas.Admin.Models.AdListViewModel
 
 @{
     ViewBag.Title = "Index";
@@ -20,6 +20,7 @@
                         <tr>
                             <th>Resim</th>
                             <th>ilan Adı</th>
+                            <th>İlan Tipi</th>
                             <th>Durumu</th>
                             <th>Vitrin Durumu</th>
                             <th class="hidden-480">Oluşturma Tarihi</th>                          
@@ -31,37 +32,38 @@
                     <tbody>
                         @foreach (var item in Model.AdDetails)
                         {
-                            <tr id="a_@item.ID">
+                            <tr id="a_@item.Id">
                                 <td><img src="@item.ThumbPath" width="40" height="40" /></td>
                                 <td>@item.Name</td>
+                                <td>Ad</td>
                                 @if (item.IsActive)
                                 {
-                                    <td id="b_@item.ID" onclick="Status('/Admin/AdDetails/Status/',@item.ID)"><span class="btn btn-info btn-sm">Aktif</span></td>
+                                    <td id="b_@item.Id" onclick="Status('/Admin/AdDetails/Status/',@item.Id)"><span class="btn btn-info btn-sm">Aktif</span></td>
                                 }
                                 else
                                 {
-                                    <td id="b_@item.ID" onclick="Status('/Admin/AdDetails/Status/',@item.ID)"><span class="btn btn-default btn-sm">Pasif</span></td>
+                                    <td id="b_@item.Id" onclick="Status('/Admin/AdDetails/Status/',@item.Id)"><span class="btn btn-default btn-sm">Pasif</span></td>
                                 }
-                                @if (item.Vitrin)
+                                @if (item.IsInVitrin)
                                 {
-                                    <td id="c_@item.ID" onclick="Vitrin('/Admin/AdDetails/Vitrin/',@item.ID)"><span class="btn btn-info btn-sm">Vitrine Eklendi</span></td>
+                                    <td id="c_@item.Id" onclick="Vitrin('/Admin/AdDetails/Vitrin/',@item.Id)"><span class="btn btn-info btn-sm">Vitrine Eklendi</span></td>
                                 }
                                 else
                                 {
-                                    <td id="c_@item.ID" onclick="Vitrin('/Admin/AdDetails/Vitrin/',@item.ID)"><span class="btn btn-default btn-sm">Vitrine Ekle</span></td>
+                                    <td id="c_@item.Id" onclick="Vitrin('/Admin/AdDetails/Vitrin/',@item.Id)"><span class="btn btn-default btn-sm">Vitrine Ekle</span></td>
                                 }
 
-                                <td class="hidden-480">@item.CreatedDate.ToShortDateString()</td>
-                                <td class="hidden-480">@item.UpdatedDate</td>
+                                <td class="hidden-480">@item.CreatedDateTime.ToShortDateString()</td>
+                                <td class="hidden-480">@item.UpdatedDateTime</td>
                                 <td>
                                     <div class="hidden-sm hidden-xs action-buttons">
 
-                                        <a class="btn btn-xs btn-primary no-radius" href="/Admin/AdDetails/Edit/@item.ID">
+                                        <a class="btn btn-xs btn-primary no-radius" href="/Admin/AdDetails/Edit/@item.Id">
                                             <i class="ace-icon fa fa-pencil-square-o smaller-100"></i>
                                             Düzenle
                                         </a>
 
-                                        <a class="btn btn-xs btn-danger btn-sm" onclick="Delete('/Admin/AdDetails/Delete/',@item.ID)">
+                                        <a class="btn btn-xs btn-danger btn-sm" onclick="Delete('/Admin/AdDetails/Delete/',@item.Id)">
                                             <i class="ace-icon fa fa-trash-o smaller-100"></i>
                                             Sil
                                         </a>
@@ -77,7 +79,7 @@
 
 
                                                 <li>
-                                                    <a href="/Admin/AdDetails/Edit/@item.ID" class="btn btn-info btn-sm">
+                                                    <a href="/Admin/AdDetails/Edit/@item.Id" class="btn btn-info btn-sm">
 
                                                         <i class="ace-icon fa fa-pencil-square-o smaller-100"></i>
                                                         Düzenle
@@ -86,7 +88,7 @@
                                                 </li>
 
                                                 <li>
-                                                    <a class="btn btn-xs btn-danger btn-sm" onclick="Delete('/Admin/AdDetails/Delete/',@item.ID)" data-rel="tooltip" title="" data-original-title="Delete">
+                                                    <a class="btn btn-xs btn-danger btn-sm" onclick="Delete('/Admin/AdDetails/Delete/',@item.Id)" data-rel="tooltip" title="" data-original-title="Delete">
 
                                                         <i class="ace-icon fa fa-trash-o smaller-100"></i>
                                                         Sil
@@ -101,37 +103,38 @@
                         }
                         @foreach (var item in Model.Lands)
                         {
-                            <tr id="a_@item.ID">
+                            <tr id="a_@item.Id">
                                 <td><img src="@item.ThumbPath" width="40" height="40" /></td>
                                 <td>@item.Name</td>
+                                <td>Arsa</td>
                                 @if (item.IsActive)
                                 {
-                                    <td id="b_@item.ID" onclick="Status('/Admin/Land/Status/',@item.ID)"><span class="btn btn-info btn-sm">Aktif</span></td>
+                                    <td id="b_@item.Id" onclick="Status('/Admin/Land/Status/',@item.Id)"><span class="btn btn-info btn-sm">Aktif</span></td>
                                 }
                                 else
                                 {
-                                    <td id="b_@item.ID" onclick="Status('/Admin/Land/Status/',@item.ID)"><span class="btn btn-default btn-sm">Pasif</span></td>
+                                    <td id="b_@item.Id" onclick="Status('/Admin/Land/Status/',@item.Id)"><span class="btn btn-default btn-sm">Pasif</span></td>
                                 }
-                                @if (item.Vitrin)
+                                @if (item.IsInVitrin)
                                 {
-                                    <td id="c_@item.ID" onclick="Vitrin('/Admin/Land/Vitrin/',@item.ID)"><span class="btn btn-info btn-sm">Vitrine Eklendi</span></td>
+                                    <td id="c_@item.Id" onclick="Vitrin('/Admin/Land/Vitrin/',@item.Id)"><span class="btn btn-info btn-sm">Vitrine Eklendi</span></td>
                                 }
                                 else
                                 {
-                                    <td id="c_@item.ID" onclick="Vitrin('/Admin/Land/Vitrin/',@item.ID)"><span class="btn btn-default btn-sm">Vitrine Ekle</span></td>
+                                    <td id="c_@item.Id" onclick="Vitrin('/Admin/Land/Vitrin/',@item.Id)"><span class="btn btn-default btn-sm">Vitrine Ekle</span></td>
                                 }
 
-                                <td class="hidden-480">@item.CreatedDate.ToShortDateString()</td>
-                                <td class="hidden-480">@item.UpdatedDate</td>
+                                <td class="hidden-480">@item.CreatedDateTime.ToShortDateString()</td>
+                                <td class="hidden-480">@item.UpdatedDateTime</td>
                                 <td>
                                     <div class="hidden-sm hidden-xs action-buttons">
 
-                                        <a class="btn btn-xs btn-primary no-radius" href="/Admin/Land/Edit/@item.ID">
+                                        <a class="btn btn-xs btn-primary no-radius" href="/Admin/Land/Edit/@item.Id">
                                             <i class="ace-icon fa fa-pencil-square-o smaller-100"></i>
                                             Düzenle
                                         </a>
 
-                                        <a class="btn btn-xs btn-danger btn-sm" onclick="Delete('/Admin/Land/Delete/',@item.ID)">
+                                        <a class="btn btn-xs btn-danger btn-sm" onclick="Delete('/Admin/Land/Delete/',@item.Id)">
                                             <i class="ace-icon fa fa-trash-o smaller-100"></i>
                                             Sil
                                         </a>
@@ -142,25 +145,17 @@
                                             <button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">
                                                 işlem <i class="ace-icon fa fa-caret-down icon-only bigger-150"></i>
                                             </button>
-
                                             <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-
-
                                                 <li>
-                                                    <a href="/Admin/Land/edit/@item.ID" class="btn btn-info btn-sm">
-
+                                                    <a href="/Admin/Land/edit/@item.Id" class="btn btn-info btn-sm">
                                                         <i class="ace-icon fa fa-pencil-square-o smaller-100"></i>
                                                         Düzenle
-
                                                     </a>
                                                 </li>
-
                                                 <li>
-                                                    <a class="btn btn-xs btn-danger btn-sm" onclick="Delete('/Admin/Land/Delete/',@item.ID)" data-rel="tooltip" title="" data-original-title="Delete">
-
+                                                    <a class="btn btn-xs btn-danger btn-sm" onclick="Delete('/Admin/Land/Delete/',@item.Id)" data-rel="tooltip" title="" data-original-title="Delete">
                                                         <i class="ace-icon fa fa-trash-o smaller-100"></i>
                                                         Sil
-
                                                     </a>
                                                 </li>
                                             </ul>
@@ -171,37 +166,38 @@
                         }
                         @foreach (var item in Model.Workplaces)
                         {
-                            <tr id="a_@item.ID">
+                            <tr id="a_@item.Id">
                                 <td><img src="@item.ThumbPath" width="40" height="40" /></td>
                                 <td>@item.Name</td>
+                                <td>İşyeri</td>
                                 @if (item.IsActive)
                                 {
-                                    <td id="b_@item.ID" onclick="Status('/Admin/Workplace/Status/',@item.ID)"><span class="btn btn-info btn-sm">Aktif</span></td>
+                                    <td id="b_@item.Id" onclick="Status('/Admin/Workplace/Status/',@item.Id)"><span class="btn btn-info btn-sm">Aktif</span></td>
                                 }
                                 else
                                 {
-                                    <td id="b_@item.ID" onclick="Status('/Admin/Workplace/Status/',@item.ID)"><span class="btn btn-default btn-sm">Pasif</span></td>
+                                    <td id="b_@item.Id" onclick="Status('/Admin/Workplace/Status/',@item.Id)"><span class="btn btn-default btn-sm">Pasif</span></td>
                                 }
-                                @if (item.Vitrin)
+                                @if (item.IsInVitrin)
                                 {
-                                    <td id="c_@item.ID" onclick="Vitrin('/Admin/Workplace/Vitrin/',@item.ID)"><span class="btn btn-info btn-sm">Vitrine Eklendi</span></td>
+                                    <td id="c_@item.Id" onclick="Vitrin('/Admin/Workplace/Vitrin/',@item.Id)"><span class="btn btn-info btn-sm">Vitrine Eklendi</span></td>
                                 }
                                 else
                                 {
-                                    <td id="c_@item.ID" onclick="Vitrin('/Admin/Workplace/Vitrin/',@item.ID)"><span class="btn btn-default btn-sm">Vitrine Ekle</span></td>
+                                    <td id="c_@item.Id" onclick="Vitrin('/Admin/Workplace/Vitrin/',@item.Id)"><span class="btn btn-default btn-sm">Vitrine Ekle</span></td>
                                 }
 
-                                <td class="hidden-480">@item.CreatedDate.ToShortDateString()</td>
-                                <td class="hidden-480">@item.UpdatedDate</td>
+                                <td class="hidden-480">@item.CreatedDateTime.ToShortDateString()</td>
+                                <td class="hidden-480">@item.UpdatedDateTime</td>
                                 <td>
                                     <div class="hidden-sm hidden-xs action-buttons">
 
-                                        <a class="btn btn-xs btn-primary no-radius" href="/Admin/Workplace/Edit/@item.ID">
+                                        <a class="btn btn-xs btn-primary no-radius" href="/Admin/Workplace/Edit/@item.Id">
                                             <i class="ace-icon fa fa-pencil-square-o smaller-100"></i>
                                             Düzenle
                                         </a>
 
-                                        <a class="btn btn-xs btn-danger btn-sm" onclick="Delete('/Admin/Workplace/Delete/',@item.ID)">
+                                        <a class="btn btn-xs btn-danger btn-sm" onclick="Delete('/Admin/Workplace/Delete/',@item.Id)">
                                             <i class="ace-icon fa fa-trash-o smaller-100"></i>
                                             Sil
                                         </a>
@@ -217,7 +213,7 @@
 
 
                                                 <li>
-                                                    <a href="/Admin/Workplace/edit/@item.ID" class="btn btn-info btn-sm">
+                                                    <a href="/Admin/Workplace/edit/@item.Id" class="btn btn-info btn-sm">
 
                                                         <i class="ace-icon fa fa-pencil-square-o smaller-100"></i>
                                                         Düzenle
@@ -226,7 +222,7 @@
                                                 </li>
 
                                                 <li>
-                                                    <a class="btn btn-xs btn-danger btn-sm" onclick="Delete('/Admin/Workplace/Delete/',@item.ID)" data-rel="tooltip" title="" data-original-title="Delete">
+                                                    <a class="btn btn-xs btn-danger btn-sm" onclick="Delete('/Admin/Workplace/Delete/',@item.Id)" data-rel="tooltip" title="" data-original-title="Delete">
 
                                                         <i class="ace-icon fa fa-trash-o smaller-100"></i>
                                                         Sil
@@ -241,37 +237,38 @@
                         }
                         @foreach (var item in Model.Binas)
                         {
-                            <tr id="a_@item.ID">
+                            <tr id="a_@item.Id">
                                 <td><img src="@item.ThumbPath" width="40" height="40" /></td>
                                 <td>@item.Name</td>
+                                <td>Bina</td>
                                 @if (item.IsActive)
                                 {
-                                    <td id="b_@item.ID" onclick="Status('/Admin/Building/Status/',@item.ID)"><span class="btn btn-info btn-sm">Aktif</span></td>
+                                    <td id="b_@item.Id" onclick="Status('/Admin/Building/Status/',@item.Id)"><span class="btn btn-info btn-sm">Aktif</span></td>
                                 }
                                 else
                                 {
-                                    <td id="b_@item.ID" onclick="Status('/Admin/Building/Status/',@item.ID)"><span class="btn btn-default btn-sm">Pasif</span></td>
+                                    <td id="b_@item.Id" onclick="Status('/Admin/Building/Status/',@item.Id)"><span class="btn btn-default btn-sm">Pasif</span></td>
                                 }
-                                @if (item.Vitrin)
+                                @if (item.IsInVitrin)
                                 {
-                                    <td id="c_@item.ID" onclick="Vitrin('/Admin/Building/Vitrin/',@item.ID)"><span class="btn btn-info btn-sm">Vitrine Eklendi</span></td>
+                                    <td id="c_@item.Id" onclick="Vitrin('/Admin/Building/Vitrin/',@item.Id)"><span class="btn btn-info btn-sm">Vitrine Eklendi</span></td>
                                 }
                                 else
                                 {
-                                    <td id="c_@item.ID" onclick="Vitrin('/Admin/Building/Vitrin/',@item.ID)"><span class="btn btn-default btn-sm">Vitrine Ekle</span></td>
+                                    <td id="c_@item.Id" onclick="Vitrin('/Admin/Building/Vitrin/',@item.Id)"><span class="btn btn-default btn-sm">Vitrine Ekle</span></td>
                                 }
 
-                                <td class="hidden-480">@item.CreatedDate.ToShortDateString()</td>
-                                <td class="hidden-480">@item.UpdatedDate</td>
+                                <td class="hidden-480">@item.CreatedDateTime.ToShortDateString()</td>
+                                <td class="hidden-480">@item.UpdatedDateTime</td>
                                 <td>
                                     <div class="hidden-sm hidden-xs action-buttons">
 
-                                        <a class="btn btn-xs btn-primary no-radius" href="/Admin/Building/Edit/@item.ID">
+                                        <a class="btn btn-xs btn-primary no-radius" href="/Admin/Building/Edit/@item.Id">
                                             <i class="ace-icon fa fa-pencil-square-o smaller-100"></i>
                                             Düzenle
                                         </a>
 
-                                        <a class="btn btn-xs btn-danger btn-sm" onclick="Delete('/Admin/Building/Delete/',@item.ID)">
+                                        <a class="btn btn-xs btn-danger btn-sm" onclick="Delete('/Admin/Building/Delete/',@item.Id)">
                                             <i class="ace-icon fa fa-trash-o smaller-100"></i>
                                             Sil
                                         </a>
@@ -287,7 +284,7 @@
 
 
                                                 <li>
-                                                    <a href="/Admin/Building/edit/@item.ID" class="btn btn-info btn-sm">
+                                                    <a href="/Admin/Building/edit/@item.Id" class="btn btn-info btn-sm">
 
                                                         <i class="ace-icon fa fa-pencil-square-o smaller-100"></i>
                                                         Düzenle
@@ -296,7 +293,7 @@
                                                 </li>
 
                                                 <li>
-                                                    <a class="btn btn-xs btn-danger btn-sm" onclick="Delete('/Admin/Building/Delete/',@item.ID)" data-rel="tooltip" title="" data-original-title="Delete">
+                                                    <a class="btn btn-xs btn-danger btn-sm" onclick="Delete('/Admin/Building/Delete/',@item.Id)" data-rel="tooltip" title="" data-original-title="Delete">
 
                                                         <i class="ace-icon fa fa-trash-o smaller-100"></i>
                                                         Sil

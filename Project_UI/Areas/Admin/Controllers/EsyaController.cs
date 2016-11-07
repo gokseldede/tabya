@@ -27,8 +27,8 @@ namespace Project_UI.Areas.Admin.Controllers
 
         public ActionResult Index()
         {
-            List<Esya> _esya = _esyaService.GetAll().ToList();
-            return View(_esya);
+            List<Esya> esya = _esyaService.GetAll().ToList();
+            return View(esya);
         }
 
         public ActionResult Create()
@@ -38,11 +38,11 @@ namespace Project_UI.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Esya _esya)
+        public ActionResult Create(Esya esya)
         {
             try
             {
-                _esyaService.Create(_esya);
+                _esyaService.Create(esya);
                 return RedirectToAction("Index");
             }
             catch (Exception)
@@ -51,20 +51,20 @@ namespace Project_UI.Areas.Admin.Controllers
             }
         }
 
-        public ActionResult Edit(int ID)
+        public ActionResult Edit(int id)
         {
-            Esya _esya = _esyaService.GetById(ID);
-            return View(_esya);
+            Esya esya = _esyaService.GetById(id);
+            return View(esya);
 
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Esya _esya)
+        public ActionResult Edit(Esya esya)
         {
             try
             {
-                _esyaService.Edit(_esya);
+                _esyaService.Edit(esya);
                 return RedirectToAction("Index");
             }
             catch (Exception)
@@ -74,11 +74,11 @@ namespace Project_UI.Areas.Admin.Controllers
         }
 
 
-        public JsonResult Delete(int ID)
+        public JsonResult Delete(int id)
         {
             try
             {
-                _esyaService.DeleteById(ID);
+                _esyaService.DeleteById(id);
                 return Json(true);
             }
             catch (Exception)
@@ -87,12 +87,12 @@ namespace Project_UI.Areas.Admin.Controllers
             }
         }
 
-        public JsonResult Status(int ID)
+        public JsonResult Status(int id)
         {
             try
             {
-                _esyaService.ChangeStatus(ID);
-                var status = _esyaService.GetById(ID);
+                _esyaService.ChangeStatus(id);
+                var status = _esyaService.GetById(id);
                 return Json(new { result = true, status = status.IsActive });
             }
             catch (Exception)

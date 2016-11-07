@@ -14,14 +14,14 @@ namespace Project_UI.Areas.Admin.Controllers
     [CheckAuth]
     public class KullanimController : BaseController
     {
-        private readonly IStandartService<Kullanım> _kullanimService;
+        private readonly IStandartService<Kullanim> _kullanimService;
 
         public KullanimController()
         {
-            _kullanimService = new StandartService<Kullanım>(new EfRepositoryForEntityBase<Kullanım>());
+            _kullanimService = new StandartService<Kullanim>(new EfRepositoryForEntityBase<Kullanim>());
         }
 
-        public KullanimController(IStandartService<Kullanım> kullanimService)
+        public KullanimController(IStandartService<Kullanim> kullanimService)
         {
             _kullanimService = kullanimService;
         }
@@ -29,7 +29,7 @@ namespace Project_UI.Areas.Admin.Controllers
         // GET: Admin/Kullanım
         public ActionResult Index()
         {
-            List<Kullanım> _kullanim = _kullanimService.GetAll().ToList();
+            List<Kullanim> _kullanim = _kullanimService.GetAll().ToList();
             return View(_kullanim);
         }
 
@@ -40,11 +40,11 @@ namespace Project_UI.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Kullanım _kullanim)
+        public ActionResult Create(Kullanim kullanim)
         {
             try
             {
-                _kullanimService.Create(_kullanim);
+                _kullanimService.Create(kullanim);
                 return RedirectToAction("Index");
             }
             catch (Exception)
@@ -53,20 +53,20 @@ namespace Project_UI.Areas.Admin.Controllers
             }
         }
 
-        public ActionResult Edit(int ID)
+        public ActionResult Edit(int id)
         {
-            Kullanım _kullanim = _kullanimService.GetById(ID);
-            return View(_kullanim);
+            Kullanim kullanim = _kullanimService.GetById(id);
+            return View(kullanim);
 
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Kullanım _kullanim)
+        public ActionResult Edit(Kullanim kullanim)
         {
             try
             {
-                _kullanimService.Edit(_kullanim);
+                _kullanimService.Edit(kullanim);
                 return RedirectToAction("Index");
             }
             catch (Exception)
@@ -76,11 +76,11 @@ namespace Project_UI.Areas.Admin.Controllers
         }
 
 
-        public JsonResult Delete(int ID)
+        public JsonResult Delete(int id)
         {
             try
             {
-                _kullanimService.DeleteById(ID);
+                _kullanimService.DeleteById(id);
                 return Json(true);
             }
             catch (Exception)
@@ -89,12 +89,12 @@ namespace Project_UI.Areas.Admin.Controllers
             }
         }
 
-        public JsonResult Status(int ID)
+        public JsonResult Status(int id)
         {
             try
             {
-                _kullanimService.ChangeStatus(ID);
-                var status = _kullanimService.GetById(ID);
+                _kullanimService.ChangeStatus(id);
+                var status = _kullanimService.GetById(id);
                 return Json(new { result = true, status = status.IsActive });
             }
             catch (Exception)

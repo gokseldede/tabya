@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Project_BLL.ViewModels;
+using Project_BLL.ServiceModels;
 using Project_Entity;
 using Project_DAL;
 
@@ -10,13 +10,20 @@ namespace Project_BLL.Implementation
 {
     public class WebSiteService : IWebSiteService
     {
-        private readonly IStandartService<Il> _ilService;
-        private readonly IStandartService<Ilce> _ilcelerService;
+        private readonly IOptionService _optionService;
+        private readonly IRepository<Project> _projectRepository;
+        private readonly IRepository<AdDetail> _adDetailRepository;
+        private readonly IRepository<Land> _landRepository;
+        private readonly IRepository<Workplace> _workplaceRepository;
+
 
         public WebSiteService()
         {
-            _ilcelerService = new StandartService<Ilce>(new EfRepositoryForEntityBase<Ilce>());
-            _ilService = new StandartService<Il>(new EfRepositoryForEntityBase<Il>());
+            _optionService = new OptionsService();
+            _projectRepository = new EfRepositoryForEntityBase<Project>();
+            _adDetailRepository = new EfRepositoryForEntityBase<AdDetail>();
+            _landRepository = new EfRepositoryForEntityBase<Land>();
+            _workplaceRepository = new EfRepositoryForEntityBase<Workplace>();
         }
         public List<SelectlistItem> GetCities()
         {
@@ -25,170 +32,56 @@ namespace Project_BLL.Implementation
 
         public List<SelectlistItem> GetCounties(int cityId)
         {
-            return _ilcelerService.Get(x => x.IlID == cityId).Select(x => new SelectlistItem() { Id = x.ID, Value = x.Ad }).ToList();
+            return _optionService.GetIlcelerList(cityId).ToList();
         }
 
         public HomeViewModel GetMainPageData()
         {
-            return new HomeViewModel()
+            var vm = new HomeViewModel();
+            vm.Cities = _optionService.GetIllerList().ToList();
+            vm.Projects = _projectRepository.Table.
+                Where(x => x.IsDelete == false && x.Vitrin).Select(x => new NewProject()
+                {
+                    Id = x.ID,
+                    Name = x.Name,
+                    Address = x.SSubName,
+                    Company = x.SubName,
+                    Photo = x.ImagePath
+                }).ToList();
+            vm.Advertisements =
+                _adDetailRepository.Table.Where(x => x.IsDelete == false && x.Vitrin).Select(x => new NewAdvertisement()
+                {
+                    Id = x.ID,
+                    Photo = x.ThumbPath,
+                    Currency = x.Kurlar.Name,
+                    Status = x.Status.Name,
+                    AdType = x.EmlakTip.Name,
+                    Price = x.Price,
+                    SquareMetre = x.Size
+                }).ToList();
+
+            vm.Advertisements.AddRange(_landRepository.Table.Where(x => x.IsDelete == false && x.Vitrin).Select(x => new NewAdvertisement()
             {
-
-                Cities = _ilService.GetAll().Select(x => new SelectlistItem() { Id = x.ID, Value = x.Ad }).ToList(),
-                Projects = new List<NewProject>()
-                {
-                    new NewProject()
-                    {
-                        Id=1,
-                        Name="IKON",
-                        Address="Ataşehir",
-                        Photo="Content/img/proje-img1.jpg",
-                        Company="DUMANKAYA"
-                    },
-                    new NewProject()
-                    {
-
-                        Id=1,
-                        Name="METROPOL ISTANBUL",
-                        Address="Ataşehir",
-                        Photo="Content/img/proje-img1.jpg",
-                        Company="VARYAP"
-                    },
-                    new NewProject()
-                    {
-
-                        Id=1,
-                        Name="MERIDIAN ISTANBU",
-                        Address="Ataşehir",
-                        Photo="Content/img/proje-img1.jpg",
-                        Company="VARYAP"
-                    },
-                    new NewProject()
-                    {
-
-                        Id=1,
-                        Name="MERIDIAN ISTANBU",
-                        Address="Ataşehir",
-                        Photo="Content/img/proje-img1.jpg",
-                        Company="VARYAP"
-                    },
-                     new NewProject()
-                    {
-                        Id=1,
-                        Name="IKON",
-                        Address="Ataşehir",
-                        Photo="Content/img/proje-img1.jpg",
-                        Company="DUMANKAYA"
-                    },
-                    new NewProject()
-                    {
-
-                        Id=1,
-                        Name="METROPOL ISTANBUL",
-                        Address="Ataşehir",
-                        Photo="Content/img/proje-img1.jpg",
-                        Company="VARYAP"
-                    },
-                    new NewProject()
-                    {
-
-                        Id=1,
-                        Name="MERIDIAN ISTANBU",
-                        Address="Ataşehir",
-                        Photo="Content/img/proje-img1.jpg",
-                        Company="VARYAP"
-                    },
-                    new NewProject()
-                    {
-
-                        Id=1,
-                        Name="MERIDIAN ISTANBU",
-                        Address="Ataşehir",
-                        Photo="Content/img/proje-img1.jpg",
-                        Company="VARYAP"
-                    },
-                    new NewProject()
-                    {
-
-                        Id=1,
-                        Name="MERIDIAN ISTANBU",
-                        Address="Ataşehir",
-                        Photo="Content/img/proje-img1.jpg",
-                        Company="VARYAP"
-                    }
-
-                },
-                Advertisements = new List<NewAdvertisement>()
-                {
-                    new NewAdvertisement()
-                    {
-                        Id=1,
-                        Address="Kadıköy, İstanbul",
-                        Photo="Content/img/ev1.jpg",
-                        Currency="TL",
-                        Price=514.400M,
-                        SquareMetre=250,
-                        Status="SATILIK",
-                        AdType = "İşyeri"
-                    },
-                     new NewAdvertisement()
-                    {
-                        Id=1,
-                        Address="Kadıköy, İstanbul",
-                        Photo="Content/img/ev1.jpg",
-                        Currency="TL",
-                        Price=514,
-                        SquareMetre=250,
-                        Status="KİRALIK",
-                        AdType = "Arsa"
-                    },
-                      new NewAdvertisement()
-                    {
-                        Id=1,
-                        Address="Kadıköy, İstanbul",
-                        Photo="Content/img/ev1.jpg",
-                        Currency="TL",
-                        Price=514,
-                        SquareMetre=250,
-                        Status="SATILIK",
-                        AdType = "Bina"
-                    },
-                     new NewAdvertisement()
-                    {
-                        Id=1,
-                        Address="Kadıköy, İstanbul",
-                        Photo="Content/img/ev1.jpg",
-                        Currency="TL",
-                        Price=514,
-                        SquareMetre=250,
-                        Status="KİRALIK",
-                        AdType = "Arsa"
-                    },
-                      new NewAdvertisement()
-                    {
-                        Id=1,
-                        Address="Kadıköy, İstanbul",
-                        Photo="Content/img/ev1.jpg",
-                        Currency="TL",
-                        Price=514,
-                        SquareMetre=250,
-                        Status="SATILIK",
-                        AdType = "İşyeri"
-                    },
-                     new NewAdvertisement()
-                    {
-                        Id=1,
-                        Address="Kadıköy, İstanbul",
-                        Photo="Content/img/ev1.jpg",
-                        Currency="TL",
-                        Price=514,
-                        SquareMetre=250,
-                        Status="KİRALIK",
-                        AdType = "Bina"
-                    }
-                }
-            };
-
+                Id = x.ID,
+                Photo = x.ThumbPath,
+                Currency = x.Kurlar.Name,
+                Status = x.Status.Name,
+                Price = x.Price,
+                SquareMetre = x.Size,
+                AdType="Arsa"
+            }).ToList());
+            vm.Advertisements.AddRange(_workplaceRepository.Table.Where(x => x.IsDelete == false && x.Vitrin).Select(x => new NewAdvertisement()
+            {
+                Id = x.ID,
+                Photo = x.ThumbPath,
+                Currency = x.Kurlar.Name,
+                Status = x.Status.Name,
+                Price = x.Price,
+                SquareMetre = x.Size,
+                AdType = "İşyeri"
+            }).ToList());
+            return vm;
         }
-        
+
     }
 }

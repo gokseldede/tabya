@@ -1,10 +1,10 @@
-﻿using Project_BLL.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using Project_UI.Areas.Admin.Models;
 
 namespace Project_UI.Areas.Admin.Controllers
 {

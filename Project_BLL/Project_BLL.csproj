@@ -42,22 +42,30 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomExtantaions.cs" />
+    <Compile Include="Implementation\AdminUserService.cs" />
+    <Compile Include="Implementation\AdService.cs" />
+    <Compile Include="Implementation\ContanctService.cs" />
     <Compile Include="Implementation\FileDetailService.cs" />
+    <Compile Include="Implementation\LandService.cs" />
     <Compile Include="Implementation\OptionsService.cs" />
     <Compile Include="Implementation\ProjectService.cs" />
     <Compile Include="Implementation\WorkPlaceService.cs" />
     <Compile Include="Implementation\ExpertService.cs" />
     <Compile Include="Implementation\StandartService.cs" />
     <Compile Include="Implementation\WebSiteService.cs" />
+    <Compile Include="Implementation\BuildingService.cs" />
+    <Compile Include="Interfaces\IAdService.cs" />
     <Compile Include="Interfaces\IExpertService.cs" />
     <Compile Include="Interfaces\IFileService.cs" />
     <Compile Include="Interfaces\IOptionService.cs" />
     <Compile Include="Interfaces\IStandartService.cs" />
     <Compile Include="Interfaces\IWebSiteService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceModels\AdDetailServiceModel.cs" />
+    <Compile Include="ServiceModels\BuildingServiceModel.cs" />
     <Compile Include="ServiceModels\FileDetailServiceModel.cs" />
     <Compile Include="ServiceModels\HomeViewModel.cs" />
-    <Compile Include="ServiceModels\LoginViewModel.cs" />
+    <Compile Include="ServiceModels\LandServiceModel.cs" />
     <Compile Include="ServiceModels\ProjectServiceModel.cs" />
     <Compile Include="ServiceModels\WorkplaceServiceModel.cs" />
   </ItemGroup>

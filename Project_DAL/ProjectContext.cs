@@ -33,7 +33,7 @@ namespace Project_DAL
         public DbSet<Status> Statues { get; set; }
         public DbSet<Isinma> Isınmalar { get; set; }
         public DbSet<Kredi> Krediler { get; set; }
-        public DbSet<Kullanım> Kullanımlar { get; set; }
+        public DbSet<Kullanim> Kullanimlar { get; set; }
         public DbSet<Esya> Esyalar { get; set; }
         public DbSet<EmlakTip> EmlakTips { get; set; }
         public DbSet<AdProp> AdProps { get; set; }

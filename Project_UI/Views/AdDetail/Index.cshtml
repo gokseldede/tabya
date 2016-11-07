@@ -34,96 +34,96 @@
                         }
                         @if (item.Status.Name.ToUpper() == "SATILIK" & Model != null)
                         {
-                        <div class="item satilik">
-                            <a href="/AdDetail/Details/@item.ID">
-                                @if (item.ThumbPath != null)
-                                {
-                                <div class="image">
-                                    <img src="@item.ThumbPath" width="393" height="303" alt="ev">
-                                    <div class="over"><span>DETAYLI İNCELE</span></div>
-                                </div>
-                                }
+                            <div class="item satilik">
+                                <a href="/AdDetail/Details/@item.ID">
+                                    @if (item.ThumbPath != null)
+                                    {
+                                        <div class="image">
+                                            <img src="@item.ThumbPath" width="393" height="303" alt="ev">
+                                            <div class="over"><span>DETAYLI İNCELE</span></div>
+                                        </div>
+                                    }
 
-                                <div class="text">
-                                    <div class="title">
-                                        <div class="row">
-                                            @if (item.StatusID != null)
-                                            {
-                                            <div class="col-sm-6"><span class="type">@item.Status.Name.ToUpper()</span></div>
-                                            }
-                                            @if (item.Price != null)
-                                           {
-                                            <div class="col-sm-6"><span class="price">@item.Price @item.Kurlar.Name</span></div>
-                                           }
+                                    <div class="text">
+                                        <div class="title">
+                                            <div class="row">
+                                                @if (item.StatusID != null)
+                                                {
+                                                    <div class="col-sm-6"><span class="type">@item.Status.Name.ToUpper()</span></div>
+                                                }
+                                                @if (item.Price != null)
+                                                {
+                                                    <div class="col-sm-6"><span class="price">@item.Price @item.Kurlar.Name</span></div>
+                                                }
 
-                                            @* <div class="col-xs-12 distance"><span><i class="fa fa-crosshairs"></i> @item.AdDetail.Location km</span></div>*@
+                                                @* <div class="col-xs-12 distance"><span><i class="fa fa-crosshairs"></i> @item.AdDetail.Location km</span></div>*@
+                                            </div>
+                                        </div>
+                                        <div class="features">
+                                            <ul>
+                                                @if (item.Location != null)
+                                                {
+                                                    <li><i class="fa fa-map-marker"></i> @lokasyon</li>
+                                                }
+                                                @if (item.Room != null)
+                                                {
+                                                    <li><i class="fa fa-home"></i> @item.Room</li>
+                                                }
+                                                @if (item.Size != null)
+                                                {
+                                                    <li><i class="fa fa-arrows-h"></i>@item.Size m2</li>
+                                                }
+                                            </ul>
                                         </div>
                                     </div>
-                                    <div class="features">
-                                        <ul>
-                                            @if (item.Location != null)
-                                            {
-                                            <li><i class="fa fa-map-marker"></i> @lokasyon</li>
-                                            }
-                                            @if (item.Room != null)
-                                            {
-                                            <li><i class="fa fa-home"></i> @item.Room</li>
-                                            }
-                                            @if (item.Size != null)
-                                            {
-                                            <li><i class="fa fa-arrows-h"></i>@item.Size m2</li>
-                                            }
-                                        </ul>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
+                                </a>
+                            </div>
                         }
 
                         @if (item.Status.Name.ToUpper() == "KIRALIK" & Model != null)
                         {
-                        <div class="item kiralik">
-                            <a href="/AdDetail/Details/@item.ID">
-                                @if (item.ThumbPath != null)
-                                {
-                                <div class="image">
-                                    <img src="@item.ThumbPath" width="393" height="303" alt="ev">
-                                    <div class="over"><span>DETAYLI İNCELE</span></div>
-                                </div>
-                                }
-                                <div class="text">
-                                    <div class="title">
-                                        <div class="row">
-                                            @if (item.StatusID != null)
-                                          {
-                                            <div class="col-sm-6"><span class="type">@item.Status.Name.ToUpper()</span></div>
-                                          }
-                                            @if (item.Price != null)
-                                        {
-                                            <div class="col-sm-6"><span class="price">@item.Price @item.Kurlar.Name</span></div>
-                                        }
-                                            @*<div class="col-xs-12 distance"><span><i class="fa fa-crosshairs"></i> @item.AdDetail.Location km</span></div>*@
+                            <div class="item kiralik">
+                                <a href="/AdDetail/Details/@item.ID">
+                                    @if (item.ThumbPath != null)
+                                    {
+                                        <div class="image">
+                                            <img src="@item.ThumbPath" width="393" height="303" alt="ev">
+                                            <div class="over"><span>DETAYLI İNCELE</span></div>
+                                        </div>
+                                    }
+                                    <div class="text">
+                                        <div class="title">
+                                            <div class="row">
+                                                @if (item.StatusID != null)
+                                                {
+                                                    <div class="col-sm-6"><span class="type">@item.Status.Name.ToUpper()</span></div>
+                                                }
+                                                @if (item.Price != null)
+                                                {
+                                                    <div class="col-sm-6"><span class="price">@item.Price @item.Kurlar.Name</span></div>
+                                                }
+                                                @*<div class="col-xs-12 distance"><span><i class="fa fa-crosshairs"></i> @item.AdDetail.Location km</span></div>*@
+                                            </div>
+                                        </div>
+                                        <div class="features">
+                                            <ul>
+                                                @if (item.Location != null)
+                                                {
+                                                    <li><i class="fa fa-map-marker"></i> @lokasyon</li>
+                                                }
+                                                @if (item.Room != null)
+                                                {
+                                                    <li><i class="fa fa-home"></i> @item.Room</li>
+                                                }
+                                                @if (item.Size != null)
+                                                {
+                                                    <li><i class="fa fa-arrows-h"></i>@item.Size m2</li>
+                                                }
+                                            </ul>
                                         </div>
                                     </div>
-                                    <div class="features">
-                                        <ul>
-                                            @if (item.Location != null)
-                                        {
-                                            <li><i class="fa fa-map-marker"></i> @lokasyon</li>
-                                        }
-                                            @if (item.Room != null)
-                                        {
-                                            <li><i class="fa fa-home"></i> @item.Room</li>
-                                        }
-                                            @if (item.Size != null)
-                                        {
-                                            <li><i class="fa fa-arrows-h"></i>@item.Size m2</li>
-                                        }
-                                        </ul>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
+                                </a>
+                            </div>
                         }
 
                     </div>
@@ -142,26 +142,26 @@
                             string lokasyon = semt + "," + ilce;
                         }
                         @if (item.Status.Name.ToUpper() == "SATILIK" & Model != null)
-                            {
+                        {
                             <div class="item satilik">
                                 <a href="/AdDetail/LandDetail/@item.ID">
                                     @if (item.ThumbPath != null)
-                                        {
-                                    <div class="image">
-                                        <img src="@item.ThumbPath" width="393" height="303" alt="ev">
-                                        <div class="over"><span>DETAYLI İNCELE</span></div>
-                                    </div>
-                                        }
+                                    {
+                                        <div class="image">
+                                            <img src="@item.ThumbPath" width="393" height="303" alt="ev">
+                                            <div class="over"><span>DETAYLI İNCELE</span></div>
+                                        </div>
+                                    }
                                     <div class="text">
                                         <div class="title">
                                             <div class="row">
                                                 @if (item.StatusID != null)
-                                                   {
-                                                <div class="col-sm-6"><span class="type">@item.Status.Name.ToUpper()</span></div>
-                                                   }
+                                                {
+                                                    <div class="col-sm-6"><span class="type">@item.Status.Name.ToUpper()</span></div>
+                                                }
                                                 @if (item.Price != null)
                                                 {
-                                                <div class="col-sm-6"><span class="price">@item.Price @item.Kurlar.Name</span></div>
+                                                    <div class="col-sm-6"><span class="price">@item.Price @item.Kurlar.Name</span></div>
                                                 }
                                                 @*  <div class="col-xs-12 distance"><span><i class="fa fa-crosshairs"></i> @item.AdDetail.Location km</span></div>*@
                                             </div>
@@ -169,42 +169,42 @@
                                         <div class="features">
                                             <ul>
                                                 @if (item.Location != null)
-                                                    {
+                                                {
                                                     <li><i class="fa fa-map-marker"></i> @lokasyon</li>
-                                                    }
+                                                }
 
                                                 @if (item.Size != null)
-                                                    {
+                                                {
                                                     <li><i class="fa fa-arrows-h"></i>@item.Size m2</li>
-                                                    }
+                                                }
                                             </ul>
                                         </div>
                                     </div>
                                 </a>
                             </div>
-                            }
+                        }
 
                         @if (item.Status.Name.ToUpper() == "KIRALIK" & Model != null)
-                            {
+                        {
                             <div class="item kiralik">
                                 <a href="/AdDetail/LandDetail/@item.ID">
                                     @if (item.ThumbPath != null)
-                                        {
-                                    <div class="image">
-                                        <img src="@item.ThumbPath" width="393" height="303" alt="ev">
-                                        <div class="over"><span>DETAYLI İNCELE</span></div>
-                                    </div>
-                                        }
+                                    {
+                                        <div class="image">
+                                            <img src="@item.ThumbPath" width="393" height="303" alt="ev">
+                                            <div class="over"><span>DETAYLI İNCELE</span></div>
+                                        </div>
+                                    }
                                     <div class="text">
                                         <div class="title">
                                             <div class="row">
                                                 @if (item.StatusID != null)
-                                                  {
-                                                <div class="col-sm-6"><span class="type">@item.Status.Name.ToUpper()</span></div>
-                                                  }
+                                                {
+                                                    <div class="col-sm-6"><span class="type">@item.Status.Name.ToUpper()</span></div>
+                                                }
                                                 @if (item.Price != null)
                                                 {
-                                                <div class="col-sm-6"><span class="price">@item.Price @item.Kurlar.Name</span></div>
+                                                    <div class="col-sm-6"><span class="price">@item.Price @item.Kurlar.Name</span></div>
                                                 }
                                                 @*<div class="col-xs-12 distance"><span><i class="fa fa-crosshairs"></i> @item.AdDetail.Location km</span></div>*@
                                             </div>
@@ -212,20 +212,20 @@
                                         <div class="features">
                                             <ul>
                                                 @if (item.Location != null)
-                                                    {
+                                                {
                                                     <li><i class="fa fa-map-marker"></i> @lokasyon</li>
-                                                    }
+                                                }
 
                                                 @if (item.Size != null)
-                                                    {
+                                                {
                                                     <li><i class="fa fa-arrows-h"></i>@item.Size m2</li>
-                                                    }
+                                                }
                                             </ul>
                                         </div>
                                     </div>
                                 </a>
                             </div>
-                            }
+                        }
 
                     </div>
                                 }
@@ -244,26 +244,26 @@
                             string lokasyon = semt + "," + ilce;
                         }
                         @if (item.Status.Name.ToUpper() == "SATILIK" & Model != null)
-                            {
+                        {
                             <div class="item satilik">
                                 <a href="/AdDetail/WorkDetail/@item.ID">
                                     @if (item.ThumbPath != null)
-                                        {
-                                    <div class="image">
-                                        <img src="@item.ThumbPath" width="393" height="303" alt="ev">
-                                        <div class="over"><span>DETAYLI İNCELE</span></div>
-                                    </div>
-                                        }
+                                    {
+                                        <div class="image">
+                                            <img src="@item.ThumbPath" width="393" height="303" alt="ev">
+                                            <div class="over"><span>DETAYLI İNCELE</span></div>
+                                        </div>
+                                    }
                                     <div class="text">
                                         <div class="title">
                                             <div class="row">
                                                 @if (item.StatusID != null)
-                                                 {
-                                                <div class="col-sm-6"><span class="type">@item.Status.Name.ToUpper()</span></div>
-                                                 }
+                                                {
+                                                    <div class="col-sm-6"><span class="type">@item.Status.Name.ToUpper()</span></div>
+                                                }
                                                 @if (item.Price != null)
                                                 {
-                                                <div class="col-sm-6"><span class="price">@item.Price @item.Kurlar.Name</span></div>
+                                                    <div class="col-sm-6"><span class="price">@item.Price @item.Kurlar.Name</span></div>
                                                 }
                                                 @* <div class="col-xs-12 distance"><span><i class="fa fa-crosshairs"></i> @item.AdDetail.Location km</span></div>*@
                                             </div>
@@ -272,45 +272,45 @@
                                         <div class="features">
                                             <ul>
                                                 @if (item.Location != null)
-                                                    {
+                                                {
                                                     <li><i class="fa fa-map-marker"></i> @lokasyon</li>
-                                                    }
+                                                }
                                                 @if (item.Room != null)
-                                                    {
+                                                {
                                                     <li><i class="fa fa-home"></i> @item.Room</li>
-                                                    }
+                                                }
                                                 @if (item.Size != null)
-                                                    {
+                                                {
                                                     <li><i class="fa fa-arrows-h"></i>@item.Size m2</li>
-                                                    }
+                                                }
                                             </ul>
                                         </div>
                                     </div>
                                 </a>
                             </div>
-                            }
+                        }
 
                         @if (item.Status.Name.ToUpper() == "KIRALIK" & Model != null)
-                            {
+                        {
                             <div class="item kiralik">
                                 <a href="/AdDetail/WorkDetail/@item.ID">
                                     @if (item.ThumbPath != null)
-                                        {
-                                    <div class="image">
-                                        <img src="@item.ThumbPath" width="393" height="303" alt="ev">
-                                        <div class="over"><span>DETAYLI İNCELE</span></div>
-                                    </div>
-                                        }
+                                    {
+                                        <div class="image">
+                                            <img src="@item.ThumbPath" width="393" height="303" alt="ev">
+                                            <div class="over"><span>DETAYLI İNCELE</span></div>
+                                        </div>
+                                    }
                                     <div class="text">
                                         <div class="title">
                                             <div class="row">
                                                 @if (item.StatusID != null)
-                                                   {
-                                                <div class="col-sm-6"><span class="type">@item.Status.Name.ToUpper()</span></div>
-                                                   }
+                                                {
+                                                    <div class="col-sm-6"><span class="type">@item.Status.Name.ToUpper()</span></div>
+                                                }
                                                 @if (item.Price != null)
                                                 {
-                                                <div class="col-sm-6"><span class="price">@item.Price @item.Kurlar.Name</span></div>
+                                                    <div class="col-sm-6"><span class="price">@item.Price @item.Kurlar.Name</span></div>
                                                 }
                                                 @*<div class="col-xs-12 distance"><span><i class="fa fa-crosshairs"></i> @item.AdDetail.Location km</span></div>*@
                                             </div>
@@ -318,23 +318,23 @@
                                         <div class="features">
                                             <ul>
                                                 @if (item.Location != null)
-                                                    {
+                                                {
                                                     <li><i class="fa fa-map-marker"></i> @lokasyon</li>
-                                                    }
+                                                }
                                                 @if (item.Room != null)
-                                                    {
+                                                {
                                                     <li><i class="fa fa-home"></i> @item.Room</li>
-                                                    }
+                                                }
                                                 @if (item.Size != null)
-                                                    {
+                                                {
                                                     <li><i class="fa fa-arrows-h"></i>@item.Size m2</li>
-                                                    }
+                                                }
                                             </ul>
                                         </div>
                                     </div>
                                 </a>
                             </div>
-                            }
+                        }
 
                     </div>
                                 }
@@ -352,90 +352,90 @@
                             string lokasyon = semt + "," + ilce;
                         }
                         @if (item.Status.Name.ToUpper() == "SATILIK" & Model != null)
-                            {
+                        {
                             <div class="item satilik">
                                 <a href="/AdDetail/BuildDetail/@item.ID">
                                     @if (item.ThumbPath != null)
-                                        {
+                                    {
                                         <div class="image">
                                             <img src="@item.ThumbPath" width="393" height="303" alt="ev">
                                             <div class="over"><span>DETAYLI İNCELE</span></div>
                                         </div>
-                                        }
+                                    }
                                     <div class="text">
                                         <div class="title">
                                             <div class="row">
                                                 @if (item.StatusID != null)
-                                                    {
+                                                {
                                                     <div class="col-sm-6"><span class="type">@item.Status.Name.ToUpper()</span></div>
-                                                    }
+                                                }
                                                 @if (item.Price != null)
-                                                    {
+                                                {
                                                     <div class="col-sm-6"><span class="price">@item.Price @item.Kurlar.Name</span></div>
-                                                    }
-                                                    @*  <div class="col-xs-12 distance"><span><i class="fa fa-crosshairs"></i> @item.AdDetail.Location km</span></div>*@
-                                                </div>
-                                            </div>
-                                            <div class="features">
-                                                <ul>
-                                                    @if (item.Location != null)
-                                                    {
-                                                    <li><i class="fa fa-map-marker"></i> @lokasyon</li>
-                                                    }
-
-                                                    @if (item.Size != null)
-                                                    {
-                                                    <li><i class="fa fa-arrows-h"></i>@item.Size m2</li>
-                                                    }
-                                                </ul>
+                                                }
+                                                @*  <div class="col-xs-12 distance"><span><i class="fa fa-crosshairs"></i> @item.AdDetail.Location km</span></div>*@
                                             </div>
                                         </div>
-                                    </a>
-                                </div>
-                            }
+                                        <div class="features">
+                                            <ul>
+                                                @if (item.Location != null)
+                                                {
+                                                    <li><i class="fa fa-map-marker"></i> @lokasyon</li>
+                                                }
+
+                                                @if (item.Size != null)
+                                                {
+                                                    <li><i class="fa fa-arrows-h"></i>@item.Size m2</li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        }
 
                         @if (item.Status.Name.ToUpper() == "KIRALIK" & Model != null)
-                            {
+                        {
                             <div class="item kiralik">
                                 <a href="/AdDetail/BuildDetail/@item.ID">
                                     @if (item.ThumbPath != null)
-                                        {
+                                    {
                                         <div class="image">
                                             <img src="@item.ThumbPath" width="393" height="303" alt="ev">
                                             <div class="over"><span>DETAYLI İNCELE</span></div>
                                         </div>
-                                        }
+                                    }
                                     <div class="text">
                                         <div class="title">
                                             <div class="row">
                                                 @if (item.StatusID != null)
-                                                    {
+                                                {
                                                     <div class="col-sm-6"><span class="type">@item.Status.Name.ToUpper()</span></div>
-                                                    }
+                                                }
                                                 @if (item.Price != null)
-                                                    {
+                                                {
                                                     <div class="col-sm-6"><span class="price">@item.Price @item.Kurlar.Name</span></div>
-                                                    }
-                                                    @*<div class="col-xs-12 distance"><span><i class="fa fa-crosshairs"></i> @item.AdDetail.Location km</span></div>*@
-                                                </div>
-                                            </div>
-                                            <div class="features">
-                                                <ul>
-                                                    @if (item.Location != null)
-                                                    {
-                                                    <li><i class="fa fa-map-marker"></i> @lokasyon</li>
-                                                    }
-
-                                                    @if (item.Size != null)
-                                                    {
-                                                    <li><i class="fa fa-arrows-h"></i>@item.Size m2</li>
-                                                    }
-                                                </ul>
+                                                }
+                                                @*<div class="col-xs-12 distance"><span><i class="fa fa-crosshairs"></i> @item.AdDetail.Location km</span></div>*@
                                             </div>
                                         </div>
-                                    </a>
-                                </div>
-                            }
+                                        <div class="features">
+                                            <ul>
+                                                @if (item.Location != null)
+                                                {
+                                                    <li><i class="fa fa-map-marker"></i> @lokasyon</li>
+                                                }
+
+                                                @if (item.Size != null)
+                                                {
+                                                    <li><i class="fa fa-arrows-h"></i>@item.Size m2</li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        }
 
                     </div>
                                 }

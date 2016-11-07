@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
-namespace Project_BLL.ViewModels
+namespace Project_BLL.ServiceModels
 {
     public class HomeViewModel
     {
@@ -22,7 +23,7 @@ namespace Project_BLL.ViewModels
     {
         public string Photo { get; set; }
         public string Status { get; set; }
-        public decimal Price { get; set; }
+        public int Price { get; set; }
         public string Currency { get; set; }
         public string Address { get; set; }
         public int SquareMetre { get; set; }

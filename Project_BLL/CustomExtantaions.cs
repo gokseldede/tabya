@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Project_BLL.ViewModels;
+using Project_BLL.ServiceModels;
 using Project_Entity;
 
 namespace Project_BLL

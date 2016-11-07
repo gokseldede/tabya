@@ -51,7 +51,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\AdDetail.cs" />
-    <Compile Include="Entities\AdDetailViewModel.cs" />
     <Compile Include="Entities\AdminUser.cs" />
     <Compile Include="Entities\AdProp.cs" />
     <Compile Include="Entities\Contact.cs" />

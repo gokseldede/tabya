@@ -9,220 +9,206 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Project_BLL.Implementation;
+using Project_BLL.Interfaces;
+using Project_BLL.ServiceModels;
 
 namespace Project_UI.Areas.Admin.Controllers
 {
     [CheckAuth]
     public class BuildingController : BaseController
     {
-        // GET: Admin/Building
+
+        private readonly IStandartService<BuildingServiceModel> _buildingService;
+        private readonly IFileService<BinaFileDetail> _buildingFileService;
+        private readonly IOptionService _optionService;
+
+        public BuildingController()
+        {
+            _buildingService = new BuildingService();
+            _optionService = new OptionsService();
+            _buildingFileService = new FileDetailService<BinaFileDetail>();
+        }
+
         public ActionResult Index()
         {
-            List<Bina> _bina = Database.Bina.Where(x => x.IsDelete == false).ToList();
-            return View(_bina);
+            List<BuildingServiceModel> bina = _buildingService.GetAll().ToList();
+            return View(bina);
         }
 
         [HttpGet]
-
         public ActionResult Create()
         {
-            GetEmlak();
-            GetExpert();
-            GetStatus();
-            GetKur();
-            GetKimden();
-            GetProperties();
-            GetSocialApps();
-            GetSecurity();
-            return View();
+            BuildingViewModel vm = GetModel();
+            return View(vm);
         }
 
-        //Çoklu resim yükleme
-        //http://www.advancesharp.com/blog/1130/image-gallery-in-asp-net-mvc-with-multiple-file-and-size
-
-        // POST: Admin/AdDetails/Create
-        [HttpPost, ValidateInput(false)]
-        public ActionResult Create(Bina bina, string[] tags, string[] socials, string[] securitys, HttpPostedFileBase document)
+        private BuildingViewModel GetModel()
         {
-            GetEmlak();
-            GetExpert();
-            GetStatus();
-            GetKimden();
-            GetKur();
-            GetProperties();
-            GetSocialApps();
-            GetSecurity();
-            bina.IsDelete = false;
-            bina.CreatedDate = DateTime.Now;
-            bina.UpdatedDate = DateTime.Now;
-            bina.IsActive = true;
-            bina.Vitrin = false;
+            var viewModel = new BuildingViewModel()
+            {
+                ExpertList = _optionService.GetExpertList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
+                KimdenList = _optionService.GetKimdenList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
+                KurlarList = _optionService.GetKurlarList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
+                PropertiesList = _optionService.GetPropertiesList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
+                SecuritiesList = _optionService.GetSecurityList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
+                SocialList = _optionService.GetSocialAppsList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
+                StatusList = _optionService.GetStatuslist().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
+                IlList = _optionService.GetIllerList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
+                FileDetails = new List<FileDetailServiceModel>()
+            };
+            return viewModel;
+        }
+        public ActionResult Edit(int id)
+        {
+            BuildingViewModel vm = GetModel();
+            var building = _buildingService.GetById(id);
 
-            var imagePath = Functions.UploadImage(document);
-            bina.ThumbPath = imagePath;
-            foreach (var b in tags)
-            {
-                bina.properties += b + ",";
-            }
+            vm.Id = building.Id;
+            vm.Name = building.Name;
+            vm.BAge = building.BAge;
+            vm.Size = building.Size;
+            vm.FloorFlatCount = building.FloorFlatCount;
+            vm.FloorCount = building.FloorCount;
+            vm.Takas = building.Takas;
+            vm.Price = building.Price;
+            vm.ThumbPath = building.ThumbPath;
+            vm.Description = building.Description;
 
-            foreach (var c in securitys)
-            {
-                bina.securitys = string.Empty;
-                bina.securitys += c + ",";
-            }
-            foreach (var a in socials)
-            {
-                bina.socialapps += a + ",";
-            }
+            vm.ExpertId = building.ExpertId;
+            vm.KurlarId = building.KurlarId;
+            vm.StatusId = building.StatusId;
+            vm.KimdenId = building.KimdenId;
+            vm.FileDetails = building.FileDetails;
+
+            TempData["ImagePath"] = building.ThumbPath;
+
+            return View(vm);
+        }
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult Create(BuildingViewModel bina, string[] tags, string[] socials, string[] securitys, HttpPostedFileBase document)
+        {
+            //foreach (var b in tags)
+            //{
+            //    bina.properties += b + ",";
+            //}
+
+            //foreach (var c in securitys)
+            //{
+            //    bina.securitys = string.Empty;
+            //    bina.securitys += c + ",";
+            //}
+            //foreach (var a in socials)
+            //{
+            //    bina.socialapps += a + ",";
+            //}
             if (ModelState.IsValid)
             {
-                #region Çoklu resim kaydetme 
-                List<BinaFileDetail> fileDetails = new List<BinaFileDetail>();
-                for (int i = 0; i < Request.Files.Count; i++)
+                var imagePath = Functions.UploadImage(document);
+                bina.ThumbPath = imagePath;
+
+                List<FileDetailServiceModel> fileDetails = UploadFiles();
+
+                BuildingServiceModel model = new BuildingServiceModel
                 {
-                    var file = Request.Files[i];
-
-                    if (file != null && file.ContentLength > 0)
-                    {
-                        var fileName = Path.GetFileName(file.FileName);
-                        BinaFileDetail fileDetail = new BinaFileDetail()
-                        {
-                            FileName = fileName,
-                            Extension = Path.GetExtension(fileName),
-                            Id = Guid.NewGuid()
-                        };
-                        fileDetails.Add(fileDetail);
-
-                        var path = Path.Combine(Server.MapPath("~/Areas/Admin/Content/Image/"), fileDetail.Id + fileDetail.Extension);
-                        file.SaveAs(path);
-                    }
-                }
-                bina.BinaFileDetails = fileDetails;
-                db.Bina.Add(bina);
-                #endregion              
-                db.SaveChanges();
+                    Id = bina.Id,
+                    BAge = bina.BAge,
+                    Description = bina.Description,
+                    ExpertId = bina.ExpertId,
+                    FloorCount = bina.FloorCount,
+                    FloorFlatCount = bina.FloorFlatCount,
+                    KimdenId = bina.KimdenId,
+                    KurlarId = bina.KurlarId,
+                    Name = bina.Name,
+                    Price = bina.Price,
+                    Size = bina.Size,
+                    StatusId = bina.StatusId,
+                    Takas = bina.Takas,
+                    ThumbPath = bina.ThumbPath,
+                    FileDetails = fileDetails
+                };
+                _buildingService.Create(model);
             }
             return Redirect("/Admin/AdDetails/Index");
         }
 
-        public ActionResult Edit(int ID, HttpPostedFileBase document)
-        {
-            GetEmlak(ID);
-            GetExpert(ID);
-            GetStatus(ID);
-            GetKimden(ID);
-            GetKur(ID);
-            GetProperties();
-            GetSecurity();
-            GetSocialApps();
-            GetProp();
-            Bina _bina = Database.Bina.FirstOrDefault(x => x.ID == ID);
-            TempData["ImagePath"] = _bina.ThumbPath;
-            return View(_bina);
-        }
-
-        // POST: Admin/AdDetails/Edit/5
-
         [HttpPost, ValidateInput(false)]
-
-        public ActionResult Edit(Bina bina, string[] tags, string[] socials, string[] securitys, HttpPostedFileBase document)
+        public ActionResult Edit(BuildingViewModel bina, string[] tags, string[] socials, string[] securitys, HttpPostedFileBase document)
         {
-
-            Bina _bina = Database.Bina.FirstOrDefault(x => x.ID == bina.ID);
-
-            _bina.Name = bina.Name;
-            _bina.Description = bina.Description;
-            _bina.Takas = bina.Takas;
-            _bina.Price = bina.Price;
-            _bina.Location = bina.Location;
-            _bina.Latitude = bina.Latitude;
-            _bina.Longitude = bina.Longitude;
-            _bina.Size = bina.Size;
-            _bina.EmlakTipID = bina.EmlakTipID;
-            _bina.StatusID = bina.StatusID;
-            _bina.KimdenID = bina.KimdenID;
-            _bina.ExpertID = bina.ExpertID;
-            _bina.IsınmaID = bina.IsınmaID;
-            _bina.Floor = bina.Floor;
-            _bina.FloorRoom = bina.FloorRoom;
-            _bina.BAge = bina.BAge;
-            _bina.KurlarID = bina.KurlarID;
-            if (tags != null)
-            {
-                _bina.properties = string.Empty;
-                foreach (var b in tags)
-                {
-                    _bina.properties += b + ",";
-                }
-            }
-            if (securitys != null)
-            {
-                _bina.securitys = string.Empty;
-                foreach (var c in securitys)
-                {
-                    _bina.securitys += c + ",";
-                }
-            }
-            if (socials != null)
-            {
-                _bina.socialapps = string.Empty;
-                foreach (var a in socials)
-                {
-                    _bina.socialapps += a + ",";
-                }
-            }
-
-            if (document != null)
-            {
-                var imagePath = Functions.UploadImage(document);
-                _bina.ThumbPath = imagePath;
-            }
-            else
-            {
-                _bina.ThumbPath = TempData["ImagePath"].ToString();
-            }
+            
+            //if (tags != null)
+            //{
+            //    _bina.properties = string.Empty;
+            //    foreach (var b in tags)
+            //    {
+            //        _bina.properties += b + ",";
+            //    }
+            //}
+            //if (securitys != null)
+            //{
+            //    _bina.securitys = string.Empty;
+            //    foreach (var c in securitys)
+            //    {
+            //        _bina.securitys += c + ",";
+            //    }
+            //}
+            //if (socials != null)
+            //{
+            //    _bina.socialapps = string.Empty;
+            //    foreach (var a in socials)
+            //    {
+            //        _bina.socialapps += a + ",";
+            //    }
+            //}
+            
             if (ModelState.IsValid)
             {
-                //New Files
-                for (int i = 0; i < Request.Files.Count; i++)
+                if (document != null)
                 {
-                    var file = Request.Files[i];
-
-                    if (file != null && file.ContentLength > 0)
-                    {
-                        var fileName = Path.GetFileName(file.FileName);
-                        BinaFileDetail fileDetail = new BinaFileDetail()
-                        {
-                            FileName = fileName,
-                            Extension = Path.GetExtension(fileName),
-                            Id = Guid.NewGuid(),
-                            BinaID = bina.ID
-                        };
-                        var path = Path.Combine(Server.MapPath("~/Areas/Admin/Content/Image/"), fileDetail.Id + fileDetail.Extension);
-                        file.SaveAs(path);
-
-                        Database.Entry(fileDetail).State = EntityState.Added;
-                    }
+                    var imagePath = Functions.UploadImage(document);
+                    bina.ThumbPath = imagePath;
                 }
-                Database.Entry(_bina).State = EntityState.Modified;
-                _bina.ID = bina.ID;
-                _bina.UpdatedDate = DateTime.Now;
-                Database.SaveChanges();
+                else
+                    bina.ThumbPath = TempData["ImagePath"].ToString();
+
+                List<FileDetailServiceModel> fileDetails = UploadFiles();
+
+                BuildingServiceModel model = new BuildingServiceModel
+                {
+                    Id = bina.Id,
+                    BAge = bina.BAge,
+                    Description = bina.Description,
+                    ExpertId = bina.ExpertId,
+                    FloorCount = bina.FloorCount,
+                    FloorFlatCount = bina.FloorFlatCount,
+                    KimdenId = bina.KimdenId,
+                    KurlarId = bina.KurlarId,
+                    Name = bina.Name,
+                    Price = bina.Price,
+                    Size = bina.Size,
+                    StatusId = bina.StatusId,
+                    Takas = bina.Takas,
+                    ThumbPath = bina.ThumbPath,
+                    FileDetails = fileDetails
+                };
+                _buildingService.Edit(model);
                 return Redirect("/Admin/AdDetails/Index");
             }
             return View(bina);
         }
 
-
-
-        public JsonResult Delete(int ID)
+        public JsonResult Delete(int id)
         {
-            Bina _bina = Database.Bina.Find(ID);
-            _bina.IsDelete = true;
-            _bina.DeletedDate = DateTime.Now;
-            Database.SaveChanges();
-            return Json(" ");
-
+            try
+            {
+                _buildingService.DeleteById(id);
+                return Json(new { result = true });
+            }
+            catch (Exception)
+            {
+                return Json(new { result = false });
+            }
         }
 
         [HttpPost]
@@ -231,49 +217,51 @@ namespace Project_UI.Areas.Admin.Controllers
             if (String.IsNullOrEmpty(id))
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return Json(new { Result = "Error" });
+                return Json(new { Result = false, Message = "Bad Request" });
             }
             try
             {
-                Guid guid = new Guid(id);
-                BinaFileDetail fileDetail = db.BinaFileDetail.Find(guid);
-                if (fileDetail == null)
-                {
-                    Response.StatusCode = (int)HttpStatusCode.NotFound;
-                    return Json(new { Result = "Error" });
-                }
-
-                //Remove from database
-                db.BinaFileDetail.Remove(fileDetail);
-                db.SaveChanges();
-
+                FileDetailServiceModel fileDetail = _buildingFileService.GetById(Guid.Parse(id));
                 //Delete file from the file system
                 var path = Path.Combine(Server.MapPath("~/Areas/Admin/Content/Image/"), fileDetail.Id + fileDetail.Extension);
                 if (System.IO.File.Exists(path))
                 {
                     System.IO.File.Delete(path);
                 }
-                return Json(new { Result = "OK" });
+                _buildingFileService.DeleteById(Guid.Parse(id));
+                return Json(new { Result = true });
             }
             catch (Exception ex)
             {
-                return Json(new { Result = "ERROR", Message = ex.Message });
+                return Json(new { Result = false, Message = ex.Message });
             }
         }
 
-        public JsonResult Status(int ID)
+        public JsonResult Status(int id)
         {
-            Bina _bina = Database.Bina.Find(ID);
-            _bina.IsActive = !_bina.IsActive;
-            Database.SaveChanges();
-            return Json(_bina.IsActive);
+            try
+            {
+                _buildingService.ChangeStatus(id);
+                var status = _buildingService.GetById(id);
+                return Json(new { result = true, status = status.IsActive });
+            }
+            catch (Exception)
+            {
+                return Json(new { result = false, status = false });
+            }
         }
-        public JsonResult Vitrin(int ID)
+        public JsonResult Vitrin(int id)
         {
-            Bina _bina = Database.Bina.Find(ID);
-            _bina.Vitrin = !_bina.Vitrin;
-            Database.SaveChanges();
-            return Json(_bina.Vitrin);
+            try
+            {
+                _buildingService.ChangeVitrin(id);
+                var status = _buildingService.GetById(id);
+                return Json(new { result = true, status = status.IsInVitrin });
+            }
+            catch (Exception)
+            {
+                return Json(new { result = false, status = false });
+            }
         }
     }
 }

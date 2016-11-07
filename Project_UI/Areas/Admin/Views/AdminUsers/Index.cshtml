@@ -4,7 +4,7 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-@model List<Project_Entity.AdminUser>
+@model List<AdminUserViewModel>
 <div class="col-lg-12">
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -27,15 +27,15 @@
                     <tbody>
                         @foreach (var item in Model)
                         {
-                            <tr id="a_@item.ID">
+                            <tr id="a_@item.Id">
                                 <td>@item.Name</td>
                                 @if (item.IsActive)
                                 {
-                                    <td id="b_@item.ID" onclick="Status('/Admin/AdminUsers/Status/',@item.ID)"><span class="btn btn-info btn-sm">Aktif</span></td>
+                                    <td id="b_@item.Id" onclick="Status('/Admin/AdminUsers/Status/',@item.Id)"><span class="btn btn-info btn-sm">Aktif</span></td>
                                 }
                                 else
                                 {
-                                    <td id="b_@item.ID" onclick="Status('/Admin/AdminUsers/Status/',@item.ID)"><span class="btn btn-default btn-sm">Pasif</span></td>
+                                    <td id="b_@item.Id" onclick="Status('/Admin/AdminUsers/Status/',@item.Id)"><span class="btn btn-default btn-sm">Pasif</span></td>
                                 }
 
                                 <td class="hidden-480">@item.CreatedDate.ToShortDateString()</td>
@@ -43,12 +43,12 @@
                                 <td>
                                     <div class="hidden-sm hidden-xs action-buttons">
 
-                                        <a class="btn btn-xs btn-primary no-radius" href="/Admin/AdminUsers/Edit/@item.ID">
+                                        <a class="btn btn-xs btn-primary no-radius" href="/Admin/AdminUsers/Edit/@item.Id">
                                             <i class="ace-icon fa fa-pencil-square-o smaller-100"></i>
                                             Düzenle
                                         </a>
 
-                                        <a class="btn btn-xs btn-danger btn-sm" onclick="Delete('/Admin/AdminUsers/Delete/',@item.ID)">
+                                        <a class="btn btn-xs btn-danger btn-sm" onclick="Delete('/Admin/AdminUsers/Delete/',@item.Id)">
                                             <i class="ace-icon fa fa-trash-o smaller-100"></i>
                                             Sil
                                         </a>
@@ -64,7 +64,7 @@
 
 
                                                 <li>
-                                                    <a href="/Admin/AdminUsers/Edit/@item.ID" class="btn btn-info btn-sm" data-rel="tooltip" title="" data-original-title="Edit">
+                                                    <a href="/Admin/AdminUsers/Edit/@item.Id" class="btn btn-info btn-sm" data-rel="tooltip" title="" data-original-title="Edit">
 
                                                         <i class="ace-icon fa fa-pencil-square-o smaller-100"></i>
                                                         Düzenle
@@ -73,7 +73,7 @@
                                                 </li>
 
                                                 <li>
-                                                    <a class="btn btn-xs btn-danger btn-sm" onclick="Delete('/Admin/AdminUsers/Delete/',@item.ID)" data-rel="tooltip" title="" data-original-title="Delete">
+                                                    <a class="btn btn-xs btn-danger btn-sm" onclick="Delete('/Admin/AdminUsers/Delete/',@item.Id)" data-rel="tooltip" title="" data-original-title="Delete">
 
                                                         <i class="ace-icon fa fa-trash-o smaller-100"></i>
                                                         Sil

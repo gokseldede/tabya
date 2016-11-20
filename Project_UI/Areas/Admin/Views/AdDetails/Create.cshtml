@@ -5,3 +5,19 @@
 }
 
 @Html.Partial("Partial/_AdDetailPartial")
+@section Scripts{
+    <script>
+        $(document).ready(function() {
+
+            $('#tags').multiselect({nonSelectedText: 'Diğer Özellikler',includeSelectAllOption: true});
+            $('#socials').multiselect({nonSelectedText: 'Sosyal Özellikler',includeSelectAllOption: true});
+            $('#securitys').multiselect({nonSelectedText: 'Güvenlik Özellikleri',includeSelectAllOption: true});
+
+            $('.dropdown-menu, .dropdown-menu li')
+                .click(function (e) {
+                    e.stopPropagation();
+                });
+
+        });
+    </script>
+}

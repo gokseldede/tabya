@@ -1,14 +1,14 @@
-﻿@model Project_UI.Models.ProjectVM.ProjectClass
+﻿@model Project_UI.Models.AdDetailDetailViewModel
 @{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_SiteLayout.cshtml";
 
-    string[] adres;
-    adres = Model.Workplace.Location.Split(',');
-    string semt = adres[0];
-    string ilce = adres[2].Substring(6).Replace("/", ",");
+    //string[] adres;
+    //adres = Model.Workplace.Location.Split(',');
+    //string semt = adres[0];
+    //string ilce = adres[2].Substring(6).Replace("/", ",");
 
-    string lokasyon = semt ;
+    //string lokasyon = semt ;
 }
 
 <section class="section ilan-detay">
@@ -17,10 +17,10 @@
             <div class="col-md-8">
                 <div class="gallery wow fadeInUp" data-wow-duration="1s">
                     @*@Html.Partial("Partial/_ImagePartial")*@
-                    @if (Model.WorkFileDetails != null)
+                    @if (Model.FileDetails != null)
                     {
                         <div class="galleryBig">
-                            @foreach (var item in Model.WorkFileDetails)
+                            @foreach (var item in Model.FileDetails)
                             {
                                 <div class="item cbp-item">
 
@@ -33,7 +33,7 @@
 
                         </div>
                         <div class="gallerySmall">
-                            @foreach (var item in Model.WorkFileDetails)
+                            @foreach (var item in Model.FileDetails)
                             {
                                 <div class="item">
                                     <img src="~/Areas/Admin/Content/Image/@item.Id@item.Extension" height="83" width="125" alt="ev">
@@ -47,118 +47,118 @@
                 @*@Html.Partial("Partial/_DetayPartial", Model.Workplaces)*@
 
                 <div class="box info wow fadeInUp" data-wow-duration="1s">
-                    @if (Model.Workplace.Name != null)
+                    @if (Model.Name != null)
                     {
                         <div class="title">
-                            <h2>@Model.Workplace.Name</h2>
+                            <h2>@Model.Name</h2>
                         </div>
                     }
                     <div class="item">
                         <!-- addClass kiralik  -->
                         <div class="row">
-                            @if (Model.Workplace.StatusID != null)
+                            @if (Model.Status != null)
                             {
-                                <div class="col-xs-6"><span class="type">@Model.Workplace.Status.Name</span></div>
+                                <div class="col-xs-6"><span class="type">@Model.Status</span></div>
                             }
-                            @if (Model.Workplace.Price != null)
+                            @if (Model.Price != 0)
                             {
-                                <div class="col-xs-6"><span class="price">@Model.Workplace.Price @Model.Workplace.Kurlar.Name</span></div>
+                                <div class="col-xs-6"><span class="price">@Model.Price @Model.Kur</span></div>
                             }
                         </div>
                         <div class="row">
-                            @if (Model.Workplace.Location != null)
+                            @*@if (Model.Workplace.Location != null)
                             {
                                 <div class="col-md-12 location">
                                     <p><i class="fa fa-map-marker"></i> @lokasyon </p>
                                 </div>
-                            }
+                            }*@
                         </div>
                     </div>
                     <div class="item">
-                        @if (Model.Workplace.ExpertID != null)
+                        @if (Model.Expert != null)
                         {
                             <div class="user-img">
-                                <img src="@Model.Workplace.Expert.ImagePath" width="65" height="65" alt="Necmi Körük">
+                                <img src="@Model.Expert.ImagePath" width="65" height="65" alt="Necmi Körük">
                             </div>
 
                             <ul class="contact-list">
-                                <li><i class="fa fa-user"></i> <strong>@Model.Workplace.Expert.Name</strong> - @Model.Workplace.Expert.Title</li>
-                                <li><i class="fa fa-phone"></i> <a href="tel:@Model.Workplace.Expert.PhoneNumber">@Model.Workplace.Expert.PhoneNumber</a></li>
-                                <li><i class="fa fa-envelope"></i> <a href="mailto:@Model.Workplace.Expert.Email">@Model.Workplace.Expert.Email</a></li>
+                                <li><i class="fa fa-user"></i> <strong>@Model.Expert.Name</strong> - @Model.Expert.Title</li>
+                                <li><i class="fa fa-phone"></i> <a href="tel:@Model.Expert.PhoneNumber">@Model.Expert.PhoneNumber</a></li>
+                                <li><i class="fa fa-envelope"></i> <a href="mailto:@Model.Expert.Email">@Model.Expert.Email</a></li>
                             </ul>
                         }
                     </div>
                     <div class="item info-list">
-                        @if (Model.Workplace.CreatedDate != null)
+                        @if (Model.CreatedDateTime != null)
                         {
                             <div class="row">
                                 <div class="col-xs-6"><strong>İlan Tarihi</strong></div>
-                                <div class="col-xs-6">@Model.Workplace.CreatedDate.ToString("dd/MM/yyyy")</div>
+                                <div class="col-xs-6">@Model.CreatedDateTime.ToString("dd/MM/yyyy")</div>
                             </div>
                         }
-                        @if (Model.Workplace.EmlakTipID != null)
+                        @if (Model.EmlakTip != null)
                         {
                             <div class="row">
                                 <div class="col-xs-6"><strong>Emlak Tipi</strong></div>
-                                <div class="col-xs-6">@Model.Workplace.EmlakTip.Name</div>
+                                <div class="col-xs-6">@Model.EmlakTip</div>
                             </div>
                         }
 
-                        @if (Model.Workplace.Size != null)
+                        @if (Model.Size != 0)
                         {
                             <div class="row">
                                 <div class="col-xs-6"><strong>m2</strong></div>
-                                <div class="col-xs-6">@Model.Workplace.Size</div>
+                                <div class="col-xs-6">@Model.Size</div>
                             </div>
                         }
-                        @if (Model.Workplace.Room!=null)
+                        @if (Model.RoomCount!=0)
                         {
                             <div class="row">
                                 <div class="col-xs-6"><strong>Oda Sayısı</strong></div>
-                                <div class="col-xs-6">@Model.Workplace.Room</div>
+                                <div class="col-xs-6">@Model.RoomCount</div>
                             </div>
                         }
-                        @if (Model.Workplace.BAge != null)
+                        @if (Model.BAge != 0)
                         {
                             <div class="row">
                                 <div class="col-xs-6"><strong>Bina Yaşı</strong></div>
-                                <div class="col-xs-6">@Model.Workplace.BAge</div>
+                                <div class="col-xs-6">@Model.BAge</div>
                             </div>
                         }
-                       @if (Model.Workplace.Dues != null)
+                       @if (Model.Dues != 0)
                        {
                         <div class="row">
                             <div class="col-xs-6"><strong>Aidat</strong></div>
-                            <div class="col-xs-6">@Model.Workplace.Dues TL</div>
+                            <div class="col-xs-6">@Model.Dues TL</div>
                         </div>
                        }
-                       @if (Model.Workplace.IsınmaID != null)
+                       @if (Model.Isinma != null)
                        {
                         <div class="row">
                             <div class="col-xs-6"><strong>Isınma Türü</strong></div>
-                            <div class="col-xs-6">@Model.Workplace.Isınma.Name</div>
+                            <div class="col-xs-6">@Model.Isinma</div>
                         </div>
                        }                      
-                      @if (Model.Workplace.KimdenID != null)
+                      @if (Model.Kimden != null)
                       {
                         <div class="row">
                             <div class="col-xs-6"><strong>Kimden</strong></div>
-                            <div class="col-xs-6">@Model.Workplace.Kimden.Name</div>
+                            <div class="col-xs-6">@Model.Kimden</div>
                         </div>
                       }
-                        @if (Model.Workplace.Takas != null)
+                        @if (Model.Takas != null)
                         {
                             <div class="row">
                                 <div class="col-xs-6"><strong>Takas</strong></div>
-                                <div class="col-xs-6">@Model.Workplace.Takas</div>
+                                <div class="col-xs-6">@Model.Takas</div>
                             </div>
                         }
                      
-                       @if (Model.Workplace.KrediID != null)
+                       @if (Model.KrediDurumu != null)
                        {
                         <div class="row">
                             <div class="col-xs-6"><strong>Krediye Uygun</strong></div>
-                            <div class="col-xs-6">@Model.Workplace.Kredi.Name.ToUpper()</div>
+                            <div class="col-xs-6">@Model.KrediDurumu</div>
                         </div>
                        }
                         
@@ -173,10 +173,10 @@
                     </div>
                     <div id="aciklama" class="tab_content">
                         <article class="article">
-                            @if (Model.Workplace.Description != null)
+                            @if (Model.Description != null)
                             {
                                 <p>
-                                    @Html.Raw(Model.Workplace.Description)
+                                    @Html.Raw(Model.Description)
                                 </p>
                             }
                         </article>
@@ -191,9 +191,9 @@
                         <div class="list">
                             <div class="row">
                                 <div class="row">
-                                    @if (Model.Workplace.socialapps != null)
+                                    @if (Model.SelectedSocialList != null)
                                     {
-                                        foreach (var item in Model.Workplace.socialapps.Substring(0, Model.Workplace.socialapps.Length - 1).Split(','))
+                                        foreach (var item in Model.SelectedSocialList)
                                         {
                                             <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text">@item.ToString()</span></div>
                                         }
@@ -209,9 +209,9 @@
                         <div class="list">
                             <div class="row">
                                 <div class="row">
-                                    @if (Model.Workplace.securitys != null)
+                                    @if (Model.SelectedSecurities != null)
                                     {
-                                        foreach (var item in Model.Workplace.securitys.Substring(0, Model.Workplace.securitys.Length - 1).Split(','))
+                                        foreach (var item in Model.SelectedSecurities)
                                         {
                                             <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text">@item.ToString()</span></div>
                                         }
@@ -227,9 +227,9 @@
                         <div class="list">
                             <div class="row">
                                 <div class="row">
-                                    @if (Model.Workplace.properties != null)
+                                    @if (Model.SelectedProperties != null)
                                     {
-                                        foreach (var item in Model.Workplace.properties.Substring(0, Model.Workplace.properties.Length - 1).Split(','))
+                                        foreach (var item in Model.SelectedProperties)
                                         {
                                             <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text">@item.ToString()</span></div>
                                         }

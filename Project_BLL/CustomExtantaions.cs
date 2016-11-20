@@ -16,11 +16,11 @@ namespace Project_BLL
                 DeliveryDate = model.ProjectDeliveryDate,
                 Description = model.Description,
                 ExpertID = model.ExpertId,
-                HouseN = model.FlatCount.ToString(),
+                HouseN = model.FlatCount,
                 ImagePath = model.ThumbPath,
                 Name = model.Name,
                 PriceList = model.PriceList,
-                ProjectA = model.ProjectArea.ToString("F2"),
+                ProjectA = model.ProjectArea,
                 SSubName = model.ProjectLocation,
                 SubName = model.ProjectFirm,
                 Video = model.ProjectPromotionVideo,
@@ -39,10 +39,10 @@ namespace Project_BLL
                 ThumbPath = data.ImagePath,
                 CreatedDateTime = data.CreatedDate,
                 Name = data.Name,
-                FlatCount = int.Parse(data.HouseN),
+                FlatCount = data.HouseN,
                 ExpertId = data.ExpertID,
                 IsInVitrin = data.Vitrin,
-                ProjectArea = decimal.Parse(data.ProjectA),
+                ProjectArea = data.ProjectA,
                 Description = data.Description,
                 UpdatedDateTime = data.UpdatedDate,
                 PriceList = data.PriceList,
@@ -50,7 +50,11 @@ namespace Project_BLL
                 ProjectFileDetails = data.ProjectFiles.Select(x => new FileDetailServiceModel() { Id = x.Id, Extension = x.Extension, FileName = x.FileName }).ToList(),
                 ProjectFirm = data.SubName,
                 ProjectLocation = data.SSubName,
-                ProjectPromotionVideo = data.Video
+                ProjectPromotionVideo = data.Video,
+                Expert = data.Expert,
+                SelectedProperties = data.Propertieses.Select(x => new SelectlistItem() { Id = x.ID, Value = x.Name }).ToList(),
+                SelectedSecurities = data.Securities.Select(x => new SelectlistItem() { Id = x.ID, Value = x.Name }).ToList(),
+                SelectedSocialApps = data.SocialAppses.Select(x => new SelectlistItem() { Id = x.ID, Value = x.Name }).ToList()
             };
 
             return vm;

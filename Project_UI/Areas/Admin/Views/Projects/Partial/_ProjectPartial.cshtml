@@ -27,19 +27,12 @@
                         <label>Proje Lokasyonu :</label>
                         @Html.TextBoxFor(x => x.ProjectLocation, new { @class = "form-control", @placeholder = "Örn: Ataşehir" })
                         <label>Proje Alanı :</label>
-                        @Html.EditorFor(x => x.ProjectArea)
+                        @Html.TextBoxFor(x => x.ProjectArea, new { @class = "form-control"})
                         <label>Proje Konut Sayısı :</label>
                         @Html.TextBoxFor(x => x.FlatCount, new { @class = "form-control", @placeholder = "Örn : 25" })
 
                         <label>Proje Teslim Tarihi :</label>
                         @Html.TextBoxFor(x => x.ProjectDeliveryDate, new { @class = "form-control", @id = "datetimepicker4" })
-                        <script type="text/javascript">
-                            $(function () {
-                                $('#datetimepicker4').datetimepicker({
-                                    format: "d/MM/YYYY"
-                                });
-                            });
-                        </script>
 
                         <label>Proje Danışman Adı :</label>
                         @Html.DropDownListFor(x => x.ExpertId, Model.ExpertList, "Danışman Seçiniz", new { @class = "form-control" })

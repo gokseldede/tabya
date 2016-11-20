@@ -8,16 +8,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Project_BLL.ServiceModels;
+using Project_UI.Models;
 
 namespace Project_UI.Controllers
 {
     public class ProjectController : Controller
     {
-        IStandartService<Project> _projectService;
+        private readonly IStandartService<ProjectServiceModel> _projectService;
 
         public ProjectController()
         {
-            _projectService = new StandartService<Project>(new EfRepositoryForEntityBase<Project>());
+            _projectService = new ProjectService();
         }
 
         public ActionResult Index()
@@ -26,10 +28,27 @@ namespace Project_UI.Controllers
             return View(projects);
         }
 
-        public ActionResult Detail(int ID)
+        public ActionResult Detail(int id)
         {
-            var project = _projectService.GetById(ID);
-            return View(project);
+            var project = _projectService.GetById(id);
+            var vm = new ProjectDetailViewModel()
+            {
+                Name = project.Name,
+                Description = project.Description,
+                DeliveryDate = project.ProjectDeliveryDate,
+                FlatCount = project.FlatCount,
+                PriceList = project.PriceList,
+                ProjectArea = project.ProjectArea,
+                ProjectFirm = project.ProjectFirm,
+                ProjectLocation = project.ProjectLocation,
+                Video = project.ProjectPromotionVideo,
+                ProjectFiles = project.ProjectFileDetails,
+                SelectedProperties = project.SelectedProperties.Select(x => x.Value).ToArray(),
+                SelectedSecurities = project.SelectedSecurities.Select(x => x.Value).ToArray(),
+                SelectedSocialList = project.SelectedProperties.Select(x => x.Value).ToArray(),
+                Expert = project.Expert
+            };
+            return View(vm);
         }
     }
 }

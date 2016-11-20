@@ -81,6 +81,10 @@ namespace Project_UI.Areas.Admin.Controllers
             vm.KimdenId = building.KimdenId;
             vm.FileDetails = building.FileDetails;
 
+            vm.SelectedProperties = building.SelectedProperties.Select(x => x.Id.ToString()).ToArray();
+            vm.SelectedSecurities = building.SelectedSecurities.Select(x => x.Id.ToString()).ToArray();
+            vm.SelectedSocialList = building.SelectedSocialApps.Select(x => x.Id.ToString()).ToArray();
+
             TempData["ImagePath"] = building.ThumbPath;
 
             return View(vm);
@@ -89,20 +93,6 @@ namespace Project_UI.Areas.Admin.Controllers
         [HttpPost, ValidateInput(false)]
         public ActionResult Create(BuildingViewModel bina, string[] tags, string[] socials, string[] securitys, HttpPostedFileBase document)
         {
-            //foreach (var b in tags)
-            //{
-            //    bina.properties += b + ",";
-            //}
-
-            //foreach (var c in securitys)
-            //{
-            //    bina.securitys = string.Empty;
-            //    bina.securitys += c + ",";
-            //}
-            //foreach (var a in socials)
-            //{
-            //    bina.socialapps += a + ",";
-            //}
             if (ModelState.IsValid)
             {
                 var imagePath = Functions.UploadImage(document);
@@ -126,7 +116,10 @@ namespace Project_UI.Areas.Admin.Controllers
                     StatusId = bina.StatusId,
                     Takas = bina.Takas,
                     ThumbPath = bina.ThumbPath,
-                    FileDetails = fileDetails
+                    FileDetails = fileDetails,
+                    SelectedSecurities = securitys.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList(),
+                    SelectedSocialApps = socials.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList(),
+                    SelectedProperties = tags.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList()
                 };
                 _buildingService.Create(model);
             }
@@ -136,32 +129,7 @@ namespace Project_UI.Areas.Admin.Controllers
         [HttpPost, ValidateInput(false)]
         public ActionResult Edit(BuildingViewModel bina, string[] tags, string[] socials, string[] securitys, HttpPostedFileBase document)
         {
-            
-            //if (tags != null)
-            //{
-            //    _bina.properties = string.Empty;
-            //    foreach (var b in tags)
-            //    {
-            //        _bina.properties += b + ",";
-            //    }
-            //}
-            //if (securitys != null)
-            //{
-            //    _bina.securitys = string.Empty;
-            //    foreach (var c in securitys)
-            //    {
-            //        _bina.securitys += c + ",";
-            //    }
-            //}
-            //if (socials != null)
-            //{
-            //    _bina.socialapps = string.Empty;
-            //    foreach (var a in socials)
-            //    {
-            //        _bina.socialapps += a + ",";
-            //    }
-            //}
-            
+
             if (ModelState.IsValid)
             {
                 if (document != null)
@@ -190,7 +158,10 @@ namespace Project_UI.Areas.Admin.Controllers
                     StatusId = bina.StatusId,
                     Takas = bina.Takas,
                     ThumbPath = bina.ThumbPath,
-                    FileDetails = fileDetails
+                    FileDetails = fileDetails,
+                    SelectedSecurities = securitys.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList(),
+                    SelectedSocialApps = socials.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList(),
+                    SelectedProperties = tags.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList()
                 };
                 _buildingService.Edit(model);
                 return Redirect("/Admin/AdDetails/Index");

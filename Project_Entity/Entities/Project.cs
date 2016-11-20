@@ -10,8 +10,8 @@ namespace Project_Entity
         public string SubName { get; set; }
         public string SSubName { get; set; }
         public string Description { get; set; }
-        public string ProjectA { get; set; }
-        public string HouseN { get; set; }
+        public int ProjectA { get; set; }
+        public int HouseN { get; set; }
         public string ImagePath { get; set; }
         public DateTime DeliveryDate { get; set; }
         public string Video { get; set; }
@@ -24,8 +24,10 @@ namespace Project_Entity
         public int? AdminUserID { get; set; }
         public virtual AdminUser AdminUser { get; set; }
         public virtual Expert Expert { get; set; }
-        
 
+        public virtual ICollection<Properties> Propertieses { get; set; }
+        public virtual ICollection<Securitys> Securities { get; set; }
+        public virtual ICollection<SocialApps> SocialAppses { get; set; }
     }
 
 

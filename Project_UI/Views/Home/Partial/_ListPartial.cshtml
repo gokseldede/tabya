@@ -3,6 +3,7 @@
 @if (!Request.QueryString["lang"].IsEmpty())
 {
     Culture = UICulture = Request.QueryString["lang"];
+
 }
 <div class="container">
     <div class="row title">
@@ -16,12 +17,10 @@
             {
 
             <div class="col-md-4 col-sm-6 col-xs-6">
-
-
                 @if (item.Status.ToUpper() == "SATILIK" & Model != null)
                 {
                     <div class="item satilik">
-                        <a href="/AdDetail/Details/@item.Id">
+                        <a href="/AdDetail/@(item.AdType=="İşyeri"?"WorkDetail":(item.AdType=="Arsa"?"LandDetail":(item.AdType=="Bina"?"BuildDetail":"Details")))/@item.Id">
                             <div class="image">
                                 <img src="@item.Photo" width="393" height="303" alt="ev">
                                 <div class="over"><span>DETAYLI İNCELE</span></div>
@@ -30,7 +29,7 @@
                                 <div class="title">
                                     <div class="row">
                                         <div class="col-sm-6"><span class="type">@item.Status</span></div>
-                                        <div class="col-sm-6"><span class="price">@item.Price @item.Currency</span></div>
+                                        <div class="col-sm-6"><span class="price">@item.Price.ToString("N")  @item.Currency</span></div>
                                     </div>
                                 </div>
 
@@ -46,10 +45,10 @@
                     </div>
                 }
 
-                @if (item.Status.ToUpper() == "KİRALIK" & Model != null)
+                @if (item.Status.ToUpper() == "KIRALIK" & Model != null)
                 {
                     <div class="item kiralik">
-                        <a href="/AdDetail/Details/@item.Id">
+                        <a href="/AdDetail/@(item.AdType=="İşyeri"?"WorkDetail":(item.AdType=="Arsa"?"LandDetail":(item.AdType=="Bina"?"BuildDetail":"Details")))/@item.Id">
                             <div class="image">
                                 <img src="/@item.Photo" width="393" height="303" alt="ev">
                                 <div class="over"><span>DETAYLI İNCELE</span></div>
@@ -58,7 +57,7 @@
                                 <div class="title">
                                     <div class="row">
                                         <div class="col-sm-6"><span class="type">@item.Status</span></div>
-                                        <div class="col-sm-6"><span class="price">@item.Price @item.Currency</span></div>
+                                        <div class="col-sm-6"><span class="price">@item.Price.ToString("N") @item.Currency</span></div>
                                     </div>
                                 </div>
 
@@ -78,10 +77,6 @@
 
         }
     </div>
-
-
-
-
     <div class="row btn-line">
         <div class="col-md-12">
             <a class="all-btn" href="/AdDetail/Index">TÜM İLANLARI GÖRÜNTÜLE</a>

@@ -190,47 +190,6 @@
     <Content Include="Areas\Admin\Content\Image\South Park Avatar Wallpaper800x600.png" />
     <Content Include="Areas\Admin\Content\Image\user.jpg" />
     <Content Include="Areas\Admin\Content\Image\uzmanlar-img.png" />
-    <Content Include="Areas\Admin\HTML\blank.html" />
-    <Content Include="Areas\Admin\HTML\buttons.html" />
-    <Content Include="Areas\Admin\HTML\calendar.html" />
-    <Content Include="Areas\Admin\HTML\content-slider.html" />
-    <Content Include="Areas\Admin\HTML\dropzone.html" />
-    <Content Include="Areas\Admin\HTML\elements.html" />
-    <Content Include="Areas\Admin\HTML\email-confirmation.html" />
-    <Content Include="Areas\Admin\HTML\email-contrast.html" />
-    <Content Include="Areas\Admin\HTML\email-navbar.html" />
-    <Content Include="Areas\Admin\HTML\email-newsletter.html" />
-    <Content Include="Areas\Admin\HTML\email.html" />
-    <Content Include="Areas\Admin\HTML\error-404.html" />
-    <Content Include="Areas\Admin\HTML\error-500.html" />
-    <Content Include="Areas\Admin\HTML\faq.html" />
-    <Content Include="Areas\Admin\HTML\favicon.ico" />
-    <Content Include="Areas\Admin\HTML\form-elements-2.html" />
-    <Content Include="Areas\Admin\HTML\form-elements.html" />
-    <Content Include="Areas\Admin\HTML\form-wizard.html" />
-    <Content Include="Areas\Admin\HTML\gallery.html" />
-    <Content Include="Areas\Admin\HTML\grid.html" />
-    <Content Include="Areas\Admin\HTML\inbox.html" />
-    <Content Include="Areas\Admin\HTML\index.html" />
-    <Content Include="Areas\Admin\HTML\invoice.html" />
-    <Content Include="Areas\Admin\HTML\jqgrid.html" />
-    <Content Include="Areas\Admin\HTML\jquery-ui.html" />
-    <Content Include="Areas\Admin\HTML\login.html" />
-    <Content Include="Areas\Admin\HTML\mobile-menu-1.html" />
-    <Content Include="Areas\Admin\HTML\mobile-menu-2.html" />
-    <Content Include="Areas\Admin\HTML\mobile-menu-3.html" />
-    <Content Include="Areas\Admin\HTML\nestable-list.html" />
-    <Content Include="Areas\Admin\HTML\pricing.html" />
-    <Content Include="Areas\Admin\HTML\profile.html" />
-    <Content Include="Areas\Admin\HTML\tables.html" />
-    <Content Include="Areas\Admin\HTML\timeline.html" />
-    <Content Include="Areas\Admin\HTML\top-menu.html" />
-    <Content Include="Areas\Admin\HTML\treeview.html" />
-    <Content Include="Areas\Admin\HTML\two-menu-1.html" />
-    <Content Include="Areas\Admin\HTML\two-menu-2.html" />
-    <Content Include="Areas\Admin\HTML\typography.html" />
-    <Content Include="Areas\Admin\HTML\widgets.html" />
-    <Content Include="Areas\Admin\HTML\wysiwyg.html" />
     <Content Include="Areas\Admin\Scripts\avatars\avatar.png" />
     <Content Include="Areas\Admin\Scripts\avatars\avatar1.png" />
     <Content Include="Areas\Admin\Scripts\avatars\avatar2.png" />
@@ -404,14 +363,6 @@
     <Content Include="Content\img\uzmanlar-img.png" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Global.asax" />
-    <Content Include="HTML\danismanlar.html" />
-    <Content Include="HTML\ilan-ara.html" />
-    <Content Include="HTML\ilan-detay.html" />
-    <Content Include="HTML\ilanlar.html" />
-    <Content Include="HTML\iletisim.html" />
-    <Content Include="HTML\index.html" />
-    <Content Include="HTML\proje-detay.html" />
-    <Content Include="HTML\projeler.html" />
     <Content Include="LCSK\Agent.html" />
     <Content Include="LCSK\agent.js" />
     <Content Include="LCSK\assets\css\bootstrap-theme.min.css" />
@@ -583,14 +534,14 @@
     <Compile Include="LCSK\ChatHub.cs" />
     <Compile Include="LCSK\Startup.cs" />
     <Compile Include="ModelBinders\DecimalModelBinder.cs" />
+    <Compile Include="Models\AdDetailDetailViewModel.cs" />
+    <Compile Include="Models\ProjectDetailViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
     <Content Include="packages.config" />
     <Content Include="Areas\Admin\Views\web.config" />
-    <Content Include="Areas\Admin\HTML\LICENSE.md" />
-    <Content Include="Areas\Admin\HTML\README.md" />
     <Content Include="Areas\Admin\Scripts\font-awesome\4.1.0\fonts\fontawesome-webfont.eot" />
     <Content Include="Areas\Admin\Scripts\font-awesome\4.1.0\fonts\fontawesome-webfont.ttf" />
     <Content Include="Areas\Admin\Scripts\font-awesome\4.1.0\fonts\fontawesome-webfont.woff" />
@@ -706,7 +657,6 @@
     <Folder Include="Areas\Admin\Content\Videos\" />
     <Folder Include="Areas\Admin\Views\Base\" />
     <Folder Include="Areas\Admin\Views\Message\" />
-    <Folder Include="Models\" />
     <Folder Include="Views\LocalizationAttribute\" />
   </ItemGroup>
   <ItemGroup>

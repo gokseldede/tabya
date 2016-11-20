@@ -21,16 +21,29 @@ namespace Project_BLL.ServiceModels
         public int Id { get; set; }
         public int Price { get; set; }
         public string ThumbPath { get; set; }
+        public string Status { get; set; }
         public int? StatusId { get; set; }
+        public string Kur { get; set; }
         public int? KurlarId { get; set; }
+        public string Isinma { get; set; }
         public int? IsinmaId { get; set; }
+        public string Kredi { get; set; }
         public int? KrediId { get; set; }
+        public dynamic Expert { get; set; }
         public int? ExpertId { get; set; }
+        public string Kimden { get; set; }
         public int? KimdenId { get; set; }
+        public string Esya { get; set; }
         public int? EsyaId { get; set; }
+        public string Site { get; set; }
         public int? SiteId { get; set; }
+        public string EmlakTip { get; set; }
         public int? EmlakTipId { get; set; }
+        public string Kullanim { get; set; }
         public int? KullanimId { get; set; }
         public List<FileDetailServiceModel> FileDetails { get; set; }
+        public List<SelectlistItem> SelectedProperties { get; set; }
+        public List<SelectlistItem> SelectedSecurities { get; set; }
+        public List<SelectlistItem> SelectedSocialApps { get; set; }
     }
 }

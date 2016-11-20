@@ -64,36 +64,7 @@ namespace Project_UI.Areas.Admin.Controllers
 
         public ActionResult Create(ProjectViewModel project, string[] tags, string[] socials, string[] securitys, HttpPostedFileBase document, HttpPostedFileBase pricelist)
         {
-
-            //GetExpert();
-            //GetProperties();
-            //GetSecurity();
-            //GetSocialApps();
-            //project.IsDelete = false;
-            //project.CreatedDate = DateTime.Now;
-            //project.UpdatedDate = DateTime.Now;
-            //project.IsActive = true;
-
-
-            //var imagePath = Functions.UploadImage(document);
-
-            //project.ImagePath = imagePath;
-            //var price = Functions.UploadImage(pricelist);
-            //project.PriceList = price;
-
-            //foreach (var b in tags)
-            //{
-            //    project.properties += b + ",";
-            //}
-            //foreach (var c in securitys)
-            //{
-            //    project.securitys += c + ",";
-            //}
-            //foreach (var a in socials)
-            //{
-            //    project.socialapps += a + ",";
-            //}
-
+            
             if (ModelState.IsValid)
             {
                 var fileDetails = FileDetailServiceModels();
@@ -116,7 +87,10 @@ namespace Project_UI.Areas.Admin.Controllers
                     ProjectFirm = project.ProjectFirm,
                     ProjectLocation = project.ProjectLocation,
                     ThumbPath = project.ThumbPath,
-                    ProjectPromotionVideo = project.ProjectPromotionVideo
+                    ProjectPromotionVideo = project.ProjectPromotionVideo,
+                    SelectedSecurities = securitys.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList(),
+                    SelectedSocialApps = socials.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList(),
+                    SelectedProperties = tags.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList()
                 };
 
                 _projectService.Create(model);
@@ -134,28 +108,30 @@ namespace Project_UI.Areas.Admin.Controllers
 
         public ActionResult Edit(int id)
         {
-            var model = GetModel();
-            var vm = _projectService.GetById(id);
+            var vm = GetModel();
+            var model = _projectService.GetById(id);
 
-            model.Id = vm.Id;
-            model.PriceList = vm.PriceList;
-            model.ProjectPromotionVideo = vm.ProjectPromotionVideo;
-            model.ThumbPath = vm.ThumbPath;
-            model.CreatedDateTime = vm.CreatedDateTime;
-            model.Description = vm.Description;
-            model.ExpertId = vm.ExpertId;
-            model.FlatCount = vm.FlatCount;
-            model.Name = vm.Name;
-            model.ProjectFirm = vm.ProjectFirm;
-            model.ProjectLocation = vm.ProjectLocation;
-            model.FileDetails = vm.ProjectFileDetails;
-            model.ProjectDeliveryDate = vm.ProjectDeliveryDate;
-            model.ProjectArea = vm.ProjectArea;
-
+            vm.Id = model.Id;
+            vm.PriceList = model.PriceList;
+            vm.ProjectPromotionVideo = model.ProjectPromotionVideo;
+            vm.ThumbPath = model.ThumbPath;
+            vm.CreatedDateTime = model.CreatedDateTime;
+            vm.Description = model.Description;
+            vm.ExpertId = model.ExpertId;
+            vm.FlatCount = model.FlatCount;
+            vm.Name = model.Name;
+            vm.ProjectFirm = model.ProjectFirm;
+            vm.ProjectLocation = model.ProjectLocation;
+            vm.FileDetails = model.ProjectFileDetails;
+            vm.ProjectDeliveryDate = model.ProjectDeliveryDate;
+            vm.ProjectArea = model.ProjectArea;
+            vm.SelectedProperties = model.SelectedProperties.Select(x => x.Id.ToString()).ToArray();
+            vm.SelectedSecurities = model.SelectedSecurities.Select(x => x.Id.ToString()).ToArray();
+            vm.SelectedSocialList = model.SelectedSocialApps.Select(x => x.Id.ToString()).ToArray();
             TempData["ThumbPath"] = vm.ThumbPath;
             TempData["PriceList"] = vm.PriceList;
 
-            return View(model);
+            return View(vm);
 
         }
 
@@ -164,53 +140,6 @@ namespace Project_UI.Areas.Admin.Controllers
         [HttpPost, ValidateInput(false)]
         public ActionResult Edit(ProjectViewModel project, string[] tags, string[] socials, string[] securitys, HttpPostedFileBase document, HttpPostedFileBase pricelist)
         {
-
-            //Project _project = Database.Projects.FirstOrDefault(x => x.ID == project.ID);
-
-
-            //else
-            //{
-            //    _project.ImagePath = TempData["ImagePath"].ToString();
-            //}
-
-            //else
-            //{
-            //    _project.PriceList = TempData["PriceList"].ToString();
-            //}
-
-            //_project.Name = project.Name;
-            //_project.SubName = project.SubName;
-            //_project.SSubName = project.SSubName;
-            //_project.Description = project.Description;
-            //_project.ProjectA = project.ProjectA;
-            //_project.HouseN = project.HouseN;
-            //_project.DeliveryDate = project.DeliveryDate;
-            //_project.ExpertID = project.ExpertID;
-            //_project.Video = project.Video;
-            //if (tags != null)
-            //{
-            //    _project.properties = string.Empty;
-            //    foreach (var b in tags)
-            //    {
-            //        _project.properties += b + ",";
-            //    }
-            //}
-            //if (securitys != null)
-            //{
-            //    _project.securitys = string.Empty;
-            //    foreach (var c in securitys)
-            //    {
-            //        _project.securitys += c + ",";
-            //    }
-            //}
-            //if (socials != null)
-            //{
-            //    _project.socialapps = string.Empty;
-            //    foreach (var a in socials)
-            //    {
-            //        _project.socialapps += a + ",";
-            //    }
-            //}
             if (ModelState.IsValid)
             {
                 if (pricelist != null)
@@ -245,7 +174,10 @@ namespace Project_UI.Areas.Admin.Controllers
                     ProjectLocation = project.ProjectLocation,
                     ThumbPath = project.ThumbPath,
                     ProjectPromotionVideo = project.ProjectPromotionVideo,
-                    Id = project.Id
+                    Id = project.Id,
+                    SelectedSecurities = securitys.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList(),
+                    SelectedSocialApps = socials.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList(),
+                    SelectedProperties = tags.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList()
                 };
 
                 _projectService.Edit(model);

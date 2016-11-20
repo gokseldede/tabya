@@ -67,20 +67,6 @@ namespace Project_UI.Areas.Admin.Controllers
         public ActionResult Create(WorkPlaceViewModel work, string[] tags, string[] socials, string[] securitys, HttpPostedFileBase document)
         {
 
-            //foreach (var b in tags)
-            //{
-            //    work.properties += b + ",";
-            //}
-            //foreach (var c in securitys)
-            //{
-            //    work.securitys += c + ",";
-            //}
-            //foreach (var a in socials)
-            //{
-            //    work.socialapps += a + ",";
-            //}
-
-
             if (ModelState.IsValid)
             {
                 List<FileDetailServiceModel> fileDetails = UploadFiles();
@@ -104,7 +90,10 @@ namespace Project_UI.Areas.Admin.Controllers
                     ThumbPath = work.ThumbPath,
                     StatusId = work.StatusId,
                     IlceId = work.IlceId,
-                    WorkFileDetails = fileDetails
+                    WorkFileDetails = fileDetails,
+                    SelectedSecurities = securitys.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList(),
+                    SelectedSocialApps = socials.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList(),
+                    SelectedProperties = tags.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList()
                 };
                 _workPlaceService.Create(model);
 
@@ -136,7 +125,9 @@ namespace Project_UI.Areas.Admin.Controllers
             vm.IlceId = work.IlceId;
             vm.Id = work.Id;
             vm.FileDetails = work.WorkFileDetails;
-
+            vm.SelectedProperties = work.SelectedProperties.Select(x=>x.Id.ToString()).ToArray();
+            vm.SelectedSecurities = work.SelectedSecurities.Select(x=>x.Id.ToString()).ToArray();
+            vm.SelectedSocialList = work.SelectedSocialApps.Select(x => x.Id.ToString()).ToArray();
             TempData["ThumbPath"] = work.ThumbPath;
 
             return View(vm);
@@ -176,7 +167,10 @@ namespace Project_UI.Areas.Admin.Controllers
                     ThumbPath = work.ThumbPath,
                     StatusId = work.StatusId,
                     IlceId = work.IlceId,
-                    WorkFileDetails = fileDetails
+                    WorkFileDetails = fileDetails,
+                    SelectedSecurities = securitys.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList(),
+                    SelectedSocialApps = socials.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList(),
+                    SelectedProperties = tags.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList()
                 };
                 _workPlaceService.Edit(model);
 

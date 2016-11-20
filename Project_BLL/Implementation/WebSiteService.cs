@@ -15,7 +15,7 @@ namespace Project_BLL.Implementation
         private readonly IRepository<AdDetail> _adDetailRepository;
         private readonly IRepository<Land> _landRepository;
         private readonly IRepository<Workplace> _workplaceRepository;
-
+        private readonly IRepository<Bina> _buildRepository;
 
         public WebSiteService()
         {
@@ -24,6 +24,7 @@ namespace Project_BLL.Implementation
             _adDetailRepository = new EfRepositoryForEntityBase<AdDetail>();
             _landRepository = new EfRepositoryForEntityBase<Land>();
             _workplaceRepository = new EfRepositoryForEntityBase<Workplace>();
+            _buildRepository=new EfRepositoryForEntityBase<Bina>();
         }
         public List<SelectlistItem> GetCities()
         {
@@ -68,7 +69,7 @@ namespace Project_BLL.Implementation
                 Status = x.Status.Name,
                 Price = x.Price,
                 SquareMetre = x.Size,
-                AdType="Arsa"
+                AdType = "Arsa"
             }).ToList());
             vm.Advertisements.AddRange(_workplaceRepository.Table.Where(x => x.IsDelete == false && x.Vitrin).Select(x => new NewAdvertisement()
             {
@@ -80,8 +81,65 @@ namespace Project_BLL.Implementation
                 SquareMetre = x.Size,
                 AdType = "İşyeri"
             }).ToList());
+            vm.Advertisements.AddRange(_buildRepository.Table.Where(x => x.IsDelete == false && x.Vitrin).Select(x => new NewAdvertisement()
+            {
+                Id = x.ID,
+                Photo = x.ThumbPath,
+                Currency = x.Kurlar.Name,
+                Status = x.Status.Name,
+                Price = x.Price,
+                SquareMetre = x.Size,
+                AdType = "Bina"
+            }).ToList());
             return vm;
         }
 
+        public List<NewAdvertisement> GetAdversmints()
+        {
+            var advertisements = new List<NewAdvertisement>();
+            advertisements.AddRange(_workplaceRepository.Table.Where(x => x.IsDelete == false).Select(x => new NewAdvertisement()
+            {
+                Id = x.ID,
+                Photo = x.ThumbPath,
+                Currency = x.Kurlar.Name,
+                Status = x.Status.Name,
+                Price = x.Price,
+                SquareMetre = x.Size,
+                AdType = "İşyeri"
+            }).ToList());
+            advertisements.AddRange(_landRepository.Table.Where(x => x.IsDelete == false).Select(x => new NewAdvertisement()
+            {
+                Id = x.ID,
+                Photo = x.ThumbPath,
+                Currency = x.Kurlar.Name,
+                Status = x.Status.Name,
+                Price = x.Price,
+                SquareMetre = x.Size,
+                AdType = "Arsa"
+            }).ToList());
+            advertisements.AddRange(
+                _adDetailRepository.Table.Where(x => x.IsDelete == false).Select(x => new NewAdvertisement()
+                {
+                    Id = x.ID,
+                    Photo = x.ThumbPath,
+                    Currency = x.Kurlar.Name,
+                    Status = x.Status.Name,
+                    AdType = x.EmlakTip.Name,
+                    Price = x.Price,
+                    SquareMetre = x.Size
+                }).ToList());
+            advertisements.AddRange(
+                _buildRepository.Table.Where(x => x.IsDelete == false).Select(x => new NewAdvertisement()
+                {
+                    Id = x.ID,
+                    Photo = x.ThumbPath,
+                    Currency = x.Kurlar.Name,
+                    Status = x.Status.Name,
+                    AdType = x.EmlakTip.Name,
+                    Price = x.Price,
+                    SquareMetre = x.Size
+                }).ToList());
+            return advertisements;
+        }
     }
 }

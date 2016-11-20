@@ -23,7 +23,7 @@
                         <label> Satış Durumu:</label>
                         @Html.DropDownListFor(x => x.StatusId, Model.StatusList, "Satış Durumu Seçiniz", new { @class = "form-control" })
                         <label> Fiyatı:</label>
-                        @Html.EditorFor(x => x.Price)
+                        @Html.TextBoxFor(x => x.Price, new { @class = "form-control", @id = "money-bank", @placeholder = "Örn: 10.5" }))
                         <label>Döviz Tipi</label>
                         @Html.DropDownListFor(x => x.KurlarId, Model.KurlarList, "Döviz Tipi Seçiniz", new { @class = "form-control" })
 

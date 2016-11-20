@@ -1,4 +1,4 @@
-﻿@model Project_UI.Models.ProjectVM.ProjectClass
+﻿@model Project_UI.Models.ProjectDetailViewModel
 @{
     ViewBag.Title = "Detail";
     Layout = "~/Views/Shared/_SiteLayout.cshtml";
@@ -12,15 +12,15 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 title">
-                    <h2>@Model.Project.Name</h2>
-                    <p><strong>@Model.Project.SubName</strong> - @Model.Project.SSubName</p>
+                    <h2>@Model.Name</h2>
+                    <p><strong>@Model.ProjectFirm</strong> - @Model.ProjectLocation</p>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <span><strong>TESLİM TARİHİ:</strong> @Model.Project.DeliveryDate.ToShortDateString()</span>
-                    <span><strong>KONUT SAYISI:</strong>@Model.Project.HouseN</span>
-                    <span><strong>TOPLAM PROJE ALANI:</strong> @Model.Project.ProjectA m2</span>
+                    <span><strong>TESLİM TARİHİ:</strong> @Model.DeliveryDate.ToShortDateString()</span>
+                    <span><strong>KONUT SAYISI:</strong>@Model.FlatCount</span>
+                    <span><strong>TOPLAM PROJE ALANI:</strong> @Model.ProjectArea m2</span>
                 </div>
             </div>
         </div>
@@ -30,7 +30,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="galleryBig">
-                        @foreach (var item in Model.ProjectFile)
+                        @foreach (var item in Model.ProjectFiles)
                         {
                             <div class="item">
 
@@ -39,9 +39,9 @@
                             </div>
                         }
                     </div>
-                    @if (Model.Project.Video != null)
+                    @if (Model.Video != null)
                     {
-                        <a href="#" class="videoBtn" data-toggle="modal" data-target="#videoModal" data-theVideo="@Model.Project.Video"><i class="fa fa-play-circle-o" aria-hidden="true"></i> Proje Tanıtım Filmini İzleyin</a>
+                        <a href="#" class="videoBtn" data-toggle="modal" data-target="#videoModal" data-theVideo="@Model.Video"><i class="fa fa-play-circle-o" aria-hidden="true"></i> Proje Tanıtım Filmini İzleyin</a>
                     <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="videoModal" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content"><iframe width="100%" height="500" src="" frameborder="0"></iframe></div>
@@ -53,15 +53,15 @@
         </div>
         <div class="info-box">
             <div class="user-img">
-                <img src="@Model.Project.Expert.ImagePath" width="65" height="65" alt="Necmi Körük">
+                <img src="@Model.Expert.ImagePath" width="65" height="65" alt="Necmi Körük">
             </div>
             <div class="text">
-                <h2>@Model.Project.Expert.Name</h2>
-                <h3>@Model.Project.Expert.Title</h3>
+                <h2>@Model.Expert.Name</h2>
+                <h3>@Model.Expert.Title</h3>
             </div>
             <ul class="contact-list">
-                <li><a href="tel:@Model.Project.Expert.PhoneNumber">@Model.Project.Expert.PhoneNumber</a><span class="icon"><i class="fa fa-phone"></i> </span></li>
-                <li><a href="mailto:@Model.Project.Expert.Email">@Model.Project.Expert.Email</a><span class="icon"><i class="fa fa-envelope"></i> </span></li>
+                <li><a href="tel:@Model.Expert.PhoneNumber">@Model.Expert.PhoneNumber</a><span class="icon"><i class="fa fa-phone"></i> </span></li>
+                <li><a href="mailto:@Model.Expert.Email">@Model.Expert.Email</a><span class="icon"><i class="fa fa-envelope"></i> </span></li>
             </ul>
         </div>
     </div>
@@ -79,9 +79,9 @@
             <div class="row">
                 <div class="col-md-12">
                     <article class="article">
-                        @if (Model.Project.Description != null)
+                        @if (Model.Description != null)
                         {
-                            <p>@Html.Raw(Model.Project.Description)</p>
+                            <p>@Html.Raw(Model.Description)</p>
                         }
 
                     </article>
@@ -101,13 +101,13 @@
         </div>
         <div class="container list">
             <div class="row">
-                @if (Model.Project.socialapps != null)
-                {
-                    foreach (var item in Model.Project.socialapps.Substring(0, Model.Project.socialapps.Length - 1).Split(','))
-                    {
-                        <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text">@item.ToString()</span></div>
-                    }
-                }
+               @if (Model.SelectedSocialList != null)
+               {
+                   foreach (var item in Model.SelectedSocialList)
+                   {
+                    <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text">@item.ToString()</span></div>
+                   }
+               }
             </div>
         </div>
         <div class="title">
@@ -121,9 +121,9 @@
         </div>
         <div class="container list">
             <div class="row">
-                @if (Model.Project.securitys != null)
+                @if (Model.SelectedSecurities != null)
                 {
-                    foreach (var item in Model.Project.securitys.Substring(0, Model.Project.securitys.Length - 1).Split(','))
+                    foreach (var item in Model.SelectedSecurities)
                     {
                         <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text">@item.ToString()</span></div>
                     }
@@ -142,9 +142,9 @@
         </div>
         <div class="container list">
             <div class="row">
-                @if (Model.Project.properties != null)
+                @if (Model.SelectedProperties != null)
                 {
-                    foreach (var item in Model.Project.properties.Substring(0, Model.Project.properties.Length - 1).Split(','))
+                    foreach (var item in Model.SelectedProperties)
                     {
                         <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text">@item.ToString()</span></div>
                     }
@@ -157,9 +157,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    @if (Model.Project.PriceList != null)
+                    @if (Model.PriceList != null)
                     {
-                        <img src="@Model.Project.PriceList" alt="">
+                        <img src="@Model.PriceList" alt="">
                     }
                     else
                     {

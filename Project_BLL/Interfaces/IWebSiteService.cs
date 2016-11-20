@@ -8,5 +8,6 @@ namespace Project_BLL.Interfaces
         HomeViewModel GetMainPageData();
         List<SelectlistItem> GetCities();
         List<SelectlistItem> GetCounties(int cityId);
+        List<NewAdvertisement> GetAdversmints();
     }
 }

@@ -6,7 +6,7 @@ namespace Project_UI.Areas.Admin.Models
     {
         public int IlceId { get; set; }
         public string ProjectFirm { get; set; }
-        public decimal ProjectArea { get; set; }
+        public int ProjectArea { get; set; }
         public int FlatCount { get; set; }
         public DateTime ProjectDeliveryDate { get; set; }
         public string ProjectPromotionVideo { get; set; }

@@ -27,11 +27,17 @@ namespace Project_BLL.ServiceModels
         public int Id { get; set; }
         public int Price { get; set; }
         public string ThumbPath { get; set; }
+        public string Status { get; set; }
         public int? StatusId { get; set; }
+        public string Kur { get; set; }
         public int? KurlarId { get; set; }
+        public string Kredi { get; set; }
         public int? KrediId { get; set; }
+        public dynamic Expert { get; set; }
         public int? ExpertId { get; set; }
+        public string Kimden { get; set; }
         public int? KimdenId { get; set; }
+        public string Imar { get; set; }
         public int? ImarId { get; set; }
         public List<FileDetailServiceModel> FileDetails { get; set; }
     }

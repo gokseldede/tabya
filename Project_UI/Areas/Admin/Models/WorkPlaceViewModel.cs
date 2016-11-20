@@ -31,8 +31,14 @@ namespace Project_UI.Areas.Admin.Models
         public List<SelectListItem> IsinmaList { get; set; }
         public List<SelectListItem> KrediList { get; set; }
         public List<SelectListItem> KurlarList { get; set; }
+
+        public string[] SelectedProperties { get; set; }
         public List<SelectListItem> PropertiesList { get; set; }
+
+        public string[] SelectedSocialList { get; set; }
         public List<SelectListItem> SocialList { get; set; }
+
+        public string[] SelectedSecurities { get; set; }
         public List<SelectListItem> SecuritiesList { get; set; }
         public List<SelectListItem> IlList { get; set; }
         public List<FileDetailServiceModel> FileDetails { get; set; }

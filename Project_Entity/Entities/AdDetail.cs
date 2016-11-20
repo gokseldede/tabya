@@ -46,7 +46,7 @@ namespace Project_Entity
 
         public int? EsyaID { get; set; }
         public virtual Esya Esya { get; set; }
-        public virtual Isinma Isınma { get; set; }
+        public virtual Isinma Isinma { get; set; }
         public virtual AdminUser AdminUser { get; set; }
         public virtual Kredi Kredi { get; set; }
         public virtual Expert Expert { get; set; }
@@ -59,6 +59,10 @@ namespace Project_Entity
         public virtual Il Il { get; set; }
         public virtual Ilce Ilce { get; set; }
         public virtual Semt Semt { get; set; }
+
+        public virtual ICollection<Properties> Propertieses { get; set; }
+        public virtual ICollection<Securitys> Securities { get; set; }
+        public virtual ICollection<SocialApps> SocialAppses { get; set; }
     }
     public class Site : EntityBase
     {
@@ -118,6 +122,9 @@ namespace Project_Entity
         public virtual Status Status { get; set; }
         public int? KurlarID { get; set; }
         public virtual Kurlar Kurlar { get; set; }
+        public virtual ICollection<Properties> Propertieses { get; set; }
+        public virtual ICollection<Securitys> Securities { get; set; }
+        public virtual ICollection<SocialApps> SocialAppses { get; set; }
     }
 
     public class Imar : EntityBase
@@ -177,7 +184,7 @@ namespace Project_Entity
         public virtual EmlakTip EmlakTip { get; set; }
         public int? StatusID { get; set; }
         public virtual Status Status { get; set; }
-        public string Size { get; set; }
+        public int Size { get; set; }
         public int? KimdenID { get; set; }
         public virtual Kimden Kimden { get; set; }
         public int? IsınmaID { get; set; }
@@ -195,5 +202,8 @@ namespace Project_Entity
         public virtual List<BinaFileDetail> BinaFileDetails { get; set; }
         public int? KurlarID { get; set; }
         public virtual Kurlar Kurlar { get; set; }
+        public virtual ICollection<Properties> Propertieses { get; set; }
+        public virtual ICollection<Securitys> Securities { get; set; }
+        public virtual ICollection<SocialApps> SocialAppses { get; set; }
     }
 }

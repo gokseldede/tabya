@@ -74,6 +74,9 @@ namespace Project_UI.Areas.Admin.Controllers
             adDetail.ThumbPath = work.ThumbPath;
             adDetail.FileDetails = work.FileDetails;
             adDetail.Id = work.Id;
+            adDetail.SelectedProperties = work.SelectedProperties.Select(x=>x.Id.ToString()).ToArray();
+            adDetail.SelectedSecurities = work.SelectedSecurities.Select(x => x.Id.ToString()).ToArray();
+            adDetail.SelectedSocialList = work.SelectedSocialApps.Select(x => x.Id.ToString()).ToArray();
 
             TempData["ImagePath"] = adDetail.ThumbPath;
 
@@ -106,20 +109,7 @@ namespace Project_UI.Areas.Admin.Controllers
         [HttpPost, ValidateInput(false)]
         public ActionResult Create(AdDetailViewModel adDetail, string[] tags, string[] socials, string[] securitys, HttpPostedFileBase document)
         {
-            //    foreach (var b in tags)
-            //    {
-            //        adDetail.properties += b + ",";
-            //    }
-
-            //    foreach (var c in securitys)
-            //    {
-            //        adDetail.securitys = string.Empty;
-            //        adDetail.securitys += c + ",";
-            //    }
-            //    foreach (var a in socials)
-            //    {
-            //        adDetail.socialapps += a + ",";
-            //    }
+           
             if (ModelState.IsValid)
             {
                 var imagePath = Functions.UploadImage(document);
@@ -150,7 +140,10 @@ namespace Project_UI.Areas.Admin.Controllers
                     Size = adDetail.Size,
                     StatusId = adDetail.StatusId,
                     ThumbPath = adDetail.ThumbPath,
-                    FileDetails = fileDetails
+                    FileDetails = fileDetails,
+                    SelectedProperties = tags.Select(x=>new SelectlistItem() {Id=int.Parse(x)}).ToList(),
+                    SelectedSecurities=securitys.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList(),
+                    SelectedSocialApps = socials.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList()
                 };
                 _adService.Create(model);
             }
@@ -162,32 +155,7 @@ namespace Project_UI.Areas.Admin.Controllers
         [HttpPost, ValidateInput(false)]
         public ActionResult Edit(AdDetailViewModel adDetail, string[] tags, string[] socials, string[] securitys, HttpPostedFileBase document)
         {
-            //    if (tags != null)
-            //    {
-            //        _adDetail.properties = string.Empty;
-            //        foreach (var b in tags)
-            //        {
-            //            _adDetail.properties += b + ",";
-            //        }
-            //    }
-
-            //    if (securitys != null)
-            //    {
-            //        _adDetail.securitys = string.Empty;
-            //        foreach (var c in securitys)
-            //        {
-            //            _adDetail.securitys += c + ",";
-            //        }
-            //    }
-            //    if (socials != null)
-            //    {
-            //        _adDetail.socialapps = string.Empty;
-            //        foreach (var a in socials)
-            //        {
-            //            _adDetail.socialapps += a + ",";
-            //        }
-            //    }
-
+           
             if (ModelState.IsValid)
             {
                 if (document != null)
@@ -224,6 +192,9 @@ namespace Project_UI.Areas.Admin.Controllers
                     StatusId = adDetail.StatusId,
                     ThumbPath = adDetail.ThumbPath,
                     FileDetails = files,
+                    SelectedSecurities = securitys.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList(),
+                    SelectedProperties = tags.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList(),
+                    SelectedSocialApps = socials.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList(),
                     Id = adDetail.Id
                 };
                 _adService.Edit(model);

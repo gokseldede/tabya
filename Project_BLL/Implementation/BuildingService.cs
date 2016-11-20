@@ -10,10 +10,17 @@ namespace Project_BLL.Implementation
     public class BuildingService : IStandartService<BuildingServiceModel>
     {
         private readonly IRepository<Bina> _buildingRepository;
+        private readonly IRepository<Securitys> _securityRepository;
+        private readonly IRepository<SocialApps> _socialAppsRepository;
+        private readonly IRepository<Properties> _propertiesRepository;
 
         public BuildingService()
         {
-            _buildingRepository=new EfRepositoryForEntityBase<Bina>();
+            ProjectContext coneContext = new ProjectContext();
+            _buildingRepository = new EfRepositoryForEntityBase<Bina>(coneContext);
+            _securityRepository = new EfRepositoryForEntityBase<Securitys>(coneContext);
+            _socialAppsRepository = new EfRepositoryForEntityBase<SocialApps>(coneContext);
+            _propertiesRepository = new EfRepositoryForEntityBase<Properties>(coneContext);
         }
 
         public void ChangeStatus(int id)
@@ -50,7 +57,7 @@ namespace Project_BLL.Implementation
                 KurlarID = model.KurlarId,
                 Name = model.Name,
                 Price = model.Price,
-                Size = model.Size.ToString(),
+                Size = model.Size,
                 StatusID = model.StatusId,
                 Takas = model.Takas,
                 ThumbPath = model.ThumbPath,
@@ -61,6 +68,10 @@ namespace Project_BLL.Implementation
                     FileName = x.FileName
                 }).ToList()
             };
+
+            bina.Securities = _securityRepository.Table.Where(x => model.SelectedSecurities.Any(y => y.Id == x.ID)).ToList();
+            bina.Propertieses = _propertiesRepository.Table.Where(x => model.SelectedSecurities.Any(y => y.Id == x.ID)).ToList();
+            bina.SocialAppses = _socialAppsRepository.Table.Where(x => model.SelectedSecurities.Any(y => y.Id == x.ID)).ToList();
 
             _buildingRepository.Insert(bina);
         }
@@ -87,7 +98,7 @@ namespace Project_BLL.Implementation
                     db.KurlarID = model.KurlarId;
                     db.Name = model.Name;
                     db.Price = model.Price;
-                    db.Size = model.Size.ToString();
+                    db.Size = model.Size;
                     db.StatusID = model.StatusId;
                     db.Takas = model.Takas;
                     db.ThumbPath = model.ThumbPath;
@@ -97,6 +108,24 @@ namespace Project_BLL.Implementation
                         Extension = x.Extension,
                         FileName = x.FileName
                     }).ToList();
+
+                    foreach (var item in db.Securities.ToList())
+                        if (model.SelectedSecurities.All(y => y.Id != item.ID))
+                            db.Securities.Remove(item);
+
+                    db.Securities = _securityRepository.Table.Where(x => model.SelectedSecurities.Any(y => y.Id == x.ID)).ToList();
+
+                    foreach (var item in db.Propertieses.ToList())
+                        if (model.SelectedProperties.All(y => y.Id != item.ID))
+                            db.Propertieses.Remove(item);
+
+                    db.Propertieses = _propertiesRepository.Table.Where(x => model.SelectedProperties.Any(y => y.Id == x.ID)).ToList();
+
+                    foreach (var item in db.SocialAppses.ToList())
+                        if (model.SelectedSocialApps.All(y => y.Id != item.ID))
+                            db.SocialAppses.Remove(item);
+
+                    db.SocialAppses = _socialAppsRepository.Table.Where(x => model.SelectedSocialApps.Any(y => y.Id == x.ID)).ToList();
 
                     _buildingRepository.Update(db);
                 }
@@ -142,16 +171,23 @@ namespace Project_BLL.Implementation
                 Description = data.Description,
                 UpdatedDateTime = data.UpdatedDate,
                 IsInVitrin = data.Vitrin,
+                Kimden = data.Kimden.Name,
                 KimdenId = data.KimdenID,
+                Expert = data.Expert,
                 ExpertId = data.ExpertID,
+                Status = data.Status.Name,
                 StatusId = data.StatusID,
-                Size = int.Parse(data.Size),
+                Size = data.Size,
+                Kur = data.Kurlar.Name,
                 KurlarId = data.KurlarID,
                 BAge = data.BAge,
                 Price = data.Price,
                 FloorCount = data.Floor,
                 FloorFlatCount = data.FloorRoom,
                 Takas = data.Takas,
+                SelectedProperties = data.Propertieses.Select(x => new SelectlistItem() { Id = x.ID, Value = x.Name }).ToList(),
+                SelectedSecurities = data.Securities.Select(x => new SelectlistItem() { Id = x.ID, Value = x.Name }).ToList(),
+                SelectedSocialApps = data.SocialAppses.Select(x => new SelectlistItem() { Id = x.ID, Value = x.Name }).ToList(),
                 FileDetails = data.BinaFileDetails.Select(x => new FileDetailServiceModel() { Id = x.Id, Extension = x.Extension, FileName = x.FileName }).ToList()
             };
             return vm;

@@ -12,10 +12,17 @@ namespace Project_BLL.Implementation
     public class WorkPlaceService : IStandartService<WorkplaceServiceModel>
     {
         private readonly IRepository<Workplace> _workPlaceRepository;
+        private readonly IRepository<Securitys> _securityRepository;
+        private readonly IRepository<SocialApps> _socialAppsRepository;
+        private readonly IRepository<Properties> _propertiesRepository;
 
         public WorkPlaceService()
         {
+            ProjectContext coneContext = new ProjectContext();
             _workPlaceRepository = new EfRepositoryForEntityBase<Workplace>();
+            _securityRepository = new EfRepositoryForEntityBase<Securitys>(coneContext);
+            _socialAppsRepository = new EfRepositoryForEntityBase<SocialApps>(coneContext);
+            _propertiesRepository = new EfRepositoryForEntityBase<Properties>(coneContext);
         }
 
         public void Create(WorkplaceServiceModel model)
@@ -40,7 +47,9 @@ namespace Project_BLL.Implementation
                 EmlakTipID = 2, //TODO: düzelt
 
             };
-
+            workplace.Securities = _securityRepository.Table.Where(x => model.SelectedSecurities.Any(y => y.Id == x.ID)).ToList();
+            workplace.Propertieses = _propertiesRepository.Table.Where(x => model.SelectedProperties.Any(y => y.Id == x.ID)).ToList();
+            workplace.SocialAppses = _socialAppsRepository.Table.Where(x => model.SelectedSocialApps.Any(y => y.Id == x.ID)).ToList();
             _workPlaceRepository.Insert(workplace);
         }
 
@@ -67,7 +76,25 @@ namespace Project_BLL.Implementation
                     db.Price = model.Price;
                     db.WorkFileDetails = model.WorkFileDetails.Select(x => new WorkFileDetail() { Id = x.Id, Extension = x.Extension, FileName = x.FileName }).ToList();
                     db.EmlakTipID = 2; //TODO: düzelt
-                    
+
+                    foreach (var item in db.Securities.ToList())
+                        if (model.SelectedSecurities.All(y => y.Id != item.ID))
+                            db.Securities.Remove(item);
+
+                    db.Securities = _securityRepository.Table.Where(x => model.SelectedSecurities.Any(y => y.Id == x.ID)).ToList();
+
+                    foreach (var item in db.Propertieses.ToList())
+                        if (model.SelectedProperties.All(y => y.Id != item.ID))
+                            db.Propertieses.Remove(item);
+
+                    db.Propertieses = _propertiesRepository.Table.Where(x => model.SelectedProperties.Any(y => y.Id == x.ID)).ToList();
+
+                    foreach (var item in db.SocialAppses.ToList())
+                        if (model.SelectedSocialApps.All(y => y.Id != item.ID))
+                            db.SocialAppses.Remove(item);
+
+                    db.SocialAppses = _socialAppsRepository.Table.Where(x => model.SelectedSocialApps.Any(y => y.Id == x.ID)).ToList();
+
                     _workPlaceRepository.Update(db);
                 }
             }
@@ -88,17 +115,26 @@ namespace Project_BLL.Implementation
                 Description = data.Description,
                 Dues = int.Parse(data.Dues),
                 ExpertId = data.ExpertID,
+                Expert=data.Expert,
                 UpdatedDateTime = data.UpdatedDate,
                 IsActive = data.IsActive,
                 StatusId = data.StatusID,
+                Status=data.Status.Name,
                 Price = data.Price,
                 Name = data.Name,
+                Kur=data.Kurlar.Name,
                 KurlarId = data.KurlarID,
                 Room = data.Room,
                 Size = data.Size,
+                Isinma=data.Isýnma.Name,
                 IsinmaId = data.IsýnmaID,
+                Kimden=data.Kimden.Name,
                 KimdenId = data.KimdenID,
+                Kredi=data.Kredi.Name,
                 KrediId = data.KrediID,
+                SelectedProperties = data.Propertieses.Select(x => new SelectlistItem() { Id = x.ID, Value = x.Name }).ToList(),
+                SelectedSecurities = data.Securities.Select(x => new SelectlistItem() { Id = x.ID, Value = x.Name }).ToList(),
+                SelectedSocialApps = data.SocialAppses.Select(x => new SelectlistItem() { Id = x.ID, Value = x.Name }).ToList(),
                 WorkFileDetails = data.WorkFileDetails.Select(
                     x => new FileDetailServiceModel() { Id = x.Id, Extension = x.Extension, FileName = x.FileName }).ToList(),
                 IsInVitrin = data.Vitrin

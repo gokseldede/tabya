@@ -12,15 +12,26 @@ namespace Project_BLL.Implementation
     public class ProjectService : IStandartService<ProjectServiceModel>
     {
         private readonly IRepository<Project> _projectRepository;
+        private readonly IRepository<Securitys> _securityRepository;
+        private readonly IRepository<SocialApps> _socialAppsRepository;
+        private readonly IRepository<Properties> _propertiesRepository;
 
         public ProjectService()
         {
-            _projectRepository = new EfRepositoryForEntityBase<Project>();
+            ProjectContext coneContext = new ProjectContext();
+            _projectRepository = new EfRepositoryForEntityBase<Project>(coneContext);
+            _securityRepository = new EfRepositoryForEntityBase<Securitys>(coneContext);
+            _socialAppsRepository = new EfRepositoryForEntityBase<SocialApps>(coneContext);
+            _propertiesRepository = new EfRepositoryForEntityBase<Properties>(coneContext);
         }
 
         public void Create(ProjectServiceModel model)
         {
-            _projectRepository.Insert(model.ToProject());
+            var db = model.ToProject();
+            db.Securities = _securityRepository.Table.Where(x => model.SelectedSecurities.Any(y => y.Id == x.ID)).ToList();
+            db.Propertieses = _propertiesRepository.Table.Where(x => model.SelectedSecurities.Any(y => y.Id == x.ID)).ToList();
+            db.SocialAppses = _socialAppsRepository.Table.Where(x => model.SelectedSecurities.Any(y => y.Id == x.ID)).ToList();
+            _projectRepository.Insert(db);
         }
 
         public void Edit(ProjectServiceModel model)
@@ -34,11 +45,11 @@ namespace Project_BLL.Implementation
                     db.DeliveryDate = model.ProjectDeliveryDate;
                     db.Description = model.Description;
                     db.ExpertID = model.ExpertId;
-                    db.HouseN = model.FlatCount.ToString();
+                    db.HouseN = model.FlatCount;
                     db.ImagePath = model.ThumbPath;
                     db.Name = model.Name;
                     db.PriceList = model.PriceList;
-                    db.ProjectA = model.ProjectArea.ToString("F2");
+                    db.ProjectA = model.ProjectArea;
                     db.SSubName = model.ProjectLocation;
                     db.SubName = model.ProjectFirm;
                     db.Video = model.ProjectPromotionVideo;
@@ -46,6 +57,23 @@ namespace Project_BLL.Implementation
                         model.ProjectFileDetails.Select(
                             x => new ProjectFile() { Id = x.Id, Extension = x.Extension, FileName = x.FileName }).ToList();
 
+                    foreach (var item in db.Securities.ToList())
+                        if (model.SelectedSecurities.All(y => y.Id != item.ID))
+                            db.Securities.Remove(item);
+
+                    db.Securities = _securityRepository.Table.Where(x => model.SelectedSecurities.Any(y => y.Id == x.ID)).ToList();
+
+                    foreach (var item in db.Propertieses.ToList())
+                        if (model.SelectedProperties.All(y => y.Id != item.ID))
+                            db.Propertieses.Remove(item);
+
+                    db.Propertieses = _propertiesRepository.Table.Where(x => model.SelectedProperties.Any(y => y.Id == x.ID)).ToList();
+
+                    foreach (var item in db.SocialAppses.ToList())
+                        if (model.SelectedSocialApps.All(y => y.Id != item.ID))
+                            db.SocialAppses.Remove(item);
+
+                    db.SocialAppses = _socialAppsRepository.Table.Where(x => model.SelectedSocialApps.Any(y => y.Id == x.ID)).ToList();
                     _projectRepository.Update(db);
                 }
             }

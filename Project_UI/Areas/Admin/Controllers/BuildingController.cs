@@ -3,7 +3,6 @@ using Project_UI.Areas.Admin.FilterAttributes;
 using Project_UI.Areas.Admin.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -43,20 +42,36 @@ namespace Project_UI.Areas.Admin.Controllers
             return View(vm);
         }
 
-        private BuildingViewModel GetModel()
+        private BuildingViewModel GetModel(BuildingViewModel viewModel = null)
         {
-            var viewModel = new BuildingViewModel()
-            {
-                ExpertList = _optionService.GetExpertList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                KimdenList = _optionService.GetKimdenList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                KurlarList = _optionService.GetKurlarList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                PropertiesList = _optionService.GetPropertiesList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                SecuritiesList = _optionService.GetSecurityList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                SocialList = _optionService.GetSocialAppsList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                StatusList = _optionService.GetStatuslist().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                IlList = _optionService.GetIllerList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                FileDetails = new List<FileDetailServiceModel>()
-            };
+            if (viewModel == null)
+                viewModel = new BuildingViewModel();
+
+            viewModel.ExpertList = _optionService.GetExpertList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList();
+            viewModel.KimdenList = _optionService.GetKimdenList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList();
+            viewModel.KurlarList = _optionService.GetKurlarList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList();
+            viewModel.PropertiesList =
+                _optionService.GetPropertiesList()
+                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value })
+                    .ToList();
+            viewModel.SecuritiesList =
+                _optionService.GetSecurityList()
+                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value })
+                    .ToList();
+            viewModel.SocialList =
+                _optionService.GetSocialAppsList()
+                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value })
+                    .ToList();
+            viewModel.StatusList =
+                _optionService.GetStatuslist()
+                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value })
+                    .ToList();
+            viewModel.IlList =
+                _optionService.GetIllerList()
+                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value })
+                    .ToList();
+            viewModel.FileDetails = new List<FileDetailServiceModel>();
+
             return viewModel;
         }
         public ActionResult Edit(int id)
@@ -91,6 +106,7 @@ namespace Project_UI.Areas.Admin.Controllers
         }
 
         [HttpPost, ValidateInput(false)]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(BuildingViewModel bina, string[] tags, string[] socials, string[] securitys, HttpPostedFileBase document)
         {
             if (ModelState.IsValid)
@@ -117,16 +133,19 @@ namespace Project_UI.Areas.Admin.Controllers
                     Takas = bina.Takas,
                     ThumbPath = bina.ThumbPath,
                     FileDetails = fileDetails,
+                    SemtId = bina.SemtId,
                     SelectedSecurities = securitys.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList(),
                     SelectedSocialApps = socials.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList(),
                     SelectedProperties = tags.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList()
                 };
                 _buildingService.Create(model);
+                return Redirect("/Admin/AdDetails/Index");
             }
-            return Redirect("/Admin/AdDetails/Index");
+            return View(GetModel(bina));
         }
 
         [HttpPost, ValidateInput(false)]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(BuildingViewModel bina, string[] tags, string[] socials, string[] securitys, HttpPostedFileBase document)
         {
 
@@ -159,6 +178,7 @@ namespace Project_UI.Areas.Admin.Controllers
                     Takas = bina.Takas,
                     ThumbPath = bina.ThumbPath,
                     FileDetails = fileDetails,
+                    SemtId = bina.SemtId,
                     SelectedSecurities = securitys.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList(),
                     SelectedSocialApps = socials.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList(),
                     SelectedProperties = tags.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList()
@@ -166,7 +186,7 @@ namespace Project_UI.Areas.Admin.Controllers
                 _buildingService.Edit(model);
                 return Redirect("/Admin/AdDetails/Index");
             }
-            return View(bina);
+            return View(GetModel(bina));
         }
 
         public JsonResult Delete(int id)
@@ -204,7 +224,7 @@ namespace Project_UI.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new { Result = false, Message = ex.Message });
+                return Json(new { Result = false, ex.Message });
             }
         }
 

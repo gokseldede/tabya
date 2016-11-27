@@ -12,7 +12,9 @@
 @section Scripts{
     <script>
         $(document).ready(function() {
-
+            
+            CKEDITOR.replace(content);
+            
             $('#tags').multiselect({nonSelectedText: 'Diğer Özellikler',includeSelectAllOption: true});
             $('#socials').multiselect({nonSelectedText: 'Sosyal Özellikler',includeSelectAllOption: true});
             $('#securitys').multiselect({nonSelectedText: 'Güvenlik Özellikleri',includeSelectAllOption: true});
@@ -25,6 +27,8 @@
             $('#tags').multiselect("select", @Html.Raw(Json.Encode(Model.SelectedProperties)));
             $('#socials').multiselect("select", @Html.Raw(Json.Encode(Model.SelectedSocialList)));
             $('#securitys').multiselect("select", @Html.Raw(Json.Encode(Model.SelectedSecurities)));
+
+
         });
     </script>
 }

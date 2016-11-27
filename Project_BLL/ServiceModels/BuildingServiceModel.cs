@@ -28,6 +28,10 @@ namespace Project_BLL.ServiceModels
         public int FloorCount { get; set; }
         public int FloorFlatCount { get; set; }
         public int Size { get; set; }
+        public string Il { get; set; }
+        public string Ilce { get; set; }
+        public string Semt { get; set; }
+        public int? SemtId { get; set; }
         public List<SelectlistItem> SelectedProperties { get; set; }
         public List<SelectlistItem> SelectedSecurities { get; set; }
         public List<SelectlistItem> SelectedSocialApps { get; set; }

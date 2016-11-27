@@ -9,6 +9,7 @@ namespace Project_BLL.Interfaces
         void Create(T model);
         void Edit(T model);
         T GetById(int id);
+        T GetActiveRecordById(int id);
         void DeleteById(int id);
         void ChangeStatus(int id);
         IList<T> GetAll();

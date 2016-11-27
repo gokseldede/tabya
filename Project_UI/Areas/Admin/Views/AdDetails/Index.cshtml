@@ -11,7 +11,7 @@
         <div class="panel-heading">
             İlan Listesi
         </div>
- 
+
         <!-- /.panel-heading -->
         <div class="panel-body">
             <div class="dataTable_wrapper">
@@ -23,7 +23,7 @@
                             <th>İlan Tipi</th>
                             <th>Durumu</th>
                             <th>Vitrin Durumu</th>
-                            <th class="hidden-480">Oluşturma Tarihi</th>                          
+                            <th class="hidden-480">Oluşturma Tarihi</th>
                             <th class="hidden-480">Güncelleme Tarihi</th>
                             <th>Procces</th>
 
@@ -36,22 +36,12 @@
                                 <td><img src="@item.ThumbPath" width="40" height="40" /></td>
                                 <td>@item.Name</td>
                                 <td>Ad</td>
-                                @if (item.IsActive)
-                                {
-                                    <td id="b_@item.Id" onclick="Status('/Admin/AdDetails/Status/',@item.Id)"><span class="btn btn-info btn-sm">Aktif</span></td>
-                                }
-                                else
-                                {
-                                    <td id="b_@item.Id" onclick="Status('/Admin/AdDetails/Status/',@item.Id)"><span class="btn btn-default btn-sm">Pasif</span></td>
-                                }
-                                @if (item.IsInVitrin)
-                                {
-                                    <td id="c_@item.Id" onclick="Vitrin('/Admin/AdDetails/Vitrin/',@item.Id)"><span class="btn btn-info btn-sm">Vitrine Eklendi</span></td>
-                                }
-                                else
-                                {
-                                    <td id="c_@item.Id" onclick="Vitrin('/Admin/AdDetails/Vitrin/',@item.Id)"><span class="btn btn-default btn-sm">Vitrine Ekle</span></td>
-                                }
+
+                                <td id="b_@item.Id" data-status="@item.IsActive" onclick="Status('/Admin/AdDetails/Status/',@item.Id,this)"><span class="btn btn-@(item.IsActive ? "info" : "default") btn-sm">@(item.IsActive ? "Aktif" : "Pasif")</span></td>
+
+
+                                <td id="c_@item.Id" data-status="@item.IsInVitrin" onclick="Vitrin('/Admin/AdDetails/Vitrin/',@item.Id,this)"><span class="btn btn-@(item.IsInVitrin ? "info" : "default") btn-sm">@(item.IsInVitrin ? "Vitrine Eklendi" : "Vitrine Ekle")</span></td>
+
 
                                 <td class="hidden-480">@item.CreatedDateTime.ToShortDateString()</td>
                                 <td class="hidden-480">@item.UpdatedDateTime</td>
@@ -107,22 +97,10 @@
                                 <td><img src="@item.ThumbPath" width="40" height="40" /></td>
                                 <td>@item.Name</td>
                                 <td>Arsa</td>
-                                @if (item.IsActive)
-                                {
-                                    <td id="b_@item.Id" onclick="Status('/Admin/Land/Status/',@item.Id)"><span class="btn btn-info btn-sm">Aktif</span></td>
-                                }
-                                else
-                                {
-                                    <td id="b_@item.Id" onclick="Status('/Admin/Land/Status/',@item.Id)"><span class="btn btn-default btn-sm">Pasif</span></td>
-                                }
-                                @if (item.IsInVitrin)
-                                {
-                                    <td id="c_@item.Id" onclick="Vitrin('/Admin/Land/Vitrin/',@item.Id)"><span class="btn btn-info btn-sm">Vitrine Eklendi</span></td>
-                                }
-                                else
-                                {
-                                    <td id="c_@item.Id" onclick="Vitrin('/Admin/Land/Vitrin/',@item.Id)"><span class="btn btn-default btn-sm">Vitrine Ekle</span></td>
-                                }
+
+                                <td id="b_@item.Id" data-status="@item.IsActive" onclick="Status('/Admin/Land/Status/',@item.Id,this)"><span class="btn btn-@(item.IsActive ? "info" : "default") btn-sm">@(item.IsActive ? "Aktif" : "Pasif")</span></td>
+
+                                <td id="c_@item.Id" data-status="@item.IsInVitrin" onclick="Vitrin('/Admin/Land/Vitrin/',@item.Id,this)"><span class="btn btn-@(item.IsInVitrin ? "info" : "default") btn-sm">@(item.IsInVitrin ? "Vitrine Eklendi" : "Vitrine Ekle")</span></td>
 
                                 <td class="hidden-480">@item.CreatedDateTime.ToShortDateString()</td>
                                 <td class="hidden-480">@item.UpdatedDateTime</td>
@@ -170,22 +148,10 @@
                                 <td><img src="@item.ThumbPath" width="40" height="40" /></td>
                                 <td>@item.Name</td>
                                 <td>İşyeri</td>
-                                @if (item.IsActive)
-                                {
-                                    <td id="b_@item.Id" onclick="Status('/Admin/Workplace/Status/',@item.Id)"><span class="btn btn-info btn-sm">Aktif</span></td>
-                                }
-                                else
-                                {
-                                    <td id="b_@item.Id" onclick="Status('/Admin/Workplace/Status/',@item.Id)"><span class="btn btn-default btn-sm">Pasif</span></td>
-                                }
-                                @if (item.IsInVitrin)
-                                {
-                                    <td id="c_@item.Id" onclick="Vitrin('/Admin/Workplace/Vitrin/',@item.Id)"><span class="btn btn-info btn-sm">Vitrine Eklendi</span></td>
-                                }
-                                else
-                                {
-                                    <td id="c_@item.Id" onclick="Vitrin('/Admin/Workplace/Vitrin/',@item.Id)"><span class="btn btn-default btn-sm">Vitrine Ekle</span></td>
-                                }
+                                <td id="b_@item.Id" data-status="@item.IsActive" onclick="Status('/Admin/Workplace/Status/',@item.Id,this)"><span class="btn btn-@(item.IsActive ? "info" : "default") btn-sm">@(item.IsActive ? "Aktif" : "Pasif")</span></td>
+
+                                <td id="c_@item.Id" data-status="@item.IsInVitrin" onclick="Vitrin('/Admin/Workplace/Vitrin/',@item.Id,this)"><span class="btn btn-@(item.IsInVitrin ? "info" : "default") btn-sm">@(item.IsInVitrin ? "Vitrine Eklendi" : "Vitrine Ekle")</span></td>
+
 
                                 <td class="hidden-480">@item.CreatedDateTime.ToShortDateString()</td>
                                 <td class="hidden-480">@item.UpdatedDateTime</td>
@@ -241,23 +207,9 @@
                                 <td><img src="@item.ThumbPath" width="40" height="40" /></td>
                                 <td>@item.Name</td>
                                 <td>Bina</td>
-                                @if (item.IsActive)
-                                {
-                                    <td id="b_@item.Id" onclick="Status('/Admin/Building/Status/',@item.Id)"><span class="btn btn-info btn-sm">Aktif</span></td>
-                                }
-                                else
-                                {
-                                    <td id="b_@item.Id" onclick="Status('/Admin/Building/Status/',@item.Id)"><span class="btn btn-default btn-sm">Pasif</span></td>
-                                }
-                                @if (item.IsInVitrin)
-                                {
-                                    <td id="c_@item.Id" onclick="Vitrin('/Admin/Building/Vitrin/',@item.Id)"><span class="btn btn-info btn-sm">Vitrine Eklendi</span></td>
-                                }
-                                else
-                                {
-                                    <td id="c_@item.Id" onclick="Vitrin('/Admin/Building/Vitrin/',@item.Id)"><span class="btn btn-default btn-sm">Vitrine Ekle</span></td>
-                                }
-
+                                <td id="b_@item.Id" data-status="@item.IsActive" onclick="Status('/Admin/Building/Status/',@item.Id,this)"><span class="btn btn-@(item.IsActive ? "info" : "default") btn-sm">@(item.IsActive ? "Aktif" : "Pasif")</span></td>
+                                <td id="c_@item.Id" data-status="@item.IsInVitrin" onclick="Vitrin('/Admin/Building/Vitrin/',@item.Id,this)"><span class="btn btn-@(item.IsInVitrin ? "info" : "default") btn-sm">@(item.IsInVitrin ? "Vitrine Eklendi" : "Vitrine Ekle")</span></td>
+                                
                                 <td class="hidden-480">@item.CreatedDateTime.ToShortDateString()</td>
                                 <td class="hidden-480">@item.UpdatedDateTime</td>
                                 <td>
@@ -317,4 +269,3 @@
     </div>
     <!-- /.panel -->
 </div>
-

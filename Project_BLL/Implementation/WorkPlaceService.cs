@@ -19,7 +19,7 @@ namespace Project_BLL.Implementation
         public WorkPlaceService()
         {
             ProjectContext coneContext = new ProjectContext();
-            _workPlaceRepository = new EfRepositoryForEntityBase<Workplace>();
+            _workPlaceRepository = new EfRepositoryForEntityBase<Workplace>(coneContext);
             _securityRepository = new EfRepositoryForEntityBase<Securitys>(coneContext);
             _socialAppsRepository = new EfRepositoryForEntityBase<SocialApps>(coneContext);
             _propertiesRepository = new EfRepositoryForEntityBase<Properties>(coneContext);
@@ -43,13 +43,17 @@ namespace Project_BLL.Implementation
                 StatusID = model.StatusId,
                 ExpertID = model.ExpertId,
                 Price = model.Price,
+                SemtID = model.SemtId,
                 WorkFileDetails = model.WorkFileDetails.Select(x => new WorkFileDetail() { Id = x.Id, Extension = x.Extension, FileName = x.FileName }).ToList(),
                 EmlakTipID = 2, //TODO: düzelt
 
             };
-            workplace.Securities = _securityRepository.Table.Where(x => model.SelectedSecurities.Any(y => y.Id == x.ID)).ToList();
-            workplace.Propertieses = _propertiesRepository.Table.Where(x => model.SelectedProperties.Any(y => y.Id == x.ID)).ToList();
-            workplace.SocialAppses = _socialAppsRepository.Table.Where(x => model.SelectedSocialApps.Any(y => y.Id == x.ID)).ToList();
+            int[] securitiesIds = model.SelectedSecurities.Select(y => y.Id).ToArray();
+            int[] propertiesIds = model.SelectedProperties.Select(y => y.Id).ToArray();
+            int[] socialAppsIds = model.SelectedSocialApps.Select(y => y.Id).ToArray();
+            workplace.Securities = _securityRepository.Table.Where(x => securitiesIds.Contains(x.ID)).ToList();
+            workplace.Propertieses = _propertiesRepository.Table.Where(x => propertiesIds.Contains(x.ID)).ToList();
+            workplace.SocialAppses = _socialAppsRepository.Table.Where(x => socialAppsIds.Contains(x.ID)).ToList();
             _workPlaceRepository.Insert(workplace);
         }
 
@@ -74,26 +78,30 @@ namespace Project_BLL.Implementation
                     db.StatusID = model.StatusId;
                     db.ExpertID = model.ExpertId;
                     db.Price = model.Price;
+                    db.SemtID = model.SemtId;
                     db.WorkFileDetails = model.WorkFileDetails.Select(x => new WorkFileDetail() { Id = x.Id, Extension = x.Extension, FileName = x.FileName }).ToList();
                     db.EmlakTipID = 2; //TODO: düzelt
 
+                    int[] securitiesIds = model.SelectedSecurities.Select(y => y.Id).ToArray();
+                    int[] propertiesIds = model.SelectedProperties.Select(y => y.Id).ToArray();
+                    int[] socialAppsIds = model.SelectedSocialApps.Select(y => y.Id).ToArray();
                     foreach (var item in db.Securities.ToList())
                         if (model.SelectedSecurities.All(y => y.Id != item.ID))
                             db.Securities.Remove(item);
 
-                    db.Securities = _securityRepository.Table.Where(x => model.SelectedSecurities.Any(y => y.Id == x.ID)).ToList();
+                    db.Securities = _securityRepository.Table.Where(x => securitiesIds.Contains(x.ID)).ToList();
 
                     foreach (var item in db.Propertieses.ToList())
                         if (model.SelectedProperties.All(y => y.Id != item.ID))
                             db.Propertieses.Remove(item);
 
-                    db.Propertieses = _propertiesRepository.Table.Where(x => model.SelectedProperties.Any(y => y.Id == x.ID)).ToList();
+                    db.Propertieses = _propertiesRepository.Table.Where(x => propertiesIds.Contains(x.ID)).ToList();
 
                     foreach (var item in db.SocialAppses.ToList())
                         if (model.SelectedSocialApps.All(y => y.Id != item.ID))
                             db.SocialAppses.Remove(item);
 
-                    db.SocialAppses = _socialAppsRepository.Table.Where(x => model.SelectedSocialApps.Any(y => y.Id == x.ID)).ToList();
+                    db.SocialAppses = _socialAppsRepository.Table.Where(x => socialAppsIds.Contains(x.ID)).ToList();
 
                     _workPlaceRepository.Update(db);
                 }
@@ -106,6 +114,12 @@ namespace Project_BLL.Implementation
             if (data == null)
                 return null;
 
+            var vm = ParseToViewModel(data);
+            return vm;
+        }
+
+        private static WorkplaceServiceModel ParseToViewModel(Workplace data)
+        {
             var vm = new WorkplaceServiceModel
             {
                 Id = data.ID,
@@ -115,23 +129,29 @@ namespace Project_BLL.Implementation
                 Description = data.Description,
                 Dues = int.Parse(data.Dues),
                 ExpertId = data.ExpertID,
-                Expert=data.Expert,
+                Expert = data.Expert,
                 UpdatedDateTime = data.UpdatedDate,
                 IsActive = data.IsActive,
                 StatusId = data.StatusID,
-                Status=data.Status.Name,
+                Status = data.Status.Name,
                 Price = data.Price,
                 Name = data.Name,
-                Kur=data.Kurlar.Name,
+                Kur = data.Kurlar.Name,
                 KurlarId = data.KurlarID,
                 Room = data.Room,
                 Size = data.Size,
-                Isinma=data.Isýnma.Name,
+                Isinma = data.Isýnma.Name,
                 IsinmaId = data.IsýnmaID,
-                Kimden=data.Kimden.Name,
+                Kimden = data.Kimden.Name,
                 KimdenId = data.KimdenID,
-                Kredi=data.Kredi.Name,
+                Kredi = data.Kredi.Name,
                 KrediId = data.KrediID,
+                Semt = data.Semt.Ad,
+                Ilce = data.Semt.Ilce.Ad,
+                Il = data.Semt.Ilce.Il.Ad,
+                SemtId = data.Semt.ID,
+                IlceId=data.Semt.IlceID,
+                IlId=data.Semt.Ilce.IlID,
                 SelectedProperties = data.Propertieses.Select(x => new SelectlistItem() { Id = x.ID, Value = x.Name }).ToList(),
                 SelectedSecurities = data.Securities.Select(x => new SelectlistItem() { Id = x.ID, Value = x.Name }).ToList(),
                 SelectedSocialApps = data.SocialAppses.Select(x => new SelectlistItem() { Id = x.ID, Value = x.Name }).ToList(),
@@ -139,8 +159,16 @@ namespace Project_BLL.Implementation
                     x => new FileDetailServiceModel() { Id = x.Id, Extension = x.Extension, FileName = x.FileName }).ToList(),
                 IsInVitrin = data.Vitrin
             };
+            return vm;
+        }
 
+        public WorkplaceServiceModel GetActiveRecordById(int id)
+        {
+            var data = _workPlaceRepository.Table.SingleOrDefault(x => x.IsActive && x.ID == id);
+            if (data == null)
+                return null;
 
+            var vm = ParseToViewModel(data);
             return vm;
         }
 

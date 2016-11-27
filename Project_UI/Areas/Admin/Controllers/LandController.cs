@@ -6,7 +6,6 @@ using System.Web.Mvc;
 using Project_Entity;
 using Project_UI.Areas.Admin.Models;
 using System.IO;
-using System.Data.Entity;
 using System.Net;
 using Project_BLL.Implementation;
 using Project_BLL.Interfaces;
@@ -24,7 +23,7 @@ namespace Project_UI.Areas.Admin.Controllers
 
         public LandController()
         {
-            _landService=new LandService();
+            _landService = new LandService();
             _optionService = new OptionsService();
             _landFileService = new FileDetailService<LandFileDetail>();
         }
@@ -42,40 +41,35 @@ namespace Project_UI.Areas.Admin.Controllers
             return View(vm);
         }
 
-        private LandViewModel GetModel()
+        private LandViewModel GetModel(LandViewModel viewModel = null)
         {
-            var viewModel = new LandViewModel()
-            {
-                ExpertList = _optionService.GetExpertList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                StatusList = _optionService.GetStatuslist().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                KimdenList = _optionService.GetKimdenList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                KurlarList = _optionService.GetKurlarList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                KrediList = _optionService.GetKrediList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                IlList = _optionService.GetIllerList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                ImarStatusList = _optionService.GetImarList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                FileDetails = new List<FileDetailServiceModel>()
-            };
+            if (viewModel == null)
+                viewModel = new LandViewModel();
+
+
+            viewModel.ExpertList = _optionService.GetExpertList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList();
+            viewModel.StatusList = _optionService.GetStatuslist().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList();
+            viewModel.KimdenList = _optionService.GetKimdenList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList();
+            viewModel.KurlarList = _optionService.GetKurlarList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList();
+            viewModel.KrediList =
+                _optionService.GetKrediList()
+                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value })
+                    .ToList();
+            viewModel.IlList =
+                _optionService.GetIllerList()
+                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value })
+                    .ToList();
+            viewModel.ImarStatusList = _optionService.GetImarList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList();
+            viewModel.FileDetails = new List<FileDetailServiceModel>();
+
             return viewModel;
         }
 
 
         [HttpPost, ValidateInput(false)]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(LandViewModel land, HttpPostedFileBase document)
         {
-
-            ////foreach (var b in tags)
-            ////{
-            ////    land.properties += b + ",";
-            ////}
-            ////foreach (var c in securitys)
-            ////{
-            ////    land.securitys = string.Empty;
-            ////    land.securitys += c + ",";
-            ////}
-            ////foreach (var a in socials)
-            ////{
-            ////    land.socialapps += a + ",";
-            ////}
             if (ModelState.IsValid)
             {
                 var imagePath = Functions.UploadImage(document);
@@ -106,81 +100,60 @@ namespace Project_UI.Areas.Admin.Controllers
                     Takas = land.Takas,
                     TapuDurumu = land.TapuDurumu,
                     ThumbPath = land.ThumbPath,
-                    FileDetails = fileDetails
+                    FileDetails = fileDetails,
+                    SemtId = land.SemtId
                 };
                 _landService.Create(model);
+                return Redirect("/Admin/AdDetails/Index");
             }
-            return Redirect("/Admin/AdDetails/Index");
+            return View(GetModel(land));
         }
 
-       
+
 
         public ActionResult Edit(int id)
         {
             LandViewModel vm = GetModel();
             var land = _landService.GetById(id);
 
-            LandViewModel model = new LandViewModel()
-            {
-                Id = land.Id,
-                AdaNo = land.AdaNo,
-                Description = land.Description,
-                Emsal = land.Emsal,
-                ExpertId = land.ExpertId,
-                Gabari = land.Gabari,
-                ImarId = land.ImarId,
-                KatKarsiligi = land.KatKarsiligi,
-                KimdenId = land.KimdenId,
-                KrediId = land.KrediId,
-                KurlarId = land.KurlarId,
-                Name = land.Name,
-                PaftaNo = land.PaftaNo,
-                ParselNo = land.ParselNo,
-                Price = land.Price,
-                PriceForM2 = land.PriceForM2,
-                Size = land.Size,
-                StatusId = land.StatusId,
-                Takas = land.Takas,
-                TapuDurumu = land.TapuDurumu,
-                ThumbPath = land.ThumbPath
-            };
+            vm.Id = land.Id;
+            vm.AdaNo = land.AdaNo;
+            vm.Description = land.Description;
+            vm.Emsal = land.Emsal;
+            vm.ExpertId = land.ExpertId;
+            vm.Gabari = land.Gabari;
+            vm.ImarId = land.ImarId;
+            vm.KatKarsiligi = land.KatKarsiligi;
+            vm.KimdenId = land.KimdenId;
+            vm.KrediId = land.KrediId;
+            vm.KurlarId = land.KurlarId;
+            vm.Name = land.Name;
+            vm.PaftaNo = land.PaftaNo;
+            vm.ParselNo = land.ParselNo;
+            vm.Price = land.Price;
+            vm.PriceForM2 = land.PriceForM2;
+            vm.Size = land.Size;
+            vm.StatusId = land.StatusId;
+            vm.Takas = land.Takas;
+            vm.TapuDurumu = land.TapuDurumu;
+            vm.ThumbPath = land.ThumbPath;
+            vm.FileDetails = land.FileDetails;
+            vm.IlId = land.IlId;
+            vm.IlceId = land.IlceId;
+            vm.SemtId = land.SemtId.Value;
 
             TempData["ThumbPath"] = land.ThumbPath;
 
-            return View(model);
+            return View(vm);
         }
 
-       
+
 
         [HttpPost, ValidateInput(false)]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(LandViewModel land, HttpPostedFileBase document)
         {
-            ////if (tags != null)
-            ////{
-            ////    _land.properties = string.Empty;
-            ////    foreach (var b in tags)
-            ////    {
-            ////        _land.properties += b + ",";
-            ////    }
-            ////}
 
-            ////if (securitys != null)
-            ////{
-            ////    _land.securitys = string.Empty;
-            ////    foreach (var c in securitys)
-            ////    {
-            ////        _land.securitys += c + ",";
-            ////    }
-            ////}
-            ////if (socials != null)
-            ////{
-            ////    _land.socialapps = string.Empty;
-            ////    foreach (var a in socials)
-            ////    {
-            ////        _land.socialapps += a + ",";
-            ////    }
-            ////}
-          
             if (ModelState.IsValid)
             {
                 if (document != null)
@@ -216,13 +189,14 @@ namespace Project_UI.Areas.Admin.Controllers
                     Takas = land.Takas,
                     TapuDurumu = land.TapuDurumu,
                     ThumbPath = land.ThumbPath,
-                    FileDetails = fileDetails
+                    FileDetails = fileDetails,
+                    SemtId = land.SemtId
                 };
                 _landService.Edit(model);
 
                 return Redirect("/Admin/AdDetails/Index");
             }
-            return View(land);
+            return View(GetModel(land));
         }
 
 
@@ -261,7 +235,7 @@ namespace Project_UI.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new { Result = false, Message = ex.Message });
+                return Json(new { Result = false, ex.Message });
             }
         }
 

@@ -18,102 +18,104 @@
             <div class="row">
                 <div class="col-lg-6">
                     <form method="post" enctype="multipart/form-data" action="#">
-                        <label>Proje Adı :</label>
-                        @Html.TextBoxFor(x => x.Name, new { @class = "form-control", @placeholder = "Örn : Maslak 1453" })
-                        <label>Proje Açıklaması :</label>
-                        @Html.TextAreaFor(x => x.Description, new { @class = "form-control", @id = "content" })
-                        <label>Proje Firması :</label>
-                        @Html.TextBoxFor(x => x.ProjectFirm, new { @class = "form-control", @placeholder = "Örn : Ağaoğlu" })
-                        <label>Proje Lokasyonu :</label>
-                        @Html.TextBoxFor(x => x.ProjectLocation, new { @class = "form-control", @placeholder = "Örn: Ataşehir" })
-                        <label>Proje Alanı :</label>
-                        @Html.TextBoxFor(x => x.ProjectArea, new { @class = "form-control"})
-                        <label>Proje Konut Sayısı :</label>
-                        @Html.TextBoxFor(x => x.FlatCount, new { @class = "form-control", @placeholder = "Örn : 25" })
-
-                        <label>Proje Teslim Tarihi :</label>
-                        @Html.TextBoxFor(x => x.ProjectDeliveryDate, new { @class = "form-control", @id = "datetimepicker4" })
-
-                        <label>Proje Danışman Adı :</label>
-                        @Html.DropDownListFor(x => x.ExpertId, Model.ExpertList, "Danışman Seçiniz", new { @class = "form-control" })
-
-                        <label>İlan Özellikleri:</label> <br />
-
-                        @Html.DropDownList("tags", Model.PropertiesList, new { @multiple = "multiple", @class = "dropdown-menu", @id = "tags" })
-                        <br />
-                        <label>İlan Sosyal Alan Özellikleri:</label> <br />
-
-                        @Html.DropDownList("socials", Model.SocialList, new { @multiple = "multiple", @class = "dropdown-menu", @id = "socials" })
-
-                        <br />
-                        <label>İlan Güvenlik Özellikleri:</label> <br />
-
-                        @Html.DropDownList("securitys", Model.SecuritiesList, new { @multiple = "multiple", @class = "dropdown-menu", @id = "securitys" })
-                        <br />
-                        <label>Proje Tanıtım Videosu :</label>
-                        @Html.TextBoxFor(x => x.ProjectPromotionVideo, new { @class = "form-control", @placeholder = "https://www.youtube.com/watch?v=bEPgGIwJIo8" })
-                        <br />
-                        <br />
-                        @Html.Label("Lütfen yüksek çözünürlüklü ya da 393x303 ebatlarında önizleme resmi yükleyiniz!")
-                        @if (Model.ThumbPath != null)
-                        {
-                            <input type="file" id="document" name="document" />
-                            <hr />
-                            <img src="@Url.Content(Model.ThumbPath)" width="50" height="50" />
-
-                        }
-                        else
-                        {
-                            <input type="file" id="document" name="document" required="Lütfen resim yükleyiniz" />
-
-                        }
-                        <br />
-                        @Html.Label("Lütfen fiyat listesi için resim yükleyiniz!")
-                        @if (Model.PriceList != null)
-                        {
-                            <input type="file" id="pricelist" name="pricelist" />
-                            <hr />
-                            <img src="@Url.Content(@Model.PriceList)" width="50" height="50" />
-
-                        }
-                        else
-                        {
-                            <input type="file" id="pricelist" name="pricelist" required="Lütfen resim yükleyiniz" />
-
-                        }
-
-                        <br />
+                        @Html.ValidationSummary(true)
+                        @Html.AntiForgeryToken()
                         <div class="form-group">
-                            @Html.Label("Lütfen galeri için resim yükleyiniz!")
-                            <br />
-                            @Html.Label("Choose Image(s)", new { @class = "control-label col-sm-3" })
-                            <div class="col-sm-5">
-                                @if (Model != null)
-                                {
-                                    <input type="file" id="file" name="files" multiple="multiple" />
-                                }
-                                else
-                                {
-                                    <input type="file" id="file" name="files" multiple="multiple" required="Lütfen resim yükleyiniz" />
+                            <label>Proje Adı :</label>
+                            @Html.TextBoxFor(x => x.Name, new {@class = "form-control", @placeholder = "Örn : Maslak 1453"})
+                        </div>
+                        <div class="form-group">
+                            <label>Proje Açıklaması :</label>
+                            @Html.TextAreaFor(x => x.Description, new {@class = "form-control", @id = "content"})
+                        </div>
+                        <div class="form-group">
+                            <label>Proje Firması :</label>
+                            @Html.TextBoxFor(x => x.ProjectFirm, new {@class = "form-control", @placeholder = "Örn : Ağaoğlu"})
+                        </div>
+                        <div class="form-group">
+                            <label>Proje Lokasyonu :</label>
+                            @Html.TextBoxFor(x => x.ProjectLocation, new {@class = "form-control", @placeholder = "Örn: Ataşehir"})
+                        </div>
+                        <div class="form-group">
+                            <label>Proje Alanı :</label>
+                            @Html.TextBoxFor(x => x.ProjectArea, new {@class = "form-control"})
+                        </div>
+                        <div class="form-group">
+                            <label>Proje Konut Sayısı :</label>
+                            @Html.TextBoxFor(x => x.FlatCount, new {@class = "form-control", @placeholder = "Örn : 25"})
+                        </div>
+                        <div class="form-group">
 
-                                }
-                                <hr />
+                            <label>Proje Teslim Tarihi :</label>
+                            @Html.TextBoxFor(x => x.ProjectDeliveryDate, new {@class = "form-control", @id = "datetimepicker4"})
+                        </div>
+                        <div class="form-group">
+
+                            <label>Proje Danışman Adı :</label>
+                            @Html.DropDownListFor(x => x.ExpertId, Model.ExpertList, "Danışman Seçiniz", new {@class = "form-control"})
+                        </div>
+                        <div class="form-group">
+
+                            <label>İlan Özellikleri:</label> <br/>
+
+                            @Html.DropDownList("tags", Model.PropertiesList, new {@multiple = "multiple", @class = "dropdown-menu", @id = "tags"})
+                        </div>
+                        <div class="form-group">
+                            <label>İlan Sosyal Alan Özellikleri:</label> <br/>
+
+                            @Html.DropDownList("socials", Model.SocialList, new {@multiple = "multiple", @class = "dropdown-menu", @id = "socials"})
+                        </div>
+                        <div class="form-group">
+                            <label>İlan Güvenlik Özellikleri:</label> <br/>
+
+                            @Html.DropDownList("securitys", Model.SecuritiesList, new {@multiple = "multiple", @class = "dropdown-menu", @id = "securitys"})
+                        </div>
+                        <div class="form-group">
+                            <label>Proje Tanıtım Videosu :</label>
+                            @Html.TextBoxFor(x => x.ProjectPromotionVideo, new {@class = "form-control", @placeholder = "https://www.youtube.com/watch?v=bEPgGIwJIo8"})
+                        </div>
+                        <div class="form-group">
+                            <label>Lütfen yüksek çözünürlüklü ya da 393x303 ebatlarında önizleme resmi yükleyiniz!</label>
+                            <input type="file" id="document" name="document" accept=".jpg, .png" @(Model.ThumbPath == null ? "required=\"required\"" : "")/>
+                            <hr/>
+                            @if (Model.ThumbPath != null)
+                            {
+                                <img src="@Url.Content(Model.ThumbPath)" width="50" height="50"/>
+                            }
+                            <br/>
+                            <label>Lütfen fiyat listesi için resim yükleyiniz!</label>
+                            <input type="file" id="pricelist" name="pricelist" accept=".jpg, .png" @(Model.PriceList == null ? "required=\"required\"" : "")/>
+                            <hr/>
+                            @if (Model.PriceList != null)
+                            {
+                                <img src="@Url.Content(@Model.PriceList)" width="50" height="50"/>
+                            }
+
+
+                        </div>
+                        <div class="form-group">
+                            <label>Lütfen galeri için resim yükleyiniz!</label>
+                            <br/>
+                            @Html.Label("Choose Image(s)", new {@class = "control-label col-sm-3"})
+                            <div class="col-sm-5">
+                                <input type="file" id="file" name="files" multiple="multiple" @(Model.FileDetails.Count == 0 ? "" : "required=\"required\"")/>
+                                <hr/>
                                 <ul class="attachment">
-                                    @if (Model != null)
+                                    @if (Model.FileDetails.Count != 0)
                                     {
                                         foreach (var item in Model.FileDetails)
                                         {
                                             <li>
-                                                <img src="~/Areas/Admin/Content/Image/@item.Id@item.Extension" width="60" height="60" />
-                                                <a href="javascript:void(0);" data-id="@item.Id" class="deleteItemp" name="deleteItem" onclick="deleteItemp('/Admin/Projects/DeleteFile/',@item.Id)">X</a>
+                                                <img src="~/Areas/Admin/Content/Image/@item.Id@item.Extension" width="60" height="60"/>
+                                                <a href="javascript:void(0);" data-id="@item.Id" onclick="DeleteFile('/Admin/Projects/DeleteFile/@item.Id', this)">X</a>
                                             </li>
                                         }
                                     }
                                 </ul>
                             </div>
                         </div>
-                        <br />
-                        <br />
+                        <br/>
+                        <br/>
 
                         <button type="submit" value="Save" class="btn btn-xs btn-success btn-xs radius-4">
                             <i class="ace-icon fa fa-floppy-o bigger-160"></i>

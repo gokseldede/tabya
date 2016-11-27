@@ -10,6 +10,8 @@
 @section Scripts{
     <script>
         $(document).ready(function() {
+           
+            CKEDITOR.replace(content);
 
             $('#tags').multiselect({nonSelectedText: 'Diğer Özellikler',includeSelectAllOption: true});
             $('#socials').multiselect({nonSelectedText: 'Sosyal Özellikler',includeSelectAllOption: true});

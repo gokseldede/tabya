@@ -43,27 +43,59 @@ namespace Project_UI.Areas.Admin.Controllers
             return View(viewModel);
         }
 
-        private WorkPlaceViewModel GetModel()
+        private WorkPlaceViewModel GetModel(WorkPlaceViewModel viewModel = null)
         {
-            var viewModel = new WorkPlaceViewModel()
-            {
-                ExpertList = _optionService.GetExpertList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                IsinmaList = _optionService.GetIsinmaList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                KimdenList = _optionService.GetKimdenList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                KrediList = _optionService.GetKrediList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                KurlarList = _optionService.GetKurlarList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                PropertiesList = _optionService.GetPropertiesList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                SecuritiesList = _optionService.GetSecurityList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                SocialList = _optionService.GetSocialAppsList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                StatusList = _optionService.GetStatuslist().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                IlList = _optionService.GetIllerList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                FileDetails = new List<FileDetailServiceModel>()
-            };
+            if (viewModel == null)
+                viewModel = new WorkPlaceViewModel();
+
+            viewModel.ExpertList =
+                _optionService.GetExpertList()
+                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value })
+                    .ToList();
+            viewModel.IsinmaList =
+                _optionService.GetIsinmaList()
+                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value })
+                    .ToList();
+            viewModel.KimdenList =
+                _optionService.GetKimdenList()
+                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value })
+                    .ToList();
+            viewModel.KrediList =
+                _optionService.GetKrediList()
+                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value })
+                    .ToList();
+            viewModel.KurlarList =
+                _optionService.GetKurlarList()
+                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value })
+                    .ToList();
+            viewModel.PropertiesList =
+                _optionService.GetPropertiesList()
+                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value })
+                    .ToList();
+            viewModel.SecuritiesList =
+                _optionService.GetSecurityList()
+                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value })
+                    .ToList();
+            viewModel.SocialList =
+                _optionService.GetSocialAppsList()
+                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value })
+                    .ToList();
+            viewModel.StatusList =
+                _optionService.GetStatuslist()
+                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value })
+                    .ToList();
+            viewModel.IlList =
+                _optionService.GetIllerList()
+                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value })
+                    .ToList();
+            viewModel.FileDetails = new List<FileDetailServiceModel>();
+
             return viewModel;
         }
 
 
         [HttpPost, ValidateInput(false)]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(WorkPlaceViewModel work, string[] tags, string[] socials, string[] securitys, HttpPostedFileBase document)
         {
 
@@ -89,7 +121,7 @@ namespace Project_UI.Areas.Admin.Controllers
                     Size = work.Size,
                     ThumbPath = work.ThumbPath,
                     StatusId = work.StatusId,
-                    IlceId = work.IlceId,
+                    SemtId = work.SemtId,
                     WorkFileDetails = fileDetails,
                     SelectedSecurities = securitys.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList(),
                     SelectedSocialApps = socials.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList(),
@@ -123,11 +155,14 @@ namespace Project_UI.Areas.Admin.Controllers
             vm.ThumbPath = work.ThumbPath;
             vm.StatusId = work.StatusId;
             vm.IlceId = work.IlceId;
+            vm.IlId = work.IlId;
+            vm.SemtId = work.SemtId;
             vm.Id = work.Id;
             vm.FileDetails = work.WorkFileDetails;
-            vm.SelectedProperties = work.SelectedProperties.Select(x=>x.Id.ToString()).ToArray();
-            vm.SelectedSecurities = work.SelectedSecurities.Select(x=>x.Id.ToString()).ToArray();
+            vm.SelectedProperties = work.SelectedProperties.Select(x => x.Id.ToString()).ToArray();
+            vm.SelectedSecurities = work.SelectedSecurities.Select(x => x.Id.ToString()).ToArray();
             vm.SelectedSocialList = work.SelectedSocialApps.Select(x => x.Id.ToString()).ToArray();
+
             TempData["ThumbPath"] = work.ThumbPath;
 
             return View(vm);
@@ -135,6 +170,7 @@ namespace Project_UI.Areas.Admin.Controllers
 
 
         [HttpPost, ValidateInput(false)]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(WorkPlaceViewModel work, string[] tags, string[] socials, string[] securitys, HttpPostedFileBase document)
         {
             if (ModelState.IsValid)
@@ -166,7 +202,7 @@ namespace Project_UI.Areas.Admin.Controllers
                     Size = work.Size,
                     ThumbPath = work.ThumbPath,
                     StatusId = work.StatusId,
-                    IlceId = work.IlceId,
+                    SemtId = work.SemtId,
                     WorkFileDetails = fileDetails,
                     SelectedSecurities = securitys.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList(),
                     SelectedSocialApps = socials.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList(),
@@ -177,7 +213,7 @@ namespace Project_UI.Areas.Admin.Controllers
                 return Redirect("/Admin/AdDetails/Index");
             }
 
-            return View(work);
+            return View(GetModel(work));
         }
 
         // GET: Admin/AdDetails/Delete/5
@@ -216,7 +252,7 @@ namespace Project_UI.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new { Result = false, Message = ex.Message });
+                return Json(new { Result = false, ex.Message });
             }
         }
 

@@ -6,13 +6,6 @@
     {
         Culture = UICulture = Request.QueryString["lang"];
     }
-    //string[] adres;
-    //adres = Model.AdDetail.Location.Split(',');
-    //string semt = adres[0];
-    //string ilce = adres[2].Substring(6).Replace("/", ",");
-
-    //string lokasyon = semt;
-
 }
 
 <section class="section ilan-detay">
@@ -71,13 +64,9 @@
                             }
                         </div>
                         <div class="row">
-                            @*@if (Model.AdDetail.Location != null)
-                                {
-                                    <div class="col-md-12 location">
-                                        <p><i class="fa fa-map-marker"></i> @lokasyon </p>
-                                    </div>
-                                }*@
-
+                            <div class="col-md-12 location">
+                                <p><i class="fa fa-map-marker"></i> @Model.Semt, @Model.Ilce, @Model.Il </p>
+                            </div>
                         </div>
                     </div>
                     <div class="item">
@@ -87,11 +76,11 @@
                                 <img src="@Model.Expert.ImagePath" width="65" height="65" alt="Necmi Körük">
                             </div>
 
-                                <ul class="contact-list">
-                                    <li><i class="fa fa-user"></i> <strong>@Model.Expert.Name</strong> - @Model.Expert.Title</li>
-                                    <li><i class="fa fa-phone"></i> <a href="tel:@Model.Expert.PhoneNumber">@Model.Expert.PhoneNumber</a></li>
-                                    <li><i class="fa fa-envelope"></i> <a href="mailto:@Model.Expert.Email">@Model.Expert.Email</a></li>
-                                </ul>
+                            <ul class="contact-list">
+                                <li><i class="fa fa-user"></i> <strong>@Model.Expert.Name</strong> - @Model.Expert.Title</li>
+                                <li><i class="fa fa-phone"></i> <a href="tel:@Model.Expert.PhoneNumber">@Model.Expert.PhoneNumber</a></li>
+                                <li><i class="fa fa-envelope"></i> <a href="mailto:@Model.Expert.Email">@Model.Expert.Email</a></li>
+                            </ul>
                         }
                     </div>
                     <div class="item info-list">

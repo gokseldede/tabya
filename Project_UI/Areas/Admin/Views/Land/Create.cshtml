@@ -5,3 +5,11 @@
 }
 
 @Html.Partial("Partial/_LandPartial")
+@section Scripts{
+    <script>
+        $(document).ready(function() {
+
+            CKEDITOR.replace(content);
+        });
+    </script>
+}

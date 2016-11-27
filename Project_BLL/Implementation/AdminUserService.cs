@@ -24,12 +24,17 @@ namespace Project_BLL.Implementation
 
         public void Edit(AdminUser model)
         {
-           _adminUserRepository.Update(model);
+            _adminUserRepository.Update(model);
         }
 
         public AdminUser GetById(int id)
         {
             return _adminUserRepository.GetById(id);
+        }
+
+        public AdminUser GetActiveRecordById(int id)
+        {
+            return _adminUserRepository.Table.SingleOrDefault(x => x.IsActive && x.ID == id);
         }
 
         public void DeleteById(int id)

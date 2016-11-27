@@ -28,9 +28,12 @@ namespace Project_BLL.Implementation
         public void Create(ProjectServiceModel model)
         {
             var db = model.ToProject();
-            db.Securities = _securityRepository.Table.Where(x => model.SelectedSecurities.Any(y => y.Id == x.ID)).ToList();
-            db.Propertieses = _propertiesRepository.Table.Where(x => model.SelectedSecurities.Any(y => y.Id == x.ID)).ToList();
-            db.SocialAppses = _socialAppsRepository.Table.Where(x => model.SelectedSecurities.Any(y => y.Id == x.ID)).ToList();
+            int[] securitiesIds = model.SelectedSecurities.Select(y => y.Id).ToArray();
+            int[] propertiesIds = model.SelectedProperties.Select(y => y.Id).ToArray();
+            int[] socialAppsIds = model.SelectedSocialApps.Select(y => y.Id).ToArray();
+            db.Securities = _securityRepository.Table.Where(x => securitiesIds.Contains(x.ID)).ToList();
+            db.Propertieses = _propertiesRepository.Table.Where(x => propertiesIds.Contains(x.ID)).ToList();
+            db.SocialAppses = _socialAppsRepository.Table.Where(x => socialAppsIds.Contains(x.ID)).ToList();
             _projectRepository.Insert(db);
         }
 
@@ -57,23 +60,26 @@ namespace Project_BLL.Implementation
                         model.ProjectFileDetails.Select(
                             x => new ProjectFile() { Id = x.Id, Extension = x.Extension, FileName = x.FileName }).ToList();
 
+                    int[] securitiesIds = model.SelectedSecurities.Select(y => y.Id).ToArray();
+                    int[] propertiesIds = model.SelectedProperties.Select(y => y.Id).ToArray();
+                    int[] socialAppsIds = model.SelectedSocialApps.Select(y => y.Id).ToArray();
                     foreach (var item in db.Securities.ToList())
                         if (model.SelectedSecurities.All(y => y.Id != item.ID))
                             db.Securities.Remove(item);
 
-                    db.Securities = _securityRepository.Table.Where(x => model.SelectedSecurities.Any(y => y.Id == x.ID)).ToList();
+                    db.Securities = _securityRepository.Table.Where(x => securitiesIds.Contains(x.ID)).ToList();
 
                     foreach (var item in db.Propertieses.ToList())
                         if (model.SelectedProperties.All(y => y.Id != item.ID))
                             db.Propertieses.Remove(item);
 
-                    db.Propertieses = _propertiesRepository.Table.Where(x => model.SelectedProperties.Any(y => y.Id == x.ID)).ToList();
+                    db.Propertieses = _propertiesRepository.Table.Where(x => propertiesIds.Contains(x.ID)).ToList();
 
                     foreach (var item in db.SocialAppses.ToList())
                         if (model.SelectedSocialApps.All(y => y.Id != item.ID))
                             db.SocialAppses.Remove(item);
 
-                    db.SocialAppses = _socialAppsRepository.Table.Where(x => model.SelectedSocialApps.Any(y => y.Id == x.ID)).ToList();
+                    db.SocialAppses = _socialAppsRepository.Table.Where(x => socialAppsIds.Contains(x.ID)).ToList();
                     _projectRepository.Update(db);
                 }
             }
@@ -82,6 +88,12 @@ namespace Project_BLL.Implementation
         public ProjectServiceModel GetById(int id)
         {
             var data = _projectRepository.GetById(id);
+            return data?.ToProjectServiceModel();
+        }
+
+        public ProjectServiceModel GetActiveRecordById(int id)
+        {
+            var data = _projectRepository.Table.SingleOrDefault(x => x.IsActive && x.ID == id);
             return data?.ToProjectServiceModel();
         }
 
@@ -102,8 +114,7 @@ namespace Project_BLL.Implementation
 
         public IList<ProjectServiceModel> GetAll()
         {
-            return
-                _projectRepository.Table.Where(x => x.IsDelete == false)
+            return _projectRepository.Table.Where(x => x.IsDelete == false)
                     .Select(x => new ProjectServiceModel()
                     {
                         Id = x.ID,
@@ -114,7 +125,8 @@ namespace Project_BLL.Implementation
                         UpdatedDateTime = x.UpdatedDate,
                         IsInVitrin = x.Vitrin,
                         ProjectDeliveryDate = x.DeliveryDate,
-                        ProjectFirm = x.SubName
+                        ProjectFirm = x.SubName,
+                        ProjectLocation = x.SSubName
                     }).ToList();
         }
 

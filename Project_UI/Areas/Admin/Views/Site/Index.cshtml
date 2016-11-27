@@ -29,15 +29,7 @@
                         {
                             <tr id="a_@item.ID">
                                 <td>@item.Name</td>
-                                @if (item.IsActive)
-                                {
-                                    <td id="b_@item.ID" onclick="Status('/Admin/Site/Status/',@item.ID)"><span class="btn btn-info btn-sm">Aktif</span></td>
-                                }
-                                else
-                                {
-                                    <td id="b_@item.ID" onclick="Status('/Admin/Site/Status/',@item.ID)"><span class="btn btn-default btn-sm">Pasif</span></td>
-                                }
-
+                                <td id="b_@item.ID" data-status="@item.IsActive" onclick="Status('/Admin/Site/Status/',@item.ID,this)"><span class="btn btn-@(item.IsActive ? "info" : "default") btn-sm">@(item.IsActive ? "Aktif" : "Pasif")</span></td>
                                 <td class="hidden-480">@item.CreatedDate.ToShortDateString()</td>
                                 <td class="hidden-480">@item.UpdatedDate</td>
                                 <td>

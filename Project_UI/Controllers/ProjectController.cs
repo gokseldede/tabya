@@ -1,12 +1,6 @@
-﻿using PagedList;
-using Project_BLL.Implementation;
+﻿using Project_BLL.Implementation;
 using Project_BLL.Interfaces;
-using Project_DAL;
-using Project_Entity;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Project_BLL.ServiceModels;
 using Project_UI.Models;
@@ -30,7 +24,7 @@ namespace Project_UI.Controllers
 
         public ActionResult Detail(int id)
         {
-            var project = _projectService.GetById(id);
+            var project = _projectService.GetActiveRecordById(id);
             var vm = new ProjectDetailViewModel()
             {
                 Name = project.Name,

@@ -24,7 +24,7 @@ namespace Project_BLL.Implementation
             _adDetailRepository = new EfRepositoryForEntityBase<AdDetail>();
             _landRepository = new EfRepositoryForEntityBase<Land>();
             _workplaceRepository = new EfRepositoryForEntityBase<Workplace>();
-            _buildRepository=new EfRepositoryForEntityBase<Bina>();
+            _buildRepository = new EfRepositoryForEntityBase<Bina>();
         }
         public List<SelectlistItem> GetCities()
         {
@@ -36,12 +36,17 @@ namespace Project_BLL.Implementation
             return _optionService.GetIlcelerList(cityId).ToList();
         }
 
+        public List<SelectlistItem> GetProviences(int countyId)
+        {
+            return _optionService.GetSemtList(countyId).ToList();
+        }
+
         public HomeViewModel GetMainPageData()
         {
             var vm = new HomeViewModel();
             vm.Cities = _optionService.GetIllerList().ToList();
             vm.Projects = _projectRepository.Table.
-                Where(x => x.IsDelete == false && x.Vitrin).Select(x => new NewProject()
+                Where(x => x.IsDelete == false && x.Vitrin && x.IsActive).Select(x => new NewProject()
                 {
                     Id = x.ID,
                     Name = x.Name,
@@ -50,7 +55,7 @@ namespace Project_BLL.Implementation
                     Photo = x.ImagePath
                 }).ToList();
             vm.Advertisements =
-                _adDetailRepository.Table.Where(x => x.IsDelete == false && x.Vitrin).Select(x => new NewAdvertisement()
+                _adDetailRepository.Table.Where(x => x.IsDelete == false && x.Vitrin && x.IsActive).Select(x => new NewAdvertisement()
                 {
                     Id = x.ID,
                     Photo = x.ThumbPath,
@@ -58,10 +63,11 @@ namespace Project_BLL.Implementation
                     Status = x.Status.Name,
                     AdType = x.EmlakTip.Name,
                     Price = x.Price,
-                    SquareMetre = x.Size
+                    SquareMetre = x.Size,
+                    Address = x.Semt.Ilce.Ad + "," + x.Semt.Ilce.Il.Ad
                 }).ToList();
 
-            vm.Advertisements.AddRange(_landRepository.Table.Where(x => x.IsDelete == false && x.Vitrin).Select(x => new NewAdvertisement()
+            vm.Advertisements.AddRange(_landRepository.Table.Where(x => x.IsDelete == false && x.Vitrin && x.IsActive).Select(x => new NewAdvertisement()
             {
                 Id = x.ID,
                 Photo = x.ThumbPath,
@@ -69,9 +75,10 @@ namespace Project_BLL.Implementation
                 Status = x.Status.Name,
                 Price = x.Price,
                 SquareMetre = x.Size,
-                AdType = "Arsa"
+                AdType = "Arsa",
+                Address = x.Semt.Ilce.Ad + ", " + x.Semt.Ilce.Il.Ad
             }).ToList());
-            vm.Advertisements.AddRange(_workplaceRepository.Table.Where(x => x.IsDelete == false && x.Vitrin).Select(x => new NewAdvertisement()
+            vm.Advertisements.AddRange(_workplaceRepository.Table.Where(x => x.IsDelete == false && x.Vitrin && x.IsActive).Select(x => new NewAdvertisement()
             {
                 Id = x.ID,
                 Photo = x.ThumbPath,
@@ -79,9 +86,10 @@ namespace Project_BLL.Implementation
                 Status = x.Status.Name,
                 Price = x.Price,
                 SquareMetre = x.Size,
-                AdType = "İşyeri"
+                AdType = "İşyeri",
+                Address = x.Semt.Ilce.Ad + ", " + x.Semt.Ilce.Il.Ad
             }).ToList());
-            vm.Advertisements.AddRange(_buildRepository.Table.Where(x => x.IsDelete == false && x.Vitrin).Select(x => new NewAdvertisement()
+            vm.Advertisements.AddRange(_buildRepository.Table.Where(x => x.IsDelete == false && x.Vitrin && x.IsActive).Select(x => new NewAdvertisement()
             {
                 Id = x.ID,
                 Photo = x.ThumbPath,
@@ -89,7 +97,8 @@ namespace Project_BLL.Implementation
                 Status = x.Status.Name,
                 Price = x.Price,
                 SquareMetre = x.Size,
-                AdType = "Bina"
+                AdType = "Bina",
+                Address = x.Semt.Ilce.Ad + ", " + x.Semt.Ilce.Il.Ad
             }).ToList());
             return vm;
         }
@@ -97,7 +106,7 @@ namespace Project_BLL.Implementation
         public List<NewAdvertisement> GetAdversmints()
         {
             var advertisements = new List<NewAdvertisement>();
-            advertisements.AddRange(_workplaceRepository.Table.Where(x => x.IsDelete == false).Select(x => new NewAdvertisement()
+            advertisements.AddRange(_workplaceRepository.Table.Where(x => x.IsDelete == false && x.IsActive).Select(x => new NewAdvertisement()
             {
                 Id = x.ID,
                 Photo = x.ThumbPath,
@@ -105,9 +114,10 @@ namespace Project_BLL.Implementation
                 Status = x.Status.Name,
                 Price = x.Price,
                 SquareMetre = x.Size,
-                AdType = "İşyeri"
+                AdType = "İşyeri",
+                Address = x.Semt.Ilce.Ad + ", " + x.Semt.Ilce.Il.Ad
             }).ToList());
-            advertisements.AddRange(_landRepository.Table.Where(x => x.IsDelete == false).Select(x => new NewAdvertisement()
+            advertisements.AddRange(_landRepository.Table.Where(x => x.IsDelete == false && x.IsActive).Select(x => new NewAdvertisement()
             {
                 Id = x.ID,
                 Photo = x.ThumbPath,
@@ -115,10 +125,11 @@ namespace Project_BLL.Implementation
                 Status = x.Status.Name,
                 Price = x.Price,
                 SquareMetre = x.Size,
-                AdType = "Arsa"
+                AdType = "Arsa",
+                Address = x.Semt.Ilce.Ad + ", " + x.Semt.Ilce.Il.Ad
             }).ToList());
             advertisements.AddRange(
-                _adDetailRepository.Table.Where(x => x.IsDelete == false).Select(x => new NewAdvertisement()
+                _adDetailRepository.Table.Where(x => x.IsDelete == false && x.IsActive).Select(x => new NewAdvertisement()
                 {
                     Id = x.ID,
                     Photo = x.ThumbPath,
@@ -126,10 +137,11 @@ namespace Project_BLL.Implementation
                     Status = x.Status.Name,
                     AdType = x.EmlakTip.Name,
                     Price = x.Price,
-                    SquareMetre = x.Size
+                    SquareMetre = x.Size,
+                    Address = x.Semt.Ilce.Ad + ", " + x.Semt.Ilce.Il.Ad
                 }).ToList());
             advertisements.AddRange(
-                _buildRepository.Table.Where(x => x.IsDelete == false).Select(x => new NewAdvertisement()
+                _buildRepository.Table.Where(x => x.IsDelete == false && x.IsActive).Select(x => new NewAdvertisement()
                 {
                     Id = x.ID,
                     Photo = x.ThumbPath,
@@ -137,7 +149,8 @@ namespace Project_BLL.Implementation
                     Status = x.Status.Name,
                     AdType = x.EmlakTip.Name,
                     Price = x.Price,
-                    SquareMetre = x.Size
+                    SquareMetre = x.Size,
+                    Address = x.Semt.Ilce.Ad + ", " + x.Semt.Ilce.Il.Ad
                 }).ToList());
             return advertisements;
         }

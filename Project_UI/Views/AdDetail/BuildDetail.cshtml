@@ -2,13 +2,6 @@
 @{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_SiteLayout.cshtml";
-
-    //string[] adres;
-    //adres = Model.Bina.Location.Split(',');
-    //string semt = adres[0];
-    //string ilce = adres[2].Substring(6).Replace("/", ",");
-
-    //string lokasyon = semt;
 }
 
 <section class="section ilan-detay">
@@ -55,18 +48,17 @@
                             {
                                 <div class="col-xs-6"><span class="type">@Model.Status</span></div>
                             }
-                            @if (Model.Price != null)
+                            @if (Model.Price != 0)
                             {
                                 <div class="col-xs-6"><span class="price">@Model.Price.ToString("N") @Model.Kur</span></div>
                             }
                         </div>
                         <div class="row">
-                            @*@if (Model.Bina.Location != null)
-                            {
+                            <div class="row">
                                 <div class="col-md-12 location">
-                                    <p><i class="fa fa-map-marker"></i> @lokasyon </p>
+                                    <p><i class="fa fa-map-marker"></i> @Model.Semt, @Model.Ilce, @Model.Il </p>
                                 </div>
-                            }*@
+                            </div>
                         </div>
                     </div>
                     <div class="item">

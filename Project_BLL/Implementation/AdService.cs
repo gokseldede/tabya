@@ -58,14 +58,19 @@ namespace Project_BLL.Implementation
                 Room = model.RoomCount.ToString(),
                 SiteID = model.SiteId,
                 StatusID = model.StatusId,
+                SemtID = model.SemtId,
                 FileDetails =
                 model.FileDetails.Select(
                     x => new FileDetail() { Id = x.Id, Extension = x.Extension, FileName = x.FileName }).ToList(),
             };
 
-            adDetail.Securities = _securityRepository.Table.Where(x => model.SelectedSecurities.Any(y=>y.Id==x.ID)).ToList();
-            adDetail.Propertieses = _propertiesRepository.Table.Where(x => model.SelectedProperties.Any(y => y.Id == x.ID)).ToList();
-            adDetail.SocialAppses = _socialAppsRepository.Table.Where(x => model.SelectedSocialApps.Any(y => y.Id == x.ID)).ToList();
+            int[] securitiesIds = model.SelectedSecurities.Select(y => y.Id).ToArray();
+            int[] propertiesIds = model.SelectedProperties.Select(y => y.Id).ToArray();
+            int[] socialAppsIds = model.SelectedSocialApps.Select(y => y.Id).ToArray();
+
+            adDetail.Securities = _securityRepository.Table.Where(x => securitiesIds.Contains(x.ID)).ToList();
+            adDetail.Propertieses = _propertiesRepository.Table.Where(x => propertiesIds.Contains(x.ID)).ToList();
+            adDetail.SocialAppses = _socialAppsRepository.Table.Where(x => socialAppsIds.Contains(x.ID)).ToList();
 
             _adRepository.Insert(adDetail);
         }
@@ -99,27 +104,32 @@ namespace Project_BLL.Implementation
                     data.Room = model.RoomCount.ToString();
                     data.SiteID = model.SiteId;
                     data.StatusID = model.StatusId;
+                    data.SemtID = model.SemtId;
                     data.FileDetails =
                         model.FileDetails.Select(
                             x => new FileDetail() { Id = x.Id, Extension = x.Extension, FileName = x.FileName }).ToList();
+
+                    int[] securitiesIds = model.SelectedSecurities.Select(y => y.Id).ToArray();
+                    int[] propertiesIds = model.SelectedProperties.Select(y => y.Id).ToArray();
+                    int[] socialAppsIds = model.SelectedSocialApps.Select(y => y.Id).ToArray();
 
                     foreach (var item in data.Securities.ToList())
                         if (model.SelectedSecurities.All(y => y.Id != item.ID))
                             data.Securities.Remove(item);
 
-                    data.Securities = _securityRepository.Table.Where(x => model.SelectedSecurities.Any(y => y.Id == x.ID)).ToList();
+                    data.Securities = _securityRepository.Table.Where(x => securitiesIds.Contains(x.ID)).ToList();
 
                     foreach (var item in data.Propertieses.ToList())
                         if (model.SelectedProperties.All(y => y.Id != item.ID))
                             data.Propertieses.Remove(item);
 
-                    data.Propertieses = _propertiesRepository.Table.Where(x => model.SelectedProperties.Any(y => y.Id == x.ID)).ToList();
+                    data.Propertieses = _propertiesRepository.Table.Where(x => propertiesIds.Contains(x.ID)).ToList();
 
                     foreach (var item in data.SocialAppses.ToList())
                         if (model.SelectedSocialApps.All(y => y.Id != item.ID))
                             data.SocialAppses.Remove(item);
 
-                    data.SocialAppses = _socialAppsRepository.Table.Where(x => model.SelectedSocialApps.Any(y => y.Id == x.ID)).ToList();
+                    data.SocialAppses = _socialAppsRepository.Table.Where(x => socialAppsIds.Contains(x.ID)).ToList();
 
                     _adRepository.Update(data);
                 }
@@ -133,6 +143,12 @@ namespace Project_BLL.Implementation
             if (data == null)
                 return null;
 
+            var vm = ParseToAdDetailServiceModel(data);
+            return vm;
+        }
+
+        private static AdDetailServiceModel ParseToAdDetailServiceModel(AdDetail data)
+        {
             var vm = new AdDetailServiceModel()
             {
                 Id = data.ID,
@@ -146,7 +162,7 @@ namespace Project_BLL.Implementation
                 Price = data.Price,
                 Size = data.Size,
                 ExpertId = data.ExpertID,
-                Expert=data.Expert,
+                Expert = data.Expert,
                 BAge = data.BAge,
                 BathroomCount = data.Bath,
                 Dues = decimal.Parse(data.Dues),
@@ -159,19 +175,25 @@ namespace Project_BLL.Implementation
                 IsinmaId = data.IsinmaID,
                 Isinma = data.Isinma.Name,
                 KimdenId = data.KimdenID,
-                Kimden=data.Kimden.Name,
+                Kimden = data.Kimden.Name,
                 KrediId = data.KrediID,
                 Kredi = data.Kredi.Name,
                 KullanimId = data.KullanimID,
-                Kullanim=data.Kullanim.Name,
+                Kullanim = data.Kullanim.Name,
                 KurlarId = data.KurlarID,
-                Kur=data.Kurlar.Name,
+                Kur = data.Kurlar.Name,
                 RoomCount = int.Parse(data.Room),
                 SiteId = data.SiteID,
                 Site = data.Site.Name,
                 StatusId = data.StatusID,
-                Status=data.Status.Name,
-                SelectedProperties = data.Propertieses.Select(x =>new SelectlistItem() {Id=x.ID,Value = x.Name}).ToList(),
+                Status = data.Status.Name,
+                Il = data.Semt.Ilce.Il.Ad,
+                Ilce = data.Semt.Ilce.Ad,
+                Semt = data.Semt.Ad,
+                SemtId = data.Semt.ID,
+                IlceId = data.Semt.IlceID,
+                IlId = data.Semt.Ilce.IlID,
+                SelectedProperties = data.Propertieses.Select(x => new SelectlistItem() { Id = x.ID, Value = x.Name }).ToList(),
                 SelectedSecurities = data.Securities.Select(x => new SelectlistItem() { Id = x.ID, Value = x.Name }).ToList(),
                 SelectedSocialApps = data.SocialAppses.Select(x => new SelectlistItem() { Id = x.ID, Value = x.Name }).ToList(),
                 FileDetails = data.FileDetails.Select(x => new FileDetailServiceModel()
@@ -181,6 +203,16 @@ namespace Project_BLL.Implementation
                     FileName = x.FileName
                 }).ToList()
             };
+            return vm;
+        }
+
+        public AdDetailServiceModel GetActiveRecordById(int id)
+        {
+            var data = _adRepository.Table.SingleOrDefault(x => x.IsActive && x.ID == id);
+            if (data == null)
+                return null;
+
+            var vm = ParseToAdDetailServiceModel(data);
             return vm;
         }
 

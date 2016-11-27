@@ -37,7 +37,7 @@ namespace Project_UI.Controllers
         // GET: AdDetail/Details/5
         public ActionResult Details(int id)
         {
-            var adDetail = _adService.GetById(id);
+            var adDetail = _adService.GetActiveRecordById(id);
             var vm = new AdDetailDetailViewModel()
             {
                 Id = adDetail.Id,
@@ -63,6 +63,9 @@ namespace Project_UI.Controllers
                 RoomCount = adDetail.RoomCount,
                 SiteStatus = adDetail.Site,
                 FileDetails = adDetail.FileDetails,
+                Il=adDetail.Il,
+                Ilce=adDetail.Ilce,
+                Semt = adDetail.Semt,
                 Expert = adDetail.Expert,
                 SelectedProperties = adDetail.SelectedProperties.Select(x => x.Value).ToArray(),
                 SelectedSecurities = adDetail.SelectedSecurities.Select(x => x.Value).ToArray(),
@@ -72,7 +75,7 @@ namespace Project_UI.Controllers
         }
         public ActionResult LandDetail(int id)
         {
-            var adDetail = _landService.GetById(id);
+            var adDetail = _landService.GetActiveRecordById(id);
             var vm = new AdDetailDetailViewModel()
             {
                 Id = adDetail.Id,
@@ -98,14 +101,17 @@ namespace Project_UI.Controllers
                 ParselNo = adDetail.ParselNo,
                 SizePrice = adDetail.PriceForM2,
                 Tapu = adDetail.TapuDurumu,
-                Kaks = adDetail.Emsal
+                Kaks = adDetail.Emsal,
+                Il = adDetail.Il,
+                Ilce = adDetail.Ilce,
+                Semt = adDetail.Semt,
             };
             return View(vm);
         }
 
         public ActionResult WorkDetail(int id)
         {
-            var adDetail = _workService.GetById(id);
+            var adDetail = _workService.GetActiveRecordById(id);
             var vm = new AdDetailDetailViewModel()
             {
                 Id = adDetail.Id,
@@ -124,6 +130,9 @@ namespace Project_UI.Controllers
                 KrediDurumu = adDetail.Kredi,
                 Kur = adDetail.Kur,
                 Expert = adDetail.Expert,
+                Il = adDetail.Il,
+                Ilce = adDetail.Ilce,
+                Semt=adDetail.Semt,
                 SelectedProperties = adDetail.SelectedProperties.Select(x => x.Value).ToArray(),
                 SelectedSecurities = adDetail.SelectedSecurities.Select(x => x.Value).ToArray(),
                 SelectedSocialList = adDetail.SelectedSocialApps.Select(x => x.Value).ToArray(),
@@ -134,7 +143,7 @@ namespace Project_UI.Controllers
 
         public ActionResult BuildDetail(int id)
         {
-            var adDetail = _binaService.GetById(id);
+            var adDetail = _binaService.GetActiveRecordById(id);
             var vm = new AdDetailDetailViewModel()
             {
                 Id = adDetail.Id,
@@ -150,6 +159,9 @@ namespace Project_UI.Controllers
                 Kimden = adDetail.Kimden,
                 Kur = adDetail.Kur,
                 Expert = adDetail.Expert,
+                Il = adDetail.Il,
+                Ilce = adDetail.Ilce,
+                Semt = adDetail.Semt,
                 SelectedProperties = adDetail.SelectedProperties.Select(x => x.Value).ToArray(),
                 SelectedSecurities = adDetail.SelectedSecurities.Select(x => x.Value).ToArray(),
                 SelectedSocialList = adDetail.SelectedSocialApps.Select(x => x.Value).ToArray(),

@@ -2,13 +2,7 @@
 @{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_SiteLayout.cshtml";
-
-    //string[] adres;
-    //adres = Model.Workplace.Location.Split(',');
-    //string semt = adres[0];
-    //string ilce = adres[2].Substring(6).Replace("/", ",");
-
-    //string lokasyon = semt ;
+    
 }
 
 <section class="section ilan-detay">
@@ -66,12 +60,11 @@
                             }
                         </div>
                         <div class="row">
-                            @*@if (Model.Workplace.Location != null)
-                            {
+                            <div class="row">
                                 <div class="col-md-12 location">
-                                    <p><i class="fa fa-map-marker"></i> @lokasyon </p>
+                                    <p><i class="fa fa-map-marker"></i> @Model.Semt, @Model.Ilce, @Model.Il </p>
                                 </div>
-                            }*@
+                            </div>
                         </div>
                     </div>
                     <div class="item">

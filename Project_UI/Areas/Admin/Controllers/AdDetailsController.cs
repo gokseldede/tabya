@@ -74,7 +74,10 @@ namespace Project_UI.Areas.Admin.Controllers
             adDetail.ThumbPath = work.ThumbPath;
             adDetail.FileDetails = work.FileDetails;
             adDetail.Id = work.Id;
-            adDetail.SelectedProperties = work.SelectedProperties.Select(x=>x.Id.ToString()).ToArray();
+            adDetail.IlId = work.IlId;
+            adDetail.IlceId = work.IlceId;
+            adDetail.SemtId = work.SemtId.Value;
+            adDetail.SelectedProperties = work.SelectedProperties.Select(x => x.Id.ToString()).ToArray();
             adDetail.SelectedSecurities = work.SelectedSecurities.Select(x => x.Id.ToString()).ToArray();
             adDetail.SelectedSocialList = work.SelectedSocialApps.Select(x => x.Id.ToString()).ToArray();
 
@@ -83,33 +86,62 @@ namespace Project_UI.Areas.Admin.Controllers
             return View(adDetail);
         }
 
-        private AdDetailViewModel GetModel()
+        private AdDetailViewModel GetModel(AdDetailViewModel viewModel = null)
         {
-            var viewModel = new AdDetailViewModel()
-            {
-                ExpertList = _optionService.GetExpertList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                IsinmaList = _optionService.GetIsinmaList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                KimdenList = _optionService.GetKimdenList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                KrediList = _optionService.GetKrediList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                KurlarList = _optionService.GetKurlarList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                PropertiesList = _optionService.GetPropertiesList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                SecuritiesList = _optionService.GetSecurityList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                SocialList = _optionService.GetSocialAppsList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                StatusList = _optionService.GetStatuslist().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                IlList = _optionService.GetIllerList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                EmlakTipList = _optionService.GetEmlakTipList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                EsyaList = _optionService.GetEsyaList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                SiteList = _optionService.GetSiteList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                KullanimList = _optionService.GetKullanimList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                FileDetails = new List<FileDetailServiceModel>()
-            };
+            if (viewModel == null)
+                viewModel = new AdDetailViewModel();
+
+            viewModel.ExpertList = _optionService.GetExpertList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList();
+            viewModel.IsinmaList = _optionService.GetIsinmaList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList();
+            viewModel.KimdenList = _optionService.GetKimdenList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList();
+            viewModel.KrediList =
+                _optionService.GetKrediList()
+                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value })
+                    .ToList();
+            viewModel.KurlarList =
+                _optionService.GetKurlarList()
+                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value })
+                    .ToList();
+            viewModel.PropertiesList =
+                _optionService.GetPropertiesList()
+                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value })
+                    .ToList();
+            viewModel.SecuritiesList =
+                _optionService.GetSecurityList()
+                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value })
+                    .ToList();
+            viewModel.SocialList =
+                _optionService.GetSocialAppsList()
+                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value })
+                    .ToList();
+            viewModel.StatusList =
+                _optionService.GetStatuslist()
+                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value })
+                    .ToList();
+            viewModel.IlList =
+                _optionService.GetIllerList()
+                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value })
+                    .ToList();
+            viewModel.EmlakTipList =
+                _optionService.GetEmlakTipList()
+                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value })
+                    .ToList();
+            viewModel.EsyaList = _optionService.GetEsyaList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList();
+            viewModel.SiteList = _optionService.GetSiteList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList();
+            viewModel.KullanimList =
+                _optionService.GetKullanimList()
+                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value })
+                    .ToList();
+            viewModel.FileDetails = new List<FileDetailServiceModel>();
+
             return viewModel;
         }
 
         [HttpPost, ValidateInput(false)]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(AdDetailViewModel adDetail, string[] tags, string[] socials, string[] securitys, HttpPostedFileBase document)
         {
-           
+
             if (ModelState.IsValid)
             {
                 var imagePath = Functions.UploadImage(document);
@@ -141,21 +173,24 @@ namespace Project_UI.Areas.Admin.Controllers
                     StatusId = adDetail.StatusId,
                     ThumbPath = adDetail.ThumbPath,
                     FileDetails = fileDetails,
-                    SelectedProperties = tags.Select(x=>new SelectlistItem() {Id=int.Parse(x)}).ToList(),
-                    SelectedSecurities=securitys.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList(),
+                    SemtId=adDetail.SemtId,
+                    SelectedProperties = tags.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList(),
+                    SelectedSecurities = securitys.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList(),
                     SelectedSocialApps = socials.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList()
                 };
                 _adService.Create(model);
+                return Redirect("Index");
             }
-            return Redirect("Index");
+            return View(GetModel(adDetail));
         }
 
-      
+
 
         [HttpPost, ValidateInput(false)]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(AdDetailViewModel adDetail, string[] tags, string[] socials, string[] securitys, HttpPostedFileBase document)
         {
-           
+
             if (ModelState.IsValid)
             {
                 if (document != null)
@@ -192,6 +227,7 @@ namespace Project_UI.Areas.Admin.Controllers
                     StatusId = adDetail.StatusId,
                     ThumbPath = adDetail.ThumbPath,
                     FileDetails = files,
+                    SemtId=adDetail.SemtId,
                     SelectedSecurities = securitys.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList(),
                     SelectedProperties = tags.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList(),
                     SelectedSocialApps = socials.Select(x => new SelectlistItem() { Id = int.Parse(x) }).ToList(),
@@ -201,7 +237,7 @@ namespace Project_UI.Areas.Admin.Controllers
 
                 return RedirectToAction("Index");
             }
-            return View(adDetail);
+            return View(GetModel(adDetail));
         }
 
         public JsonResult Delete(int id)

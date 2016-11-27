@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Project_UI.Areas.Admin.Models
 {
@@ -12,5 +9,11 @@ namespace Project_UI.Areas.Admin.Models
         public int FloorCount { get; set; }
         public int FloorFlatCount { get; set; }
         public string Takas { get; set; }
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Kimden olduğunu seçmelisiniz!!!")]
+        public int? KimdenId { get; set; }
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Kur seçmelisiniz!!!")]
+        public int? KurlarId { get; set; }
     }
 }

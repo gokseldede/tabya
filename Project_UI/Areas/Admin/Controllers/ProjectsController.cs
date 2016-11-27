@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -45,26 +44,39 @@ namespace Project_UI.Areas.Admin.Controllers
             return View(model);
         }
 
-        private ProjectViewModel GetModel()
+        private ProjectViewModel GetModel(ProjectViewModel viewModel = null)
         {
-            var viewModel = new ProjectViewModel()
-            {
-                ExpertList = _optionService.GetExpertList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                PropertiesList = _optionService.GetPropertiesList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                SecuritiesList = _optionService.GetSecurityList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                SocialList = _optionService.GetSocialAppsList().Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value }).ToList(),
-                FileDetails = new List<FileDetailServiceModel>()
-            };
+            if (viewModel == null)
+                viewModel = new ProjectViewModel() { ProjectDeliveryDate = DateTime.Now };
+
+            viewModel.ExpertList =
+                _optionService.GetExpertList()
+                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value })
+                    .ToList();
+            viewModel.PropertiesList =
+                _optionService.GetPropertiesList()
+                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value })
+                    .ToList();
+            viewModel.SecuritiesList =
+                _optionService.GetSecurityList()
+                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value })
+                    .ToList();
+            viewModel.SocialList =
+                _optionService.GetSocialAppsList()
+                    .Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Value })
+                    .ToList();
+            viewModel.FileDetails = new List<FileDetailServiceModel>();
+
             return viewModel;
         }
 
         // POST: Admin/Projects/Create
 
         [HttpPost, ValidateInput(false)]
-
+        [ValidateAntiForgeryToken]
         public ActionResult Create(ProjectViewModel project, string[] tags, string[] socials, string[] securitys, HttpPostedFileBase document, HttpPostedFileBase pricelist)
         {
-            
+
             if (ModelState.IsValid)
             {
                 var fileDetails = FileDetailServiceModels();
@@ -94,10 +106,9 @@ namespace Project_UI.Areas.Admin.Controllers
                 };
 
                 _projectService.Create(model);
+                return Redirect("Index");
             }
-
-
-            return Redirect("Index");
+            return View(GetModel(project));
         }
 
         private List<FileDetailServiceModel> FileDetailServiceModels()
@@ -138,6 +149,7 @@ namespace Project_UI.Areas.Admin.Controllers
 
 
         [HttpPost, ValidateInput(false)]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(ProjectViewModel project, string[] tags, string[] socials, string[] securitys, HttpPostedFileBase document, HttpPostedFileBase pricelist)
         {
             if (ModelState.IsValid)
@@ -183,7 +195,7 @@ namespace Project_UI.Areas.Admin.Controllers
                 _projectService.Edit(model);
                 return RedirectToAction("Index");
             }
-            return View();
+            return View(GetModel(project));
         }
 
         public JsonResult Delete(int id)
@@ -222,7 +234,7 @@ namespace Project_UI.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new { Result = false, Message = ex.Message });
+                return Json(new { Result = false, ex.Message });
             }
         }
 

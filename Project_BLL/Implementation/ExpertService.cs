@@ -4,6 +4,7 @@ using Project_BLL.Interfaces;
 using Project_Entity;
 using Project_DAL;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Project_BLL.Implementation
 {
@@ -32,6 +33,11 @@ namespace Project_BLL.Implementation
                 _expertRepository.Insert(model);
         }
 
+        public Expert GetActiveRecordById(int id)
+        {
+            return _expertRepository.Table.SingleOrDefault(x => x.IsActive && x.ID == id);
+        }
+
         public void DeleteById(int id)
         {
             _expertRepository.Delete(id);
@@ -43,9 +49,9 @@ namespace Project_BLL.Implementation
                 _expertRepository.Update(model);
         }
 
-        public IList<Expert> Get(System.Linq.Expressions.Expression<Func<Expert, bool>> predicate)
+        public IList<Expert> Get(Expression<Func<Expert, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return _expertRepository.Table.Where(predicate).ToList();
         }
 
         public void ChangeVitrin(int id)

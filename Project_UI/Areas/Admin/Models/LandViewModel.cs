@@ -1,4 +1,6 @@
-﻿namespace Project_UI.Areas.Admin.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Project_UI.Areas.Admin.Models
 {
     public class LandViewModel : BaseViewModel
     {
@@ -13,5 +15,13 @@
         public string KatKarsiligi { get; set; }
         public string Takas { get; set; }
 
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Kredi Tipi seçmelisiniz!!!")]
+        public int? KrediId { get; set; }
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Kimden olduğunu seçmelisiniz!!!")]
+        public int? KimdenId { get; set; }
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Kur seçmelisiniz!!!")]
+        public int? KurlarId { get; set; }
     }
 }

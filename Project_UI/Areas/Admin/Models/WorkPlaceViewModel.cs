@@ -8,6 +8,7 @@ namespace Project_UI.Areas.Admin.Models
 {
     public class BaseViewModel
     {
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Ad alanı boş geçilemez!!!")]
         public string Name { get; set; }
         public string Description { get; set; }
         public bool IsActive { get; set; }
@@ -19,12 +20,8 @@ namespace Project_UI.Areas.Admin.Models
 
         public string ThumbPath { get; set; }
         public int? StatusId { get; set; }
-        public int? KurlarId { get; set; }
-        public int? IsinmaId { get; set; }
-        public int? KrediId { get; set; }
-        public int? ExpertId { get; set; }
-        public int? KimdenId { get; set; }
 
+        public int? ExpertId { get; set; }
         public List<SelectListItem> ExpertList { get; set; }
         public List<SelectListItem> KimdenList { get; set; }
         public List<SelectListItem> StatusList { get; set; }
@@ -57,13 +54,35 @@ namespace Project_UI.Areas.Admin.Models
 
         public int? KullanimId { get; set; }
         public List<SelectListItem> KullanimList { get; set; }
+
+        public int IlId { get; set; }
+        public int IlceId { get; set; }
+        public int SemtId { get; set; }
     }
     public class WorkPlaceViewModel : BaseViewModel
     {
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Oda sayısı boş geçilemez!!!")]
         public string Room { get; set; }
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "M2 boş geçilemez!!!")]
         public int Size { get; set; }
-        public int IlceId { get; set; }
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Bina yaşı boş geçilemez!!!")]
         public int BAge { get; set; }
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Aidat ücreti!!!")]
         public int Dues { get; set; }
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Kredi Tipi seçmelisiniz!!!")]
+        public int? KrediId { get; set; }
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Isınma Tipi seçmelisiniz!!!")]
+        public int? IsinmaId { get; set; }
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Kimden olduğunu seçmelisiniz!!!")]
+        public int? KimdenId { get; set; }
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Kur seçmelisiniz!!!")]
+        public int? KurlarId { get; set; }
     }
 }

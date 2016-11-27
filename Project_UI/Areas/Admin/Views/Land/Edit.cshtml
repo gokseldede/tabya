@@ -6,3 +6,12 @@
 
 @model LandViewModel
 @Html.Partial("Partial/_LandPartial", Model)
+
+@section Scripts{
+    <script>
+        $(document).ready(function() {
+
+            CKEDITOR.replace(content);
+        });
+    </script>
+}

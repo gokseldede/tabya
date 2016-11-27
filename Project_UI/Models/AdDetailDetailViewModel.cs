@@ -34,7 +34,7 @@ namespace Project_UI.Models
         public string[] SelectedSecurities { get; set; }
         public string Il { get; set; }
         public string Ilce { get; set; }
-        public string Mahalle { get; set; }
+        public string Semt { get; set; }
         public List<FileDetailServiceModel> FileDetails { get; set; }
         public string ImarStatus { get; set; }
         public string EsyaStatus { get; set; }

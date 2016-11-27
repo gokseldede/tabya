@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using Project_BLL.Interfaces;
 using Project_BLL.ServiceModels;
 using Project_DAL;
@@ -69,11 +71,25 @@ namespace Project_BLL.Implementation
                 }).ToList()
             };
 
-            bina.Securities = _securityRepository.Table.Where(x => model.SelectedSecurities.Any(y => y.Id == x.ID)).ToList();
-            bina.Propertieses = _propertiesRepository.Table.Where(x => model.SelectedSecurities.Any(y => y.Id == x.ID)).ToList();
-            bina.SocialAppses = _socialAppsRepository.Table.Where(x => model.SelectedSecurities.Any(y => y.Id == x.ID)).ToList();
+            int[] securitiesIds = model.SelectedSecurities.Select(y => y.Id).ToArray();
+            int[] propertiesIds = model.SelectedProperties.Select(y => y.Id).ToArray();
+            int[] socialAppsIds = model.SelectedSocialApps.Select(y => y.Id).ToArray();
+
+            bina.Securities = _securityRepository.Table.Where(x => securitiesIds.Contains(x.ID)).ToList();
+            bina.Propertieses = _propertiesRepository.Table.Where(x => propertiesIds.Contains(x.ID)).ToList();
+            bina.SocialAppses = _socialAppsRepository.Table.Where(x => socialAppsIds.Contains(x.ID)).ToList();
 
             _buildingRepository.Insert(bina);
+        }
+
+        public BuildingServiceModel GetActiveRecordById(int id)
+        {
+            var data = _buildingRepository.Table.SingleOrDefault(x => x.IsActive && x.ID == id);
+            if (data == null)
+                return null;
+
+            var vm = ParseToBuildingServiceModel(data);
+            return vm;
         }
 
         public void DeleteById(int id)
@@ -109,36 +125,40 @@ namespace Project_BLL.Implementation
                         FileName = x.FileName
                     }).ToList();
 
+
+                    int[] securitiesIds = model.SelectedSecurities.Select(y => y.Id).ToArray();
+                    int[] propertiesIds = model.SelectedProperties.Select(y => y.Id).ToArray();
+                    int[] socialAppsIds = model.SelectedSocialApps.Select(y => y.Id).ToArray();
+
                     foreach (var item in db.Securities.ToList())
                         if (model.SelectedSecurities.All(y => y.Id != item.ID))
                             db.Securities.Remove(item);
 
-                    db.Securities = _securityRepository.Table.Where(x => model.SelectedSecurities.Any(y => y.Id == x.ID)).ToList();
+                    db.Securities = _securityRepository.Table.Where(x => securitiesIds.Contains(x.ID)).ToList();
 
                     foreach (var item in db.Propertieses.ToList())
                         if (model.SelectedProperties.All(y => y.Id != item.ID))
                             db.Propertieses.Remove(item);
 
-                    db.Propertieses = _propertiesRepository.Table.Where(x => model.SelectedProperties.Any(y => y.Id == x.ID)).ToList();
+                    db.Propertieses = _propertiesRepository.Table.Where(x => propertiesIds.Contains(x.ID)).ToList();
 
                     foreach (var item in db.SocialAppses.ToList())
                         if (model.SelectedSocialApps.All(y => y.Id != item.ID))
                             db.SocialAppses.Remove(item);
 
-                    db.SocialAppses = _socialAppsRepository.Table.Where(x => model.SelectedSocialApps.Any(y => y.Id == x.ID)).ToList();
+                    db.SocialAppses = _socialAppsRepository.Table.Where(x => socialAppsIds.Contains(x.ID)).ToList();
 
                     _buildingRepository.Update(db);
                 }
             }
         }
 
-        public
-            System.Collections.Generic.IList<BuildingServiceModel> Get(System.Linq.Expressions.Expression<Func<BuildingServiceModel, bool>> predicate)
+        public IList<BuildingServiceModel> Get(Expression<Func<BuildingServiceModel, bool>> predicate)
         {
             throw new NotImplementedException();
         }
 
-        public System.Collections.Generic.IList<BuildingServiceModel> GetAll()
+        public IList<BuildingServiceModel> GetAll()
         {
             return
                 _buildingRepository.Table.Where(x => x.IsDelete == false)
@@ -161,6 +181,12 @@ namespace Project_BLL.Implementation
             if (data == null)
                 return null;
 
+            var vm = ParseToBuildingServiceModel(data);
+            return vm;
+        }
+
+        private static BuildingServiceModel ParseToBuildingServiceModel(Bina data)
+        {
             var vm = new BuildingServiceModel()
             {
                 Id = data.ID,
@@ -185,10 +211,16 @@ namespace Project_BLL.Implementation
                 FloorCount = data.Floor,
                 FloorFlatCount = data.FloorRoom,
                 Takas = data.Takas,
+                Semt = data.Semt.Ad,
+                Ilce = data.Semt.Ilce.Ad,
+                Il = data.Semt.Ilce.Il.Ad,
+                SemtId = data.SemtID,
                 SelectedProperties = data.Propertieses.Select(x => new SelectlistItem() { Id = x.ID, Value = x.Name }).ToList(),
                 SelectedSecurities = data.Securities.Select(x => new SelectlistItem() { Id = x.ID, Value = x.Name }).ToList(),
                 SelectedSocialApps = data.SocialAppses.Select(x => new SelectlistItem() { Id = x.ID, Value = x.Name }).ToList(),
-                FileDetails = data.BinaFileDetails.Select(x => new FileDetailServiceModel() { Id = x.Id, Extension = x.Extension, FileName = x.FileName }).ToList()
+                FileDetails =
+                    data.BinaFileDetails.Select(
+                        x => new FileDetailServiceModel() { Id = x.Id, Extension = x.Extension, FileName = x.FileName }).ToList()
             };
             return vm;
         }

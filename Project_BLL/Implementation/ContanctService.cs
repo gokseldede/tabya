@@ -38,6 +38,11 @@ namespace Project_BLL.Implementation
             return _contactRepository.GetById(id);
         }
 
+        public Contact GetActiveRecordById(int id)
+        {
+            return _contactRepository.Table.SingleOrDefault(x => x.IsActive && x.ID == id);
+        }
+
         public void DeleteById(int id)
         {
            _contactRepository.Delete(id);

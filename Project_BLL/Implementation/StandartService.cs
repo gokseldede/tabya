@@ -30,6 +30,11 @@ namespace Project_BLL.Implementation
                 _repository.Insert(model);
         }
 
+        public T GetActiveRecordById(int id)
+        {
+            return _repository.Table.SingleOrDefault(x => x.IsActive && x.ID == id);
+        }
+
         public void DeleteById(int id)
         {
             _repository.Delete(id);

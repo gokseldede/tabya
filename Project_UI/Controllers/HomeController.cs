@@ -44,9 +44,16 @@ namespace Project_UI.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetirSemtler(int ilceId)
+        public JsonResult GetirSemtler(string ilceId)
         {
-            return Json("");
+            int _ilceId;
+            if (int.TryParse(ilceId, out _ilceId) == false)
+            {
+                return Json("İnteger değer göndermelisin dostum:)");
+            }
+
+            var result = _service.GetProviences(_ilceId);
+            return Json(result);
         }
     }
 }

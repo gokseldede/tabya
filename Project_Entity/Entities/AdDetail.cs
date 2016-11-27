@@ -55,9 +55,7 @@ namespace Project_Entity
         public virtual Kurlar Kurlar { get; set; }
         public virtual List<Global> Global { get; set; }
         public virtual Status Status { get; set; }
-
-        public virtual Il Il { get; set; }
-        public virtual Ilce Ilce { get; set; }
+        public int? SemtID { get; set; }
         public virtual Semt Semt { get; set; }
 
         public virtual ICollection<Properties> Propertieses { get; set; }
@@ -122,6 +120,8 @@ namespace Project_Entity
         public virtual Status Status { get; set; }
         public int? KurlarID { get; set; }
         public virtual Kurlar Kurlar { get; set; }
+        public int? SemtID { get; set; }
+        public virtual Semt Semt { get; set; }
         public virtual ICollection<Properties> Propertieses { get; set; }
         public virtual ICollection<Securitys> Securities { get; set; }
         public virtual ICollection<SocialApps> SocialAppses { get; set; }
@@ -167,6 +167,8 @@ namespace Project_Entity
         public virtual Status Status { get; set; }
         public int? KimdenID { get; set; }
         public virtual Kimden Kimden { get; set; }
+        public int? SemtID { get; set; }
+        public virtual Semt Semt { get; set; }
         public virtual List<LandFileDetail> LandFileDetails { get; set; }
         public int? KurlarID { get; set; }
         public virtual Kurlar Kurlar { get; set; }
@@ -205,5 +207,7 @@ namespace Project_Entity
         public virtual ICollection<Properties> Propertieses { get; set; }
         public virtual ICollection<Securitys> Securities { get; set; }
         public virtual ICollection<SocialApps> SocialAppses { get; set; }
+        public int? SemtID { get; set; }
+        public virtual Semt Semt { get; set; }
     }
 }

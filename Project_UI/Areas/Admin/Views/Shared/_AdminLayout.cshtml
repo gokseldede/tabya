@@ -12,8 +12,6 @@
     <link href="~/Areas/Admin/Content/css/ace.min.css" rel="stylesheet" />
     <link href="~/Areas/Admin/Scripts/dist/sweetalert.css" rel="stylesheet" />
     <script src="~/Areas/Admin/Scripts/js/jquery.2.1.1.min.js"></script>
-    <script src='http://maps.googleapis.com/maps/api/js?key=AIzaSyACK-coethsOi5bJxqgmgSjHMAN5W0rWvY&sensor=false&libraries=places'></script>
-    <script src="http://rawgit.com/Logicify/jquery-locationpicker-plugin/master/dist/locationpicker.jquery.js"></script>
     <link href="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
     <script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
@@ -443,66 +441,66 @@
                     </ul>
                     <b class="arrow"></b>
 
-                <li class="">
-                    <a href="#" class="dropdown-toggle">
-                        <i class="menu-icon fa fa-pencil-square-o"></i>
-                        <span class="menu-text"> İller </span>
+                    @*<li class="">
+                            <a href="#" class="dropdown-toggle">
+                                <i class="menu-icon fa fa-pencil-square-o"></i>
+                                <span class="menu-text"> İller </span>
 
-                        <b class="arrow fa fa-angle-down"></b>
-                    </a>
-
-                    <b class="arrow"></b>
-
-                    <ul class="submenu">
-                        <li class="">
-                            <a href="/Admin/Il/Index">
-                                <i class="menu-icon fa fa-caret-right"></i>
-                                İl Listesi
+                                <b class="arrow fa fa-angle-down"></b>
                             </a>
 
                             <b class="arrow"></b>
-                        </li>
 
+                            <ul class="submenu">
+                                <li class="">
+                                    <a href="/Admin/Il/Index">
+                                        <i class="menu-icon fa fa-caret-right"></i>
+                                        İl Listesi
+                                    </a>
+
+                                    <b class="arrow"></b>
+                                </li>
+
+                                <li class="">
+                                    <a href="/Admin/Il/Create">
+                                        <i class="menu-icon fa fa-caret-right"></i>
+                                        Yeni Kayıt
+                                    </a>
+
+                                    <b class="arrow"></b>
+                                </li>
+                            </ul>
+                        </li>
                         <li class="">
-                            <a href="/Admin/Il/Create">
-                                <i class="menu-icon fa fa-caret-right"></i>
-                                Yeni Kayıt
+                            <a href="#" class="dropdown-toggle">
+                                <i class="menu-icon fa fa-pencil-square-o"></i>
+                                <span class="menu-text"> İlçeler </span>
+
+                                <b class="arrow fa fa-angle-down"></b>
                             </a>
 
                             <b class="arrow"></b>
-                        </li>
-                    </ul>
-                </li>
-                <li class="">
-                    <a href="#" class="dropdown-toggle">
-                        <i class="menu-icon fa fa-pencil-square-o"></i>
-                        <span class="menu-text"> İlçeler </span>
 
-                        <b class="arrow fa fa-angle-down"></b>
-                    </a>
+                            <ul class="submenu">
+                                <li class="">
+                                    <a href="/Admin/Ilce/Index">
+                                        <i class="menu-icon fa fa-caret-right"></i>
+                                        İlçe Listesi
+                                    </a>
 
-                    <b class="arrow"></b>
+                                    <b class="arrow"></b>
+                                </li>
 
-                    <ul class="submenu">
-                        <li class="">
-                            <a href="/Admin/Ilce/Index">
-                                <i class="menu-icon fa fa-caret-right"></i>
-                                İlçe Listesi
-                            </a>
+                                <li class="">
+                                    <a href="/Admin/Ilce/Create">
+                                        <i class="menu-icon fa fa-caret-right"></i>
+                                        Yeni Kayıt
+                                    </a>
 
-                            <b class="arrow"></b>
-                        </li>
-
-                        <li class="">
-                            <a href="/Admin/Ilce/Create">
-                                <i class="menu-icon fa fa-caret-right"></i>
-                                Yeni Kayıt
-                            </a>
-
-                            <b class="arrow"></b>
-                        </li>
-                    </ul>
-                </li>
+                                    <b class="arrow"></b>
+                                </li>
+                            </ul>
+                        </li>*@
                 <li class="">
                     <a href="#" class="dropdown-toggle">
                         <i class="menu-icon fa fa-phone"></i>
@@ -777,36 +775,54 @@
     <script>
         $(document)
             .ready(function () {
-                $('#dataTables-example')
-                    .DataTable({
-                        responsive: true
-                    });
+                $('#dataTables-example').DataTable({
+                    responsive: true
+                });
 
-                CKEDITOR.replace(content);
+                //CKEDITOR.replace(content);
 
 
-                $('#Il')
-                    .on('change',
-                        function () {
-                            GetirIlceler(this.value);
-                        });
+                $('#Il').on('change', function () {
+                    GetIlceler(this.value);
+                });
+                $('#IlceId').on('change', function () {
+                    GetSemtler(this.value);
+                });
 
-                function GetirIlceler(ilID) {
+                function GetIlceler(ilId) {
                     $.ajax({
                         type: "POST",
                         url: '@Url.Action("GetirIlceler", "Home", new {area = ""})',
-                        data: { ilID: ilID },
+                        data: { ilId: ilId },
                         dataType: "json",
                         success: function (ilceler) {
-                            $("#ilceler").html("");
+                            $("#IlceId").html("");
                             $.each(ilceler, function (index, ilce) {
-                                $("#ilceler").append("<option value=" + ilce.Id + " selected=" + $("#Il").data("id") + ">" + ilce.Value + "</option>");
+                                $("#IlceId").append("<option value=" + ilce.Id + ($("#IlceId").data("id") === ilce.Id ? " Selected='selected'>" : ">") + ilce.Value + "</option>");
+                            });
+                            $("#IlceId").trigger("change");
+                        }
+                    });
+                }
+
+                function GetSemtler(ilceId) {
+                    debugger;
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("GetirSemtler", "Home", new {area = ""})',
+                        data: { ilceId: ilceId },
+                        dataType: "json",
+                        success: function (semtler) {
+                            $("#SemtId").html("");
+                            $.each(semtler, function (index, semt) {
+                                $("#SemtId").append("<option value=" + semt.Id + ($("#SemtId").data("id") == semt.Id ? " Selected='selected'>" : ">") + semt.Value + "</option>");
                             });
                         }
                     });
                 }
 
                 $("#Il").trigger("change");
+                
             });
 
 
@@ -860,6 +876,6 @@
 
 
     </script>
-    @RenderSection("scripts",false)
+    @RenderSection("scripts", false)
 </body>
 </html>

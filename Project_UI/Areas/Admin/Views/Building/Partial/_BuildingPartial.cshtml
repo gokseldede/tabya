@@ -16,77 +16,93 @@
             <div class="row">
                 <div class="col-lg-6">
                     <form method="post" enctype="multipart/form-data" action="#">
-
+                        @Html.ValidationSummary(true)
                         @Html.AntiForgeryToken()
-                        <label> Adı:</label>
-                        @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
-                        <label> Satış Durumu:</label>
-                        @Html.DropDownListFor(x => x.StatusId, Model.StatusList, "Satış Durumu Seçiniz", new { @class = "form-control" })
-                        <label> Fiyatı:</label>
-                        @Html.TextBoxFor(x => x.Price, new { @class = "form-control", @id = "money-bank", @placeholder = "Örn: 10.5" }))
-                        <label>Döviz Tipi</label>
-                        @Html.DropDownListFor(x => x.KurlarId, Model.KurlarList, "Döviz Tipi Seçiniz", new { @class = "form-control" })
-
-                        <label> Açıklaması:</label>
-                        @Html.TextAreaFor(x => x.Description, new { @class = "form-control", @id = "content" })
-                        <label> Ölçüleri(m2):</label>
-                        @Html.TextBoxFor(x => x.Size, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(x => x.Size, "", new { @class = "text-danger" })
-                        <br />
-                        <label> Takas Durumu:</label>
-                        @Html.TextBoxFor(x => x.Takas, new { @class = "form-control" })
-                        <br />
-                        <label>Bina Yaşı:</label>
-                        <br />
-                        @Html.EditorFor(x => x.BAge, new { @class = "ui-spinner-input" })
-                        @Html.ValidationMessageFor(x => x.BAge, "", new { @class = "text-danger" })
-                        <br />
-                        <label> Kat Sayısı:</label>
-                        <br />
-                        @Html.EditorFor(x => x.FloorCount, new { @class = "ui-spinner-input " })
-                        @Html.ValidationMessageFor(x => x.FloorCount, "", new { @class = "text-danger" })
-                        <br />
-                        <label> Kattaki Daire Sayısı:</label>
-                        <br />
-                        @Html.EditorFor(x => x.FloorFlatCount, new { @class = "ui-spinner-input " })
-                        @Html.ValidationMessageFor(x => x.FloorFlatCount, "", new { @class = "text-danger" })
-
-                        </br>
-                        <label> Danışmanı:</label>
-                        @Html.DropDownListFor(x => x.ExpertId, Model.ExpertList, "Danışman Seçiniz", new { @class = "form-control" })
-                        <br />
-
-                        <label> Diğer Özellikler:</label> <br />
-                        @Html.DropDownList("tags", Model.PropertiesList, new { @multiple = "multiple", @class = "dropdown-menu", @id = "tags" })
-                        <br />
-
-                        <label> Sosyal Alan Özellikleri:</label> <br />
-                        @Html.DropDownList("socials", Model.SocialList, new { @multiple = "multiple", @class = "dropdown-menu", @id = "socials" })
-
-                        <br />
-                        <label> Güvenlik Özellikleri:</label> <br />
-                        @Html.DropDownList("securitys", Model.SecuritiesList, new { @multiple = "multiple", @class = "dropdown-menu", @id = "securitys" })
-
-                        <br />
-                        <label> Kimden Durumu:</label>
-                        @Html.DropDownListFor(x => x.KimdenId, Model.KimdenList, " Mülk Sahibi Seçiniz", new { @class = "form-control" })
-                        @*@Html.ValidationMessageFor(x => x.Kimden, "", new { @class = "text-danger" })*@
-
-                        <br />
+                        <div class="form-group">
+                            <label> Adı:</label>
+                            @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label> Satış Durumu:</label>
+                            @Html.DropDownListFor(x => x.StatusId, Model.StatusList, "Satış Durumu Seçiniz", new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label> Fiyatı:</label>
+                            @Html.TextBoxFor(x => x.Price, new { @class = "form-control", @id = "money-bank", @placeholder = "Örn: 10.5" })
+                        </div>
+                        <div class="form-group">
+                            <label>Döviz Tipi</label>
+                            @Html.DropDownListFor(x => x.KurlarId, Model.KurlarList, "Döviz Tipi Seçiniz", new { @class = "form-control" })
+                        </div><div class="form-group">
+                            <label> Açıklaması:</label>
+                            @Html.TextAreaFor(x => x.Description, new { @class = "form-control", @id = "content" })
+                        </div>
+                        <div class="form-group">
+                            <label> Ölçüleri(m2):</label>
+                            @Html.TextBoxFor(x => x.Size, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(x => x.Size, null, new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            <label> Takas Durumu:</label>
+                            @Html.TextBoxFor(x => x.Takas, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label>Bina Yaşı:</label>
+                        </div>
+                        <div class="form-group">
+                            @Html.TextBoxFor(x => x.BAge, new { @class = "ui-spinner-input" })
+                            @Html.ValidationMessageFor(x => x.BAge, null, new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            <label> Kat Sayısı:</label>
+                            @Html.TextBoxFor(x => x.FloorCount, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(x => x.FloorCount, null, new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            <label> Kattaki Daire Sayısı:</label>
+                            @Html.TextBoxFor(x => x.FloorFlatCount, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(x => x.FloorFlatCount, null, new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            <label> Danışmanı:</label>
+                            @Html.DropDownListFor(x => x.ExpertId, Model.ExpertList, "Danışman Seçiniz", new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label> Diğer Özellikler:</label> <br />
+                            @Html.DropDownList("tags", Model.PropertiesList, new { @multiple = "multiple", @class = "dropdown-menu", @id = "tags" })
+                        </div>
+                        <div class="form-group">
+                            <label> Sosyal Alan Özellikleri:</label> <br />
+                            @Html.DropDownList("socials", Model.SocialList, new { @multiple = "multiple", @class = "dropdown-menu", @id = "socials" })
+                        </div>
+                        <div class="form-group">
+                            <label> Güvenlik Özellikleri:</label> <br />
+                            @Html.DropDownList("securitys", Model.SecuritiesList, new { @multiple = "multiple", @class = "dropdown-menu", @id = "securitys" })
+                        </div>
+                        <div class="form-group">
+                            <label> Kimden Durumu:</label>
+                            @Html.DropDownListFor(x => x.KimdenId, Model.KimdenList, " Mülk Sahibi Seçiniz", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(x => x.KimdenId, null, new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            <label>Iller:</label>
+                            @Html.DropDownListFor(x => x.IlId, Model.IlList, new { @class = "form-control", id = "Il" })
+                            <label>Ilce:</label>
+                            <select id="IlceId" name="IlceId" data-id="@Model.IlceId" class="form-control"></select>
+                            <label>Semtler:</label>
+                            <select id="SemtId" name="SemtId" data-id="@Model.SemtId" class="form-control"></select>
+                        </div>
                         <hr />
-                        @Html.Label("Lütfen yüksek çözünürlüklü ya da 393x303 ebatlarında önizleme resmi yükleyiniz!")
-                        @if (Model.ThumbPath != null)
-                        {
-                            <input type="file" id="document" name="document" />
-                            <hr />
-                            <img src="@Url.Content(@Model.ThumbPath)" width="50" height="50" />
-
-                        }
-                        else
-                        {
-                            <input type="file" id="document" name="document" required="Lütfen resim ekleyiniz" />
-
-                        }
+                        <div class="form-group">
+                            <label>Lütfen yüksek çözünürlüklü ya da 393x303 ebatlarında önizleme resmi yükleyiniz!</label>
+                            <input type="file" id="document" name="document" accept=".jpg, .png" @(Model.ThumbPath != null ? "" : "required=\"required\"") />
+                            
+                            @if (Model.ThumbPath != null)
+                            {
+                                <hr />
+                                <img src="@Url.Content(Model.ThumbPath)" width="50" height="50" />
+                            }
+                        </div>
                         <hr />
                         <div class="form-group">
                             <div class="col-md-12">
@@ -94,17 +110,8 @@
                                 <br />
                                 @Html.Label("Choose Image(s)", new { @class = "control-label col-sm-3" })
                                 <div class="col-sm-5">
-                                    @if (Model != null)
-                                    {
-                                        <input type="file" id="file" name="files" multiple="multiple" accept=".jpg, .png, .gif" />
-                                    }
-                                    else
-                                    {
-                                        <input type="file" id="file" name="files" multiple="multiple" accept=".jpg, .png, .gif" required="Lütfen resim ekleyiniz" />
-
-                                    }
+                                    <input type="file" id="file" name="files" multiple="multiple" accept=".jpg, .png" @(Model.FileDetails.Count != 0 ? "" : "required=\"required\"") />
                                 </div>
-                                <hr />
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <ul class="attachment">
@@ -114,7 +121,7 @@
                                                 {
                                                     <li>
                                                         <img src="~/Areas/Admin/Content/Image/@item.Id@item.Extension" width="60" height="60" />
-                                                        <a href="javascript:void(0);" data-id="@item.Id" class="deleteItemb" name="deleteItem" onclick="deleteItemb('/Admin/Building/DeleteFile/'@item.Id)">X</a>
+                                                        <a href="javascript:void(0);" data-id="@item.Id" onclick="DeleteFile('/Admin/Building/DeleteFile/@item.Id',this)">X</a>
                                                     </li>
                                                 }
                                             }
@@ -125,7 +132,7 @@
                         </div>
 
                         <br />
-
+                        <hr/>
                         <button type="submit" value="Save" class="btn btn-xs btn-success btn-xs radius-4">
                             <i class="ace-icon fa fa-floppy-o bigger-160"></i>
                             Kaydet

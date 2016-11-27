@@ -4,21 +4,22 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-@model WorkPlaceViewModel 
-@Html.Partial("Partial/_WorkPartial",Model)
+@model WorkPlaceViewModel
+@Html.Partial("Partial/_WorkPartial", Model)
 
 @section Scripts{
     <script>
         $(document).ready(function() {
 
+            CKEDITOR.replace(content);
+
             $('#tags').multiselect({nonSelectedText: 'Diğer Özellikler',includeSelectAllOption: true});
             $('#socials').multiselect({nonSelectedText: 'Sosyal Özellikler',includeSelectAllOption: true});
             $('#securitys').multiselect({nonSelectedText: 'Güvenlik Özellikleri',includeSelectAllOption: true});
 
-            $('.dropdown-menu, .dropdown-menu li')
-                .click(function (e) {
-                    e.stopPropagation();
-                });
+            $('.dropdown-menu, .dropdown-menu li').click(function (e) {
+                e.stopPropagation();
+            });
 
             $('#tags').multiselect("select", @Html.Raw(Json.Encode(Model.SelectedProperties)));
             $('#socials').multiselect("select", @Html.Raw(Json.Encode(Model.SelectedSocialList)));

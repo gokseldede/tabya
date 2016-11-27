@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using Project_BLL.Interfaces;
 using Project_BLL.ServiceModels;
 using Project_DAL;
@@ -44,6 +42,7 @@ namespace Project_BLL.Implementation
                 SizePrice = model.PriceForM2,
                 Tapu = model.TapuDurumu,
                 ThumbPath = model.ThumbPath,
+                SemtID = model.SemtId,
                 LandFileDetails = model.FileDetails.Select(x => new LandFileDetail()
                 {
                     Id = x.Id,
@@ -82,6 +81,7 @@ namespace Project_BLL.Implementation
                     db.SizePrice = model.PriceForM2;
                     db.Tapu = model.TapuDurumu;
                     db.ThumbPath = model.ThumbPath;
+                    db.SemtID = model.SemtId;
                     db.LandFileDetails = model.FileDetails.Select(x => new LandFileDetail()
                     {
                         Id = x.Id,
@@ -100,6 +100,12 @@ namespace Project_BLL.Implementation
             if (data == null)
                 return null;
 
+            var vm = ParseToLandServiceModel(data);
+            return vm;
+        }
+
+        private static LandServiceModel ParseToLandServiceModel(Land data)
+        {
             var vm = new LandServiceModel()
             {
                 Id = data.ID,
@@ -133,6 +139,12 @@ namespace Project_BLL.Implementation
                 Status = data.Status.Name,
                 Takas = data.Takas,
                 TapuDurumu = data.Tapu,
+                Semt = data.Semt.Ad,
+                Ilce = data.Semt.Ilce.Ad,
+                Il = data.Semt.Ilce.Il.Ad,
+                SemtId = data.SemtID,
+                IlId=data.Semt.Ilce.IlID,
+                IlceId=data.Semt.IlceID,
                 FileDetails = data.LandFileDetails.Select(x => new FileDetailServiceModel()
                 {
                     Id = x.Id,
@@ -140,6 +152,16 @@ namespace Project_BLL.Implementation
                     FileName = x.FileName
                 }).ToList()
             };
+            return vm;
+        }
+
+        public LandServiceModel GetActiveRecordById(int id)
+        {
+            var data = _landRepository.Table.SingleOrDefault(x => x.IsActive && x.ID == id);
+            if (data == null)
+                return null;
+
+            var vm = ParseToLandServiceModel(data);
             return vm;
         }
 

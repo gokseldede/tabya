@@ -27,7 +27,7 @@
                     <a class="btnx" href="#" data-toggle="modal" data-target=".basvur-modal">BİR UZMANA BAŞVUR</a>
                 </div>
                 <div class="image  wow fadeInUp" data-wow-duration="1s">
-                    <img src="Content/img/uzmanlar-img.png" alt="uzmanlar">
+                    <img src="@Url.Content("/Content/img/uzmanlar-img.png")" alt="uzmanlar">
                 </div>
             </div>
         </div>
@@ -40,17 +40,17 @@
            
             $('#il').on('change', function () {
                 debugger;
-                GetirIlceler($('#ilce'), this.value)
+                GetirIlceler($('#ilce'), this.value);
             });
 
             $('#il1').on('change', function () {
                 debugger;
-                GetirIlceler($('#ilce1'), this.value)
+                GetirIlceler($('#ilce1'), this.value);
             });
 
             $('#il2').on('change', function () {
                 debugger;
-                GetirIlceler($('#ilce2'), this.value)
+                GetirIlceler($('#ilce2'), this.value);
             });
 
             $('#il').trigger("change");

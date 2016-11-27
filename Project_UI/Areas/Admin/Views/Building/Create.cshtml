@@ -5,19 +5,20 @@
 }
 
 @Html.Partial("Partial/_BuildingPartial")
-section Scripts{
+
+@section Scripts{
 <script>
-        $(document).ready(function() {
+    $(document).ready(function () {
+        CKEDITOR.replace(content);
+        $('#tags').multiselect({ nonSelectedText: 'Diğer Özellikler', includeSelectAllOption: true });
+        $('#socials').multiselect({ nonSelectedText: 'Sosyal Özellikler', includeSelectAllOption: true });
+        $('#securitys').multiselect({ nonSelectedText: 'Güvenlik Özellikleri', includeSelectAllOption: true });
 
-            $('#tags').multiselect({nonSelectedText: 'Diğer Özellikler',includeSelectAllOption: true});
-            $('#socials').multiselect({nonSelectedText: 'Sosyal Özellikler',includeSelectAllOption: true});
-            $('#securitys').multiselect({nonSelectedText: 'Güvenlik Özellikleri',includeSelectAllOption: true});
+        $('.dropdown-menu, .dropdown-menu li')
+            .click(function (e) {
+                e.stopPropagation();
+            });
 
-            $('.dropdown-menu, .dropdown-menu li')
-                .click(function (e) {
-                    e.stopPropagation();
-                });
-
-        });
+    });
 </script>
 }

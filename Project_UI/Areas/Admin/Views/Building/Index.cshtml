@@ -33,14 +33,7 @@
                             <tr id="a_@item.Id">
                                 <td><img src="@item.ThumbPath" width="40" height="40" /></td>
                                 <td>@item.Name</td>
-                                @if (item.IsActive)
-                                {
-                                    <td id="b_@item.Id" onclick="Status('/Admin/Building/Status/',@item.Id)"><span class="btn btn-info btn-sm">Aktif</span></td>
-                                }
-                                else
-                                {
-                                    <td id="b_@item.Id" onclick="Status('/Admin/Building/Status/',@item.Id)"><span class="btn btn-default btn-sm">Pasif</span></td>
-                                }
+                                <td id="b_@item.Id" data-status="@item.IsActive" onclick="Status('/Admin/Building/Status/',@item.Id,this)"><span class="btn btn-@(item.IsActive ? "info" : "default") btn-sm">@(item.IsActive ? "Aktif" : "Pasif")</span></td>
 
                                 <td class="hidden-480">@item.CreatedDateTime.ToShortDateString()</td>
                                 <td class="hidden-480">@item.UpdatedDateTime</td>

@@ -35,22 +35,12 @@
                                 <td>@item.Name</td>
                                 <td class="hidden-480">@item.ProjectFirm</td>
                                 <td>@item.ProjectDeliveryDate</td>
-                                @if (item.IsActive)
-                                {
-                                    <td id="b_@item.Id" onclick="Status('/Admin/Projects/Status/',@item.Id)"><span class="btn btn-info btn-sm">Aktif</span></td>
-                                }
-                                else
-                                {
-                                    <td id="b_@item.Id" onclick="Status('/Admin/Projects/Status/',@item.Id)"><span class="btn btn-default btn-sm">Pasif</span></td>
-                                }
-                                @if (item.IsInVitrin)
-                                {
-                                    <td id="c_@item.Id" onclick="Vitrin('/Admin/Projects/Vitrin/',@item.Id)"><span class="btn btn-info btn-sm">Vitrine Eklendi</span></td>
-                                }
-                                else
-                                {
-                                    <td id="c_@item.Id" onclick="Vitrin('/Admin/Projects/Vitrin/',@item.Id)"><span class="btn btn-default btn-sm">Vitrine Ekle</span></td>
-                                }
+                                
+                                <td id="b_@item.Id" data-status="@item.IsActive" onclick="Status('/Admin/Projects/Status/',@item.Id,this)"><span class="btn btn-@(item.IsActive ? "info" : "default") btn-sm">@(item.IsActive ? "Aktif" : "Pasif")</span></td>
+
+
+                                <td id="c_@item.Id" data-status="@item.IsInVitrin" onclick="Vitrin('/Admin/Projects/Vitrin/',@item.Id,this)"><span class="btn btn-@(item.IsInVitrin ? "info" : "default") btn-sm">@(item.IsInVitrin ? "Vitrine Eklendi" : "Vitrine Ekle")</span></td>
+                                
                                 <td class="hidden-480">@item.CreatedDateTime.ToShortDateString()</td>
                                 <td class="hidden-480">@item.UpdatedDateTime</td>
                                 <td>

@@ -39,6 +39,12 @@ namespace Project_BLL.ServiceModels
         public int? KimdenId { get; set; }
         public string Imar { get; set; }
         public int? ImarId { get; set; }
+        public string Il { get; set; }
+        public string Ilce { get; set; }
+        public string Semt { get; set; }
+        public int? SemtId { get; set; }
+        public int IlId { get; set; }
+        public int IlceId { get; set; }
         public List<FileDetailServiceModel> FileDetails { get; set; }
     }
 }

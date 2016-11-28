@@ -1,33 +1,42 @@
-﻿using Project_Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web;
+﻿using System.Text;
 using System.Web.Mvc;
+using Project_BLL.Implementation;
+using Project_BLL.Interfaces;
+using Project_Entity;
+using Project_UI.Models;
 
 namespace Project_UI.Controllers
 {
     public class ContactController : Controller
     {
-        // GET: Contact
+        private readonly IStandartService<Contact> _contanctService;
+
+        public ContactController()
+        {
+            _contanctService = new ContanctService();
+        }
+
         public ActionResult Index()
         {
             return View();
         }
+
         [HttpPost]
-        public ActionResult Index(Message message)
+        [ValidateAntiForgeryToken]
+        public ActionResult Index(ContanctViewModel model)
         {
             if (ModelState.IsValid)
             {
+                _contanctService.Create(new Contact() { Email = model.EMail, Name = model.Name, Number = model.PhoneNumber });
+
                 var body = new StringBuilder();
-                body.AppendLine("Ad Soyad:" + message.Name);
-                body.AppendLine("Email:" + message.Email);
-                body.AppendLine("Number" + message.Number);
-                Mail.SendMail(body.ToString());
+                body.AppendLine("Ad Soyad:" + model.Name);
+                body.AppendLine("Email:" + model.EMail);
+                body.AppendLine("Number" + model.PhoneNumber);
+                //Mail.SendMail(body.ToString());
 
             }
-            return View();
+            return RedirectToAction("Index","Home");
         }
     }
 }

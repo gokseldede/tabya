@@ -45,8 +45,14 @@ namespace Project_BLL.Implementation
 
         public void Edit(Expert model)
         {
-            if (model != null)
-                _expertRepository.Update(model);
+            var entity = GetById(model.ID);
+            entity.Name = model.Name;
+            entity.Email = model.Email;
+            entity.ImagePath = model.ImagePath;
+            entity.PhoneNumber = model.PhoneNumber;
+            entity.Title = model.Title;
+
+            _expertRepository.Update(entity);
         }
 
         public IList<Expert> Get(Expression<Func<Expert, bool>> predicate)

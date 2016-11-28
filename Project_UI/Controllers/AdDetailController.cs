@@ -30,7 +30,7 @@ namespace Project_UI.Controllers
         // GET: AdDetail
         public ActionResult Index()
         {
-            var list = _webSiteService.GetAdversmints();
+            var list = _webSiteService.GetAdvertisements();
             return View(list);
         }
 

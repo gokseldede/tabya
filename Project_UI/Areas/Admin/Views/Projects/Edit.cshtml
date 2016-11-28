@@ -14,7 +14,7 @@
             $('#tags').multiselect({nonSelectedText: 'Diğer Özellikler',includeSelectAllOption: true});
             $('#socials').multiselect({nonSelectedText: 'Sosyal Özellikler',includeSelectAllOption: true});
             $('#securitys').multiselect({nonSelectedText: 'Güvenlik Özellikleri',includeSelectAllOption: true});
-
+            CKEDITOR.replace(content);
             $('.dropdown-menu, .dropdown-menu li')
                 .click(function (e) {
                     e.stopPropagation();

@@ -34,9 +34,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <form action="/Search/Query" method="post" class="search-area">
+                    <form action="/Search/Query" method="get" class="search-area">
                         <input type="text" class="search" name="search" id="search" value="" placeholder="Arama Yapın.." />
-                        <input type="submit" class="btn" name="submit" value="" />
+                        <input type="submit" class="btn" value=""/>
                     </form>
                     <a class="search-close" href="#"><i class="fa fa-times"></i></a>
                 </div>
@@ -97,6 +97,7 @@
     </footer>
 
     @Html.Partial("Partial/_ModalPartial")
+    @Html.Partial("Partial/_PartialNewster")
 
     <div class="overlay">
         <div class="mobile-copyright">Copyright © Tabya Gayrimenkul</div>
@@ -111,5 +112,32 @@
     <script src="~/Scripts/js/custom/custom.js"></script>
 
     @RenderSection("Scripts", false)
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.0/jquery.cookie.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+
+            if ($.cookie("no_thanks") == null) {
+                $('#bulten').appendTo("body");
+                window.setTimeout(showModal, 1000);
+            }
+
+            $(".nothanks").click(function () {
+                $.cookie('no_thanks', 'true', { expires: 36500, path: '/' });
+            });
+            function showModal() {
+                $('#bulten').modal();
+            }
+        });
+        function addtonewster() {
+            debugger;
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("AddToNewster", "Home")',
+                data: { mailAddress: $("#newstermail").val() },
+                dataType: "json"
+            });
+        }
+    </script>
 </body>
 </html>

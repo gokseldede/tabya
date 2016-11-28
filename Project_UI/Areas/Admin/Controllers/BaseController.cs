@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Project_DAL;
 using System.Web.Mvc;
 using Project_BLL.ServiceModels;
@@ -23,22 +24,22 @@ namespace Project_UI.Areas.Admin.Controllers
             {
                 var file = Request.Files[i];
 
-                if (file != null && file.ContentLength > 0)
+                if (file != null && file.ContentLength > 0 && (Request.Files.AllKeys.Contains("document") & file.FileName != Request.Files["document"].FileName))
                 {
-                    var fileName = Path.GetFileName(file.FileName);
-                    FileDetailServiceModel fileDetail = new FileDetailServiceModel()
-                    {
-                        FileName = fileName,
-                        Extension = Path.GetExtension(fileName),
-                        Id = Guid.NewGuid()
-                    };
-                    fileDetails.Add(fileDetail);
+                var fileName = Path.GetFileName(file.FileName);
+                FileDetailServiceModel fileDetail = new FileDetailServiceModel()
+                {
+                    FileName = fileName,
+                    Extension = Path.GetExtension(fileName),
+                    Id = Guid.NewGuid()
+                };
+                fileDetails.Add(fileDetail);
 
-                    var path = Path.Combine(Server.MapPath("~/Areas/Admin/Content/Image/"), fileDetail.Id + fileDetail.Extension);
-                    file.SaveAs(path);
-                }
+                var path = Path.Combine(Server.MapPath("~/Areas/Admin/Content/Image/"), fileDetail.Id + fileDetail.Extension);
+                file.SaveAs(path);
             }
+        }
             return fileDetails;
         }
-    }
+}
 }

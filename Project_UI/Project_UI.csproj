@@ -174,22 +174,6 @@
     <Content Include="Areas\Admin\Content\css\sumoselect.css" />
     <Content Include="Areas\Admin\Content\css\ui.jqgrid.css" />
     <Content Include="Areas\Admin\Content\css\ui.jqgrid.min.css" />
-    <Content Include="Areas\Admin\Content\Image\20160117_141450.jpg" />
-    <Content Include="Areas\Admin\Content\Image\banner.jpg" />
-    <Content Include="Areas\Admin\Content\Image\bg.jpg" />
-    <Content Include="Areas\Admin\Content\Image\gallery-img1.jpg" />
-    <Content Include="Areas\Admin\Content\Image\intro-pic.jpg" />
-    <Content Include="Areas\Admin\Content\Image\proje-img1.jpg" />
-    <Content Include="Areas\Admin\Content\Image\proje-img2.jpg" />
-    <Content Include="Areas\Admin\Content\Image\proje-img3.jpg" />
-    <Content Include="Areas\Admin\Content\Image\projeler-banner.png" />
-    <Content Include="Areas\Admin\Content\Image\slide-1.jpg" />
-    <Content Include="Areas\Admin\Content\Image\slide-2.jpg" />
-    <Content Include="Areas\Admin\Content\Image\slide-3.jpg" />
-    <Content Include="Areas\Admin\Content\Image\South Park Avatar Wallpaper800x600-1.png" />
-    <Content Include="Areas\Admin\Content\Image\South Park Avatar Wallpaper800x600.png" />
-    <Content Include="Areas\Admin\Content\Image\user.jpg" />
-    <Content Include="Areas\Admin\Content\Image\uzmanlar-img.png" />
     <Content Include="Areas\Admin\Scripts\avatars\avatar.png" />
     <Content Include="Areas\Admin\Scripts\avatars\avatar1.png" />
     <Content Include="Areas\Admin\Scripts\avatars\avatar2.png" />
@@ -535,8 +519,11 @@
     <Compile Include="LCSK\Startup.cs" />
     <Compile Include="ModelBinders\DecimalModelBinder.cs" />
     <Compile Include="Models\AdDetailDetailViewModel.cs" />
+    <Compile Include="Models\ContanctViewModel.cs" />
     <Compile Include="Models\ProjectDetailViewModel.cs" />
+    <Compile Include="Models\QueryViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools\Mail.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -642,6 +629,7 @@
     <Content Include="Views\Search\QueryResult.cshtml" />
     <Content Include="Views\AdDetail\WorkDetail.cshtml" />
     <Content Include="Views\AdDetail\BuildDetail.cshtml" />
+    <Content Include="Views\Shared\Partial\_PartialNewster.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -653,6 +641,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Admin\Content\Image\" />
     <Folder Include="Areas\Admin\Content\thumbs\" />
     <Folder Include="Areas\Admin\Content\Videos\" />
     <Folder Include="Areas\Admin\Views\Base\" />

@@ -3,7 +3,7 @@
     Layout = "~/Views/Shared/_SiteLayout.cshtml";
 }
 
-@model Project_UI.Models.ProjectVM.ProjectClass
+@model Project_UI.Models.QueryViewModel
 <section class="section ilan-banner">
     <div class="container">
         <div class="row">
@@ -13,344 +13,345 @@
         </div>
     </div>
 </section>
-<section class="section ilan-list wow fadeInUp" data-wow-duration="1s">
+<section class="section ilan-ara wow fadeInUp" data-wow-duration="1s">
     <div class="container">
         <div class="row">
-
-            @if (Model.AdDetails != null && Model.AdDetails.Count() > 0)
-            {
-                <div class="row list-owl">
-                    @foreach (var item in Model.AdDetails)
-                    {
-
-                    <div class="col-md-4 col-sm-6 col-xs-6">
-
-                        @{
-                                string[] adres;
-                                adres = item.Location.Split(',');
-                                string semt = adres[0];
-                                string ilce = adres[2].Substring(6).Replace("/", ",");
-
-                                string lokasyon = semt + "," + ilce;
-                        }
-                        @if (item.Status.Name.ToUpper() == "SATILIK" & Model != null)
-                        {
-                            <div class="item satilik">
-                                <a href="/AdDetail/Details/@item.ID">
-                                    <div class="image">
-                                        <img src="@item.ThumbPath" width="393" height="303" alt="ev">
-                                        <div class="over"><span>DETAYLI İNCELE</span></div>
-                                    </div>
-                                    <div class="text">
-                                        <div class="title">
-                                            <div class="row">
-                                                <div class="col-sm-6"><span class="type">@item.Status.Name.ToUpper()</span></div>
-                                                <div class="col-sm-6"><span class="price">@item.Price TL</span></div>
-                                                @* <div class="col-xs-12 distance"><span><i class="fa fa-crosshairs"></i> @item.AdDetail.Location km</span></div>*@
-                                            </div>
-                                        </div>
-
-                                        <div class="features">
-                                            <ul>
-                                                <li><i class="fa fa-map-marker"></i> @lokasyon</li>
-                                                <li><i class="fa fa-home"></i> @item.Room</li>
-                                                <li><i class="fa fa-arrows-h"></i>@item.Size m2</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        }
-
-                        @if (item.Status.Name.ToUpper() == "KIRALIK" & Model != null)
-                        {
-                            <div class="item kiralik">
-                                <a href="/AdDetail/Details/@item.ID">
-                                    <div class="image">
-                                        <img src="@item.ThumbPath" width="393" height="303" alt="ev">
-                                        <div class="over"><span>DETAYLI İNCELE</span></div>
-                                    </div>
-                                    <div class="text">
-                                        <div class="title">
-                                            <div class="row">
-                                                <div class="col-sm-6"><span class="type">@item.Status.Name.ToUpper()</span></div>
-                                                <div class="col-sm-6"><span class="price">@item.Price TL</span></div>
-                                                @*<div class="col-xs-12 distance"><span><i class="fa fa-crosshairs"></i> @item.AdDetail.Location km</span></div>*@
-                                            </div>
-                                        </div>
-                                        <div class="features">
-                                            <ul>
-                                                <li><i class="fa fa-map-marker"></i> @lokasyon</li>
-                                                <li><i class="fa fa-home"></i> @item.Room</li>
-                                                <li><i class="fa fa-arrows-h"></i> @item.Size m2</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        }
-
+            @*<div class="col-md-3 col-sm-4 filter">
+                <div class="box">
+                    <div class="head-title">
+                        <h2>FİLTRELE</h2>
+                        <a href="#" class="closex visible-xs"><i class="fa fa-times"></i></a>
                     </div>
-
-                                }
-
-                    }
-
-                    @if (Model.Lands.Count() > 0)
-                    {
-
-                        foreach (var item in Model.Lands)
-                        {
-
-                    <div class="col-md-4 col-sm-6 col-xs-6">
-                        @{
-                                    string[] adres;
-                                    adres = item.Location.Split(',');
-                                    string semt = adres[0];
-                                    string ilce = adres[2].Substring(6).Replace("/", ",");
-                                    string lokasyon = semt + "," + ilce;
-                        }
-                        @if (item.Status.Name.ToUpper() == "SATILIK" & Model != null)
-                        {
-                            <div class="item satilik">
-                                <a href="/AdDetail/LandDetail/@item.ID">
-                                    <div class="image">
-                                        <img src="@item.ThumbPath" width="393" height="303" alt="ev">
-                                        <div class="over"><span>DETAYLI İNCELE</span></div>
-                                    </div>
-                                    <div class="text">
-                                        <div class="title">
-                                            <div class="row">
-                                                <div class="col-sm-6"><span class="type">@item.Status.Name.ToUpper()</span></div>
-                                                <div class="col-sm-6"><span class="price">@item.Price TL</span></div>
-                                                @*  <div class="col-xs-12 distance"><span><i class="fa fa-crosshairs"></i> @item.AdDetail.Location km</span></div>*@
-                                            </div>
-                                        </div>
-                                        <div class="features">
-                                            <ul>
-                                                <li><i class="fa fa-map-marker"></i> @lokasyon</li>
-                                                <li><i class="fa fa-arrows-h"></i>@item.Size m2</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </a>
+                    <div class="item">
+                        <div class="title">
+                            <h2>EMLAK TİPİ<span class="icon"></span></h2>
+                        </div>
+                        <div class="content">
+                            <div class="form-item">
+                                <input type="checkbox" name="daire" id="daire" class="css-checkbox" />
+                                <label for="daire" class="css-label radGroup1">Daire</label>
                             </div>
-                        }
-
-                        @if (item.Status.Name.ToUpper() == "KIRALIK" & Model != null)
-                        {
-                            <div class="item kiralik">
-                                <a href="/AdDetail/LandDetail/@item.ID">
-                                    <div class="image">
-                                        <img src="@item.ThumbPath" width="393" height="303" alt="ev">
-                                        <div class="over"><span>DETAYLI İNCELE</span></div>
-                                    </div>
-                                    <div class="text">
-                                        <div class="title">
-                                            <div class="row">
-                                                <div class="col-sm-6"><span class="type">@item.Status.Name.ToUpper()</span></div>
-                                                <div class="col-sm-6"><span class="price">@item.Price TL</span></div>
-                                                @*<div class="col-xs-12 distance"><span><i class="fa fa-crosshairs"></i> @item.AdDetail.Location km</span></div>*@
-                                            </div>
-                                        </div>
-                                        <div class="features">
-                                            <ul>
-                                                <li><i class="fa fa-map-marker"></i> @lokasyon</li>
-                                                <li><i class="fa fa-arrows-h"></i> @item.Size m2</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </a>
+                            <div class="form-item">
+                                <input type="checkbox" name="mustakil" id="mustakil" class="css-checkbox" />
+                                <label for="mustakil" class="css-label radGroup1">Müstakil</label>
                             </div>
-                        }
+                            <div class="form-item">
+                                <input type="checkbox" name="ofis" id="ofis" class="css-checkbox" />
+                                <label for="ofis" class="css-label radGroup1">Ofis</label>
+                            </div>
+                        </div>
+                        <div class="content">
+                            <div class="form-item">
+                                <input type="checkbox" name="satilik" id="satilik" class="css-checkbox" />
+                                <label id="checked" for="satilik" class="css-label radGroup1">Satılık</label>
+                            </div>
+                            <div class="form-item">
+                                <input type="checkbox" name="kiralik" id="kiralik" class="css-checkbox" />
+                                <label id="checked" for="kiralik" class="css-label radGroup1">Kiralık</label>
+                            </div>
+                        </div>
                     </div>
-
-                                        }
-
-                                    }
-                    @if (Model.Workplaces.Count() > 0)
-                    {
-
-                        foreach (var item in Model.Workplaces)
-                        {
-
-                    <div class="col-md-4 col-sm-6 col-xs-6">
-
-                        @{
-                                    string[] adres;
-                                    adres = item.Location.Split(',');
-                                    string semt = adres[0];
-                                    string ilce = adres[2].Substring(6).Replace("/", ",");
-                                    string lokasyon = semt + "," + ilce;
-                        }
-                        @if (item.Status.Name.ToUpper() == "SATILIK" & Model != null)
-                        {
-                            <div class="item satilik">
-                                <a href="/AdDetail/WorkDetail/@item.ID">
-                                    <div class="image">
-                                        <img src="@item.ThumbPath" width="393" height="303" alt="ev">
-                                        <div class="over"><span>DETAYLI İNCELE</span></div>
-                                    </div>
-                                    <div class="text">
-                                        <div class="title">
-                                            <div class="row">
-                                                <div class="col-sm-6"><span class="type">@item.Status.Name.ToUpper()</span></div>
-                                                <div class="col-sm-6"><span class="price">@item.Price TL</span></div>
-                                                @* <div class="col-xs-12 distance"><span><i class="fa fa-crosshairs"></i> @item.AdDetail.Location km</span></div>*@
-                                            </div>
-                                        </div>
-
-                                        <div class="features">
-                                            <ul>
-                                                <li><i class="fa fa-map-marker"></i> @lokasyon</li>
-                                                <li><i class="fa fa-home"></i> @item.Room</li>
-                                                <li><i class="fa fa-arrows-h"></i>@item.Size m2</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </a>
+                    <div class="item">
+                        <div class="title">
+                            <h2>KONUM<span class="icon"></span></h2>
+                        </div>
+                        <div class="content">
+                            <div class="form-item select">
+                                <label><strong>ŞEHİR:</strong></label>
+                                <select name="iller" id="iller">
+                                    <option value="ADANA">Adana</option>
+                                    <option value="ANKARA">Ankara</option>
+                                    <option value="ANTALYA">Antalya</option>
+                                    <option value="AYDIN">Aydın</option>
+                                    <option value="BALIKESİR">Balıkesir</option>
+                                    <option value="BURSA">Bursa</option>
+                                    <option value="DİYARBAKIR">Diyarbakır</option>
+                                    <option value="GAZİANTEP">Gaziantep</option>
+                                    <option value="HATAY">Hatay</option>
+                                    <option value="İSTANBUL">İstanbul</option>
+                                    <option value="İZMİR">İzmir</option>
+                                    <option value="KAHRAMANMARAŞ">Kahramanmaraş</option>
+                                    <option value="KAYSERİ">Kayseri</option>
+                                    <option value="KOCAELİ">Kocaeli</option>
+                                    <option value="KONYA">Konya</option>
+                                    <option value="MANİSA">Manisa</option>
+                                    <option value="MERSİN">Mersin</option>
+                                    <option value="SAMSUN">Samsun</option>
+                                    <option value="ŞANLIURFA">Şanlıurfa</option>
+                                    <option value="VAN">Van</option>
+                                </select>
                             </div>
-                        }
-
-                        @if (item.Status.Name.ToUpper() == "KIRALIK" & Model != null)
-                        {
-                            <div class="item kiralik">
-                                <a href="/AdDetail/WorkDetail/@item.ID">
-                                    <div class="image">
-                                        <img src="@item.ThumbPath" width="393" height="303" alt="ev">
-                                        <div class="over"><span>DETAYLI İNCELE</span></div>
-                                    </div>
-                                    <div class="text">
-                                        <div class="title">
-                                            <div class="row">
-                                                <div class="col-sm-6"><span class="type">@item.Status.Name.ToUpper()</span></div>
-                                                <div class="col-sm-6"><span class="price">@item.Price TL</span></div>
-                                                @*<div class="col-xs-12 distance"><span><i class="fa fa-crosshairs"></i> @item.AdDetail.Location km</span></div>*@
-                                            </div>
-                                        </div>
-                                        <div class="features">
-                                            <ul>
-                                                <li><i class="fa fa-map-marker"></i> @lokasyon</li>
-                                                <li><i class="fa fa-home"></i> @item.Room</li>
-                                                <li><i class="fa fa-arrows-h"></i> @item.Size m2</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </a>
+                            <div class="form-item select">
+                                <label><strong>İLÇE:</strong></label>
+                                <select name="ilceler" id="ilceler">
+                                    <option value="ARNAVUTKOY">Arnavutköy</option>
+                                    <option value="SISLI">Şişli</option>
+                                    <option value="SARIYER">Sarıyer</option>
+                                    <option value="KADIKOY">Kadıköy</option>
+                                    <option value="BAKIRKOY">Bakırköy</option>
+                                </select>
                             </div>
-                        }
-
+                            <div class="form-item select">
+                                <label><strong>MAHALLE:</strong></label>
+                                <select name="mahalle" id="mahalle">
+                                    <option value="MECIDIYEKOY">Mecidiyeköy</option>
+                                    <option value="FERIKOY">Feriköy</option>
+                                    <option value="GULBAHAR">Gülbahar</option>
+                                    <option value="FULYA">Fulya</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
-
-                                        }
-
-                                    }
-
-
-                    @if (Model.Binas.Count() > 0)
-                    {
-
-                        foreach (var item in Model.Binas)
-                        {
-
-                            <div class="col-md-4 col-sm-6 col-xs-6">
-
-                                @{
-                                    string[] adres;
-                                    adres = item.Location.Split(',');
-                                    string semt = adres[0];
-                                    string ilce = adres[2].Substring(6).Replace("/", ",");
-                                    string lokasyon = semt + "," + ilce;
-                                }
-                                @if (item.Status.Name.ToUpper() == "SATILIK" & Model != null)
-                                {
-                                    <div class="item satilik">
-                                        <a href="/AdDetail/BuilDetail/@item.ID">
-                                            <div class="image">
-                                                <img src="@item.ThumbPath" width="393" height="303" alt="ev">
-                                                <div class="over"><span>DETAYLI İNCELE</span></div>
-                                            </div>
-                                            <div class="text">
-                                                <div class="title">
-                                                    <div class="row">
-                                                        <div class="col-sm-6"><span class="type">@item.Status.Name.ToUpper()</span></div>
-                                                        <div class="col-sm-6"><span class="price">@item.Price TL</span></div>
-                                                        @* <div class="col-xs-12 distance"><span><i class="fa fa-crosshairs"></i> @item.AdDetail.Location km</span></div>*@
-                                                    </div>
-                                                </div>
-
-                                                <div class="features">
-                                                    <ul>
-                                                        <li><i class="fa fa-map-marker"></i> @lokasyon</li>
-                                                        <li><i class="fa fa-arrows-h"></i>@item.Size m2</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                }
-
-                                @if (item.Status.Name.ToUpper() == "KIRALIK" & Model != null)
-                                {
-                                    <div class="item kiralik">
-                                        <a href="/AdDetail/BuilDetail/@item.ID">
-                                            <div class="image">
-                                                <img src="@item.ThumbPath" width="393" height="303" alt="ev">
-                                                <div class="over"><span>DETAYLI İNCELE</span></div>
-                                            </div>
-                                            <div class="text">
-                                                <div class="title">
-                                                    <div class="row">
-                                                        <div class="col-sm-6"><span class="type">@item.Status.Name.ToUpper()</span></div>
-                                                        <div class="col-sm-6"><span class="price">@item.Price TL</span></div>
-                                                        @*<div class="col-xs-12 distance"><span><i class="fa fa-crosshairs"></i> @item.AdDetail.Location km</span></div>*@
-                                                    </div>
-                                                </div>
-                                                <div class="features">
-                                                    <ul>
-                                                        <li><i class="fa fa-map-marker"></i> @lokasyon</li>
-                                                        <li><i class="fa fa-arrows-h"></i> @item.Size m2</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                }
-
+                    <div class="item">
+                        <div class="title">
+                            <h2>M2<span class="icon"></span></h2>
+                        </div>
+                        <div class="content">
+                            <div class="form-item">
+                                <input type="checkbox" name="80120" id="80120" class="css-checkbox" />
+                                <label for="80120" class="css-label radGroup1">80 - 120 m2</label>
                             </div>
-
-                                        }
-
-                                    }
-
-                    @if (Model.Projects.Count() > 0)
-                    {
-
-                        foreach (var item in Model.Projects)
-                        {
-                    <div class="col-md-4 col-sm-6 col-xs-6">
-                        <a href="/Project/Detail/@item.ID">
-                            <div class="image">
-                                <img src="@item.ImagePath" height="303" width="393" alt="ev">
-                                <div class="over"></div>
+                            <div class="form-item">
+                                <input type="checkbox" name="100150" id="100150" class="css-checkbox" />
+                                <label for="100150" class="css-label radGroup1">100 - 150 m2</label>
                             </div>
-                            <div class="text">
-                                <h3>@item.Name</h3>
-                                <h4>@item.SubName - @item.SSubName</h4>
+                            <div class="form-item">
+                                <input type="checkbox" name="150250" id="150250" class="css-checkbox" />
+                                <label for="150250" class="css-label radGroup1">150 - 250 m2</label>
                             </div>
-                        </a>
+                        </div>
                     </div>
-                        }
-
-                    }
-
+                    <div class="item">
+                        <div class="title">
+                            <h2>BİNA YAŞI<span class="icon"></span></h2>
+                        </div>
+                        <div class="content">
+                            <div class="form-item">
+                                <input type="checkbox" name="binayas05" id="binayas05" class="css-checkbox" />
+                                <label for="binayas05" class="css-label radGroup1">0 - 5</label>
+                            </div>
+                            <div class="form-item">
+                                <input type="checkbox" name="binayas515" id="binayas515" class="css-checkbox" />
+                                <label for="binayas515" class="css-label radGroup1">5 - 15</label>
+                            </div>
+                            <div class="form-item">
+                                <input type="checkbox" name="binayas1525" id="binayas1525" class="css-checkbox" />
+                                <label for="binayas1525" class="css-label radGroup1">15 - 25</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="title">
+                            <h2>BİNADAKİ KAT SAYISI<span class="icon"></span></h2>
+                        </div>
+                        <div class="content">
+                            <div class="form-item">
+                                <input type="radio" name="radiog_lite" id="radio1" class="css-checkbox" />
+                                <label for="radio1" class="css-label radGroup1 radGroup1">Option 1</label>
+                            </div>
+                            <div class="form-item">
+                                <input type="radio" name="radiog_lite" id="radio2" class="css-checkbox" />
+                                <label for="radio2" class="css-label radGroup1 radGroup1">Option 1</label>
+                            </div>
+                            <div class="form-item">
+                                <input type="radio" name="radiog_lite" id="radio3" class="css-checkbox" />
+                                <label for="radio3" class="css-label radGroup1 radGroup1">Option 1</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="title">
+                            <h2>BULUNDUĞU KAT<span class="icon"></span></h2>
+                        </div>
+                        <div class="content">
+                            <div class="form-item">
+                                <input type="checkbox" name="kat1" id="kat1" class="css-checkbox" />
+                                <label for="kat1" class="css-label radGroup1">1</label>
+                            </div>
+                            <div class="form-item">
+                                <input type="checkbox" name="kat2" id="kat2" class="css-checkbox" />
+                                <label for="kat2" class="css-label radGroup1">2</label>
+                            </div>
+                            <div class="form-item">
+                                <input type="checkbox" name="kat5" id="kat5" class="css-checkbox" />
+                                <label for="kat5" class="css-label radGroup1">5</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="title">
+                            <h2>ISITMA SİSTEMİ<span class="icon"></span></h2>
+                        </div>
+                        <div class="content">
+                            <div class="form-item">
+                                <input type="checkbox" name="dogalgaz" id="dogalgaz" class="css-checkbox" />
+                                <label for="dogalgaz" class="css-label radGroup1">Doğalgaz</label>
+                            </div>
+                            <div class="form-item">
+                                <input type="checkbox" name="soba" id="soba" class="css-checkbox" />
+                                <label for="soba" class="css-label radGroup1">Soba</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="title">
+                            <h2>BANYO SAYISI<span class="icon"></span></h2>
+                        </div>
+                        <div class="content">
+                            <div class="form-item">
+                                <input type="checkbox" name="banyo1" id="banyo1" class="css-checkbox" />
+                                <label for="banyo1" class="css-label radGroup1">1</label>
+                            </div>
+                            <div class="form-item">
+                                <input type="checkbox" name="banyo2" id="banyo2" class="css-checkbox" />
+                                <label for="banyo2" class="css-label radGroup1">2</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="title">
+                            <h2>KULLANIM DURUMU<span class="icon"></span></h2>
+                        </div>
+                        <div class="content">
+                            <div class="form-item">
+                                <input type="checkbox" name="kullanimevet" id="kullanimevet" class="css-checkbox" />
+                                <label for="kullanimevet" class="css-label radGroup1">Evet</label>
+                            </div>
+                            <div class="form-item">
+                                <input type="checkbox" name="kullanimhayir" id="kullanimhayir" class="css-checkbox" />
+                                <label for="kullanimhayir" class="css-label radGroup1">Hayır</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="title">
+                            <h2>EŞYALI<span class="phoneCheck"><label><input type="checkbox" class="ios-switch green" /><div><div></div></div></label></span></h2>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="title">
+                            <h2>SİTE İÇERİSİNDE<span class="phoneCheck"><label><input type="checkbox" class="ios-switch green" checked /><div><div></div></div></label></span></h2>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="title">
+                            <h2>KREDİYE UYGUN<span class="phoneCheck"><label><input type="checkbox" class="ios-switch green" checked /><div><div></div></div></label></span></h2>
+                        </div>
+                    </div>
+                    <div class="btn-line">
+                        <input type="submit" class="btnx" value="ARA">
+                    </div>
                 </div>
-                            }
-            <div class="row">
-
+            </div>*@
+            <div class="col-md-12 col-sm-12 wrapper">
+                <div class="row head">
+                    <div class="col-xs-4 visible-xs">
+                        <a href="#" class="filtre-btn">FİLTRE</a>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-4 notes">
+                        <p class="hidden-xs"><span>@Model.List.Count ilan gösteriliyor.</span></p>
+                        <p class="visible-xs">@Model.List.Count ilan</p>
+                    </div>
+                    <div class="col-md-2 hidden-sm hidden-xs view">
+                        <ul>
+                            <li class="active" rel="list-box"><a class="boxBtn" href="#"><i class="fa fa-th-large"></i></a></li>
+                            <li rel="list-table"><a class="listBtn" href="#"><i class="fa fa-th-list"></i></a>
+                        </ul>
+                    </div>
+                    <div class="col-md-4 col-sm-6 col-xs-4">
+                        <div class="select">
+                            <label>SIRALA:</label>
+                            <select name="sirala" id="sirala" onchange="document.location.href = '/Search/Query?search=@Model.Query&order=' + this.options[this.selectedIndex].value;">
+                                <option value="yenideneskiye" @(Model.Order=="yenideneskiye"?"selected='selected'":string.Empty)>Yeniden eskiye</option>
+                                <option value="eskidenyeniye" @(Model.Order== "eskidenyeniye" ? "selected='selected'":string.Empty)>Eskiden yeniye</option>
+                                <option value="ucuzdanpahaliya" @(Model.Order== "ucuzdanpahaliya" ? "selected='selected'":string.Empty)>Ucuzdan Pahalıya</option>
+                                <option value="pahalidanucuza" @(Model.Order== "pahalidanucuza" ? "selected='selected'":string.Empty)>Pahalıdan ucuza</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div id="list-table" class="row list list-table">
+                    <div class="col-md-12">
+                        <div class="box">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>EMLAK</th>
+                                        <th>EMLAK TİPİ</th>
+                                        <th>M2</th>
+                                        <th>KONUM</th>
+                                        <th>FİYAT</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                
+                                    @foreach (var item in Model.List)
+                                    {
+                                        <tr data-href="/AdDetail/@(item.AdType=="İşyeri"?"WorkDetail":(item.AdType=="Arsa"?"LandDetail":(item.AdType=="Bina"?"BuildDetail":"Details")))/@item.Id">
+                                            <td class="image"><img src="@item.Photo" alt="ev"></td>
+                                            <td>@item.Status</td>
+                                            <td>@item.AdType</td>
+                                            <td>@item.SquareMetre</td>
+                                            <td>@item.Address</td>
+                                            <td><span class="price">@item.Price.ToString("N")  @item.Currency</span></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div id="list-box" class="row list list-box">
+                    @foreach (var item in Model.List)
+                    {
+                        <div class="col-md-4 col-xs-12">
+                            <div class="item box @(item.Status.ToLower()=="kıralık"?"kiralik":"satilik")">
+                                <a href="/AdDetail/@(item.AdType=="İşyeri"?"WorkDetail":(item.AdType=="Arsa"?"LandDetail":(item.AdType=="Bina"?"BuildDetail":"Details")))/@item.Id">
+                                    <div class="row">
+                                        <div class="col-md-12 col-xs-6">
+                                            <div class="image">
+                                                <img class="lazy-loaded" data-src="@item.Photo" alt="ev">
+                                                <div class="over"><span>DETAYLI İNCELE</span></div>
+                                            </div>
+                                            <span class="type">@item.Status</span>
+                                        </div>
+                                        <div class="col-md-12 col-xs-6">
+                                            <div class="text">
+                                                <div class="title">
+                                                    <span class="notes">@item.AdType</span>
+                                                    <span class="price">@item.Price.ToString("N")  @item.Currency</span>
+                                                </div>
+                                                <div class="features">
+                                                    <ul>
+                                                        <li><i class="fa fa-map-marker"></i> @item.Address</li>
+                                                        <li><i class="fa fa-arrows-h"></i> @item.SquareMetre m2</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="row">
+                    <div class="col-md-12 pagination wow fadeInUp" data-wow-duration="1s">
+                        <ul>
+                            <li class="first active"><a href="#"><i class="fa fa-angle-left"></i></a></li>
+                            <li class="active"><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">...</a></li>
+                            <li><a href="#">9</a></li>
+                            <li><a href="#">10</a></li>
+                            <li><a href="#">11</a></li>
+                            <li class="last active"><a href="#"><i class="fa fa-angle-right"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-
         </div>
     </div>
-
 </section>

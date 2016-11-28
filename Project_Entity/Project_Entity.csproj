@@ -60,9 +60,9 @@
     <Compile Include="Entities\IDAd.cs" />
     <Compile Include="Entities\Il.cs" />
     <Compile Include="Entities\Isınma.cs" />
-    <Compile Include="Entities\Mail.cs" />
     <Compile Include="Entities\Message.cs" />
     <Compile Include="Entities\FileDetail.cs" />
+    <Compile Include="Entities\Newsletter.cs" />
     <Compile Include="Entities\Project.cs" />
     <Compile Include="Entities\ProjectFile.cs" />
     <Compile Include="Entities\Properties.cs" />

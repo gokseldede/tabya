@@ -39,28 +39,25 @@
         $(document).ready(function () {
            
             $('#il').on('change', function () {
-                debugger;
                 GetirIlceler($('#ilce'), this.value);
             });
 
             $('#il1').on('change', function () {
-                debugger;
                 GetirIlceler($('#ilce1'), this.value);
             });
 
             $('#il2').on('change', function () {
-                debugger;
                 GetirIlceler($('#ilce2'), this.value);
             });
 
             $('#il').trigger("change");
         });
-        function GetirIlceler(list2, ilID) {
-            debugger;
+        function GetirIlceler(list2, ilId) {
+
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("GetirIlceler", "Home")',
-                data: { ilID: ilID },
+                data: { ilID: ilId },
                 dataType: "json",
                 success: function (ilceler) {
                     $.each(ilceler, function (index, ilce) {

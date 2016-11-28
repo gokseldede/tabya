@@ -40,7 +40,7 @@ namespace Project_UI.Models
         public string EsyaStatus { get; set; }
         public string SiteStatus { get; set; }
         public string KullanimStatus { get; set; }
-        public int RoomCount { get; set; }
+        public string RoomCount { get; set; }
         public int Size { get; set; }
         public decimal Dues { get; set; }
         public int FloorCount { get; set; }

@@ -4,7 +4,6 @@ namespace Project_UI.Areas.Admin.Models
 {
     public class ProjectViewModel : BaseViewModel
     {
-        public int IlceId { get; set; }
         public string ProjectFirm { get; set; }
         public int ProjectArea { get; set; }
         public int FlatCount { get; set; }

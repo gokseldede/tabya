@@ -8,14 +8,15 @@
            
                 <div class="contentx">
                     <form action="/Contact/Index" method="post">
+                        @Html.AntiForgeryToken()
                         <div class="form-line">
                             <input type="text" class="form-input" id="adsoyad" name="Name" placeholder="Adınız Soyadınız">
                         </div>
                         <div class="form-line">
-                            <input type="text" class="form-input" id="email" name="Email" placeholder="Email Adresiniz">
+                            <input type="text" class="form-input" id="email" name="EMail" placeholder="Email Adresiniz">
                         </div>
                         <div class="form-line">
-                            <input type="text" class="form-input" id="tel" name="Number" placeholder="Telefon Numaranız">
+                            <input type="text" class="form-input" id="tel" name="PhoneNumber" placeholder="Telefon Numaranız">
                         </div>
                         <div class="form-line btn-line">
                             <input type="submit" class="btnx" value="BAŞVUR">

@@ -30,8 +30,8 @@ namespace Project_UI.Areas.Admin.Controllers
         }
         public ActionResult Index()
         {
-            List<Expert> _experts = _expertService.GetAll().ToList();
-            return View(_experts);
+            List<Expert> experts = _expertService.GetAll().ToList();
+            return View(experts);
         }
 
         public ActionResult Create()

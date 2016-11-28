@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_SiteLayout.cshtml";
-    
+
 }
 
 <section class="section ilan-detay">
@@ -104,7 +104,7 @@
                                 <div class="col-xs-6">@Model.Size</div>
                             </div>
                         }
-                        @if (Model.RoomCount!=0)
+                        @if (Model.RoomCount != null)
                         {
                             <div class="row">
                                 <div class="col-xs-6"><strong>Oda Sayısı</strong></div>
@@ -118,27 +118,24 @@
                                 <div class="col-xs-6">@Model.BAge</div>
                             </div>
                         }
-                       @if (Model.Dues != 0)
-                       {
                         <div class="row">
                             <div class="col-xs-6"><strong>Aidat</strong></div>
-                            <div class="col-xs-6">@Model.Dues TL</div>
+                            <div class="col-xs-6">@(Model.Dues != 0 ? Model.Dues + " TL" : "Belirtilmemiş")</div>
                         </div>
-                       }
-                       @if (Model.Isinma != null)
-                       {
-                        <div class="row">
-                            <div class="col-xs-6"><strong>Isınma Türü</strong></div>
-                            <div class="col-xs-6">@Model.Isinma</div>
-                        </div>
-                       }                      
-                      @if (Model.Kimden != null)
-                      {
-                        <div class="row">
-                            <div class="col-xs-6"><strong>Kimden</strong></div>
-                            <div class="col-xs-6">@Model.Kimden</div>
-                        </div>
-                      }
+                        @if (Model.Isinma != null)
+                        {
+                            <div class="row">
+                                <div class="col-xs-6"><strong>Isınma Türü</strong></div>
+                                <div class="col-xs-6">@Model.Isinma</div>
+                            </div>
+                        }
+                        @if (Model.Kimden != null)
+                        {
+                            <div class="row">
+                                <div class="col-xs-6"><strong>Kimden</strong></div>
+                                <div class="col-xs-6">@Model.Kimden</div>
+                            </div>
+                        }
                         @if (Model.Takas != null)
                         {
                             <div class="row">
@@ -146,15 +143,15 @@
                                 <div class="col-xs-6">@Model.Takas</div>
                             </div>
                         }
-                     
-                       @if (Model.KrediDurumu != null)
-                       {
-                        <div class="row">
-                            <div class="col-xs-6"><strong>Krediye Uygun</strong></div>
-                            <div class="col-xs-6">@Model.KrediDurumu</div>
-                        </div>
-                       }
-                        
+
+                        @if (Model.KrediDurumu != null)
+                        {
+                            <div class="row">
+                                <div class="col-xs-6"><strong>Krediye Uygun</strong></div>
+                                <div class="col-xs-6">@Model.KrediDurumu</div>
+                            </div>
+                        }
+
                     </div>
                 </div>
                 <div class="box details proje-tab wow fadeInUp" data-wow-duration="1s">

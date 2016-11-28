@@ -126,11 +126,11 @@ namespace Project_UI.Areas.Admin.Controllers
             try
             {
                 _adminUserService.DeleteById(id);
-                return Json(true);
+                return Json(new { result = true });
             }
             catch (Exception)
             {
-                return Json(false);
+                return Json(new { result = false });
             }
         }
 

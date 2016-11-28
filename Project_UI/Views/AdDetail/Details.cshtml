@@ -14,7 +14,7 @@
             <div class="col-md-8">
                 <div class="gallery wow fadeInUp" data-wow-duration="1s">
                     @*@Html.Partial("Partial/_ImagePartial")*@
-                    @if (Model.FileDetails != null)
+                    @if (Model.FileDetails.Count != 0)
                     {
                         <div class="galleryBig">
                             @foreach (var item in Model.FileDetails)
@@ -107,7 +107,7 @@
                             </div>
                         }
 
-                        @if (Model.RoomCount != 0)
+                        @if (Model.RoomCount != null)
                         {
                             <div class="row">
                                 <div class="col-xs-6"><strong>Oda Sayısı</strong></div>
@@ -170,13 +170,10 @@
                                 <div class="col-xs-6">@Model.SiteStatus</div>
                             </div>
                         }
-                        @if (Model.Dues != 0)
-                        {
-                            <div class="row">
-                                <div class="col-xs-6"><strong>Aidat</strong></div>
-                                <div class="col-xs-6">@Model.Dues TL</div>
-                            </div>
-                        }
+                        <div class="row">
+                            <div class="col-xs-6"><strong>Aidat</strong></div>
+                            <div class="col-xs-6">@(Model.Dues != 0 ? Model.Dues + " TL" : "Belirtilmemiş")</div>
+                        </div>
                         @if (Model.KrediDurumu != null)
                         {
                             <div class="row">

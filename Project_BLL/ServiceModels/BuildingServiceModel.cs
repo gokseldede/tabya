@@ -32,6 +32,8 @@ namespace Project_BLL.ServiceModels
         public string Ilce { get; set; }
         public string Semt { get; set; }
         public int? SemtId { get; set; }
+        public int IlId { get; set; }
+        public int IlceId { get; set; }
         public List<SelectlistItem> SelectedProperties { get; set; }
         public List<SelectlistItem> SelectedSecurities { get; set; }
         public List<SelectlistItem> SelectedSocialApps { get; set; }

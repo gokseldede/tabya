@@ -42,11 +42,11 @@
                     @if (Model.Video != null)
                     {
                         <a href="#" class="videoBtn" data-toggle="modal" data-target="#videoModal" data-theVideo="@Model.Video"><i class="fa fa-play-circle-o" aria-hidden="true"></i> Proje Tanıtım Filmini İzleyin</a>
-                    <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="videoModal" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content"><iframe width="100%" height="500" src="" frameborder="0"></iframe></div>
+                        <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="videoModal" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content"><iframe width="100%" height="500" src="" frameborder="0"></iframe></div>
+                            </div>
                         </div>
-                    </div>
                     }
                 </div>
             </div>
@@ -71,7 +71,10 @@
         <ul>
             <li class="active" rel="aciklama"><a href="#">AÇIKLAMA</a></li>
             <li rel="ozellikler"><a href="#">ÖZELLİKLER</a></li>
-            <li rel="fiyat"><a href="#">FİYAT LİSTESİ</a></li>
+            @if (Model.PriceList != null)
+            {
+                <li rel="fiyat"><a href="#">FİYAT LİSTESİ</a></li>
+            }
         </ul>
     </div>
     <div id="aciklama" class="tab_content">
@@ -101,13 +104,13 @@
         </div>
         <div class="container list">
             <div class="row">
-               @if (Model.SelectedSocialList != null)
-               {
-                   foreach (var item in Model.SelectedSocialList)
-                   {
-                    <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text">@item.ToString()</span></div>
-                   }
-               }
+                @if (Model.SelectedSocialList != null)
+                {
+                    foreach (var item in Model.SelectedSocialList)
+                    {
+                        <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text">@item</span></div>
+                    }
+                }
             </div>
         </div>
         <div class="title">
@@ -125,7 +128,7 @@
                 {
                     foreach (var item in Model.SelectedSecurities)
                     {
-                        <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text">@item.ToString()</span></div>
+                        <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text">@item</span></div>
                     }
                 }
 
@@ -146,30 +149,25 @@
                 {
                     foreach (var item in Model.SelectedProperties)
                     {
-                        <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text">@item.ToString()</span></div>
+                        <div class="col-md-4 col-sm-6 col-xs-6"><span class="icon"></span><span class="text">@item</span></div>
                     }
                 }
 
             </div>
         </div>
     </div>
-    <div id="fiyat" class="tab_content">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    @if (Model.PriceList != null)
-                    {
+    @if (Model.PriceList != null)
+    {
+        <div id="fiyat" class="tab_content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
                         <img src="@Model.PriceList" alt="">
-                    }
-                    else
-                    {
-                        <img src="#" alt="">
-                    }
-
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    }
 </section>
 <script>
 

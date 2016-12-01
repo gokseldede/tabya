@@ -56,5 +56,10 @@ namespace Project_UI.Controllers
             _service.AddToNewster(mailAddress,Request.UserHostAddress);
             return Json(new {result = true});
         }
+
+        public ActionResult NotFound()
+        {
+            return View();
+        }
     }
 }

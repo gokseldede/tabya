@@ -9,9 +9,21 @@
 
 @section Scripts{
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
 
             CKEDITOR.replace(content);
+            $(".money-bank").each(function (ind, obj) {
+                $(obj).priceFormat({
+                    prefix: '',
+                    centsLimit: 0
+                });
+            });
+
+            $("#myForm").submit(function () {
+                $(".money-bank").each(function (ind, obj) {
+                    $(obj).val($(obj).unmask());
+                });
+            });
         });
     </script>
 }

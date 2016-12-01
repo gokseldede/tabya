@@ -16,6 +16,14 @@
             $('.dropdown-menu, .dropdown-menu li').click(function (e) {
                 e.stopPropagation();
             });
+            $("#money-bank").priceFormat({
+                prefix: '',
+                centsLimit: 0
+            });
+
+            $("#myForm").submit(function () {
+                $("#money-bank").val($("#money-bank").unmask());
+            });
 
         });
     </script>

@@ -630,6 +630,7 @@
     <Content Include="Views\AdDetail\WorkDetail.cshtml" />
     <Content Include="Views\AdDetail\BuildDetail.cshtml" />
     <Content Include="Views\Shared\Partial\_PartialNewster.cshtml" />
+    <Content Include="Views\Home\NotFound.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

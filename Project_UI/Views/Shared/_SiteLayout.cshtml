@@ -35,7 +35,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <form action="/Search/Query" method="get" class="search-area">
-                        <input type="text" class="search" name="search" id="search" value="" placeholder="Arama Yapın.." />
+                        <input type="text" class="search" name="query" id="query" value="" placeholder="Arama Yapın.." />
                         <input type="submit" class="btn" value=""/>
                     </form>
                     <a class="search-close" href="#"><i class="fa fa-times"></i></a>
@@ -110,11 +110,10 @@
     <script src="~/Scripts/js/plugin/slick.js"></script>
     <script src="~/Scripts/js/plugin/lightbox.min.js"></script>
     <script src="~/Scripts/js/custom/custom.js"></script>
-
-    @RenderSection("Scripts", false)
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-price-format/2.1/jquery.priceformat.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.0/jquery.cookie.min.js"></script>
+    @RenderSection("Scripts", false)
     <script>
-
         $(document).ready(function () {
 
             if ($.cookie("no_thanks") == null) {
@@ -130,7 +129,6 @@
             }
         });
         function addtonewster() {
-            debugger;
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("AddToNewster", "Home")',

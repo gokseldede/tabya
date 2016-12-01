@@ -84,7 +84,7 @@
                             }
                             <br/>
                             <label>Lütfen fiyat listesi için resim yükleyiniz!</label>
-                            <input type="file" id="pricelist" name="pricelist" accept=".jpg, .png" @(Model.PriceList == null ? "required=\"required\"" : "")/>
+                            <input type="file" id="pricelist" name="pricelist" accept=".jpg, .png"/>
                             <hr/>
                             @if (Model.PriceList != null)
                             {

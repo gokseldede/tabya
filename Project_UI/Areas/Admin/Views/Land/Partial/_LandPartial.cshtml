@@ -16,7 +16,7 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-lg-6">
-                    <form method="post" enctype="multipart/form-data" action="#">
+                    <form method="post" id="myForm" enctype="multipart/form-data" action="#">
                         @Html.ValidationSummary(true)
                         @Html.AntiForgeryToken()
                         <div class="form-group">
@@ -29,7 +29,7 @@
                         </div>
                         <div class="form-group">
                             <label> Fiyatı:</label>
-                            @Html.TextBoxFor(x => x.Price, new { @class = "form-control", @id = "money-bank", @placeholder = "Örn: 10.5" })
+                            @Html.TextBoxFor(x => x.Price, new { @class = "form-control money-bank", @id = "money-bank", @placeholder = "Örn: 10.5" })
                         </div>
                         <div class="form-group">
                             <label>Döviz Tipi</label>
@@ -47,7 +47,7 @@
                         </div>
                         <div class="form-group">
                             <label> Ölçü Fiyatı(m2):</label>
-                            @Html.TextBoxFor(x => x.PriceForM2, new { @class = "form-control", @id = "money-bank", @placeholder = "Örn: 10.5" })
+                            @Html.TextBoxFor(x => x.PriceForM2, new { @class = "form-control money-bank", @id = "money-bank", @placeholder = "Örn: 10.5" })
                         </div>
                         <div class="form-group">
                             <label> Ada No:</label>

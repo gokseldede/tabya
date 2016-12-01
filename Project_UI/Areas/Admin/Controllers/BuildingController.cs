@@ -95,7 +95,9 @@ namespace Project_UI.Areas.Admin.Controllers
             vm.StatusId = building.StatusId;
             vm.KimdenId = building.KimdenId;
             vm.FileDetails = building.FileDetails;
-
+            vm.SemtId = building.SemtId.Value;
+            vm.IlceId = building.IlceId;
+            vm.IlId = building.IlId;
             vm.SelectedProperties = building.SelectedProperties.Select(x => x.Id.ToString()).ToArray();
             vm.SelectedSecurities = building.SelectedSecurities.Select(x => x.Id.ToString()).ToArray();
             vm.SelectedSocialList = building.SelectedSocialApps.Select(x => x.Id.ToString()).ToArray();

@@ -25,6 +25,9 @@ namespace Project_UI.Controllers
         public ActionResult Detail(int id)
         {
             var project = _projectService.GetActiveRecordById(id);
+            if (project == null)
+                return RedirectToAction("NotFound", "Home");
+
             var vm = new ProjectDetailViewModel()
             {
                 Name = project.Name,

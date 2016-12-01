@@ -127,7 +127,7 @@ namespace Project_BLL.Implementation
                         ProjectDeliveryDate = x.DeliveryDate,
                         ProjectFirm = x.SubName,
                         ProjectLocation = x.SSubName
-                    }).ToList();
+                    }).OrderByDescending(x=>x.CreatedDateTime).ToList();
         }
 
         public IList<ProjectServiceModel> Get(Expression<Func<ProjectServiceModel, bool>> predicate)

@@ -261,7 +261,7 @@
                     <div class="col-md-4 col-sm-6 col-xs-4">
                         <div class="select">
                             <label>SIRALA:</label>
-                            <select name="sirala" id="sirala" onchange="document.location.href = '/Search/Query?search=@Model.Query&order=' + this.options[this.selectedIndex].value;">
+                            <select name="sirala" id="sirala" onchange="document.location.href = document.location.href+'&order=' + this.options[this.selectedIndex].value;">
                                 <option value="yenideneskiye" @(Model.Order=="yenideneskiye"?"selected='selected'":string.Empty)>Yeniden eskiye</option>
                                 <option value="eskidenyeniye" @(Model.Order== "eskidenyeniye" ? "selected='selected'":string.Empty)>Eskiden yeniye</option>
                                 <option value="ucuzdanpahaliya" @(Model.Order== "ucuzdanpahaliya" ? "selected='selected'":string.Empty)>Ucuzdan Pahalıya</option>
@@ -288,13 +288,13 @@
                                 
                                     @foreach (var item in Model.List)
                                     {
-                                        <tr data-href="/AdDetail/@(item.AdType=="İşyeri"?"WorkDetail":(item.AdType=="Arsa"?"LandDetail":(item.AdType=="Bina"?"BuildDetail":"Details")))/@item.Id">
+                                        <tr data-href="/AdDetail/@(item.AdType=="Ofis"?"WorkDetail":(item.AdType=="Arsa"?"LandDetail":(item.AdType=="Bina"?"BuildDetail":"Details")))/@item.Id">
                                             <td class="image"><img src="@item.Photo" alt="ev"></td>
                                             <td>@item.Status</td>
                                             <td>@item.AdType</td>
                                             <td>@item.SquareMetre</td>
                                             <td>@item.Address</td>
-                                            <td><span class="price">@item.Price.ToString("N")  @item.Currency</span></td>
+                                            <td><span class="price" id="price" data-currency="@item.Currency">@item.Price</span></td>
                                         </tr>
                                     }
                                 </tbody>
@@ -307,7 +307,7 @@
                     {
                         <div class="col-md-4 col-xs-12">
                             <div class="item box @(item.Status.ToLower()=="kıralık"?"kiralik":"satilik")">
-                                <a href="/AdDetail/@(item.AdType=="İşyeri"?"WorkDetail":(item.AdType=="Arsa"?"LandDetail":(item.AdType=="Bina"?"BuildDetail":"Details")))/@item.Id">
+                                <a href="/AdDetail/@(item.AdType=="ofis"?"WorkDetail":(item.AdType=="Arsa"?"LandDetail":(item.AdType=="Bina"?"BuildDetail":"Details")))/@item.Id">
                                     <div class="row">
                                         <div class="col-md-12 col-xs-6">
                                             <div class="image">
@@ -320,7 +320,7 @@
                                             <div class="text">
                                                 <div class="title">
                                                     <span class="notes">@item.AdType</span>
-                                                    <span class="price">@item.Price.ToString("N")  @item.Currency</span>
+                                                    <span class="price" id="price" data-currency="@item.Currency">@item.Price</span>
                                                 </div>
                                                 <div class="features">
                                                     <ul>
@@ -336,7 +336,7 @@
                         </div>
                     }
                 </div>
-                <div class="row">
+                @*<div class="row">
                     <div class="col-md-12 pagination wow fadeInUp" data-wow-duration="1s">
                         <ul>
                             <li class="first active"><a href="#"><i class="fa fa-angle-left"></i></a></li>
@@ -350,8 +350,23 @@
                             <li class="last active"><a href="#"><i class="fa fa-angle-right"></i></a></li>
                         </ul>
                     </div>
-                </div>
+                </div>*@
             </div>
         </div>
     </div>
 </section>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $(".price").each(function (ind, obj) {
+                $(obj).priceFormat({
+                    clearPrefix: true,
+                    suffix: ' ' + $(obj).data("currency"),
+                    centsLimit:0
+                });
+            });
+
+        });
+    </script>
+
+}

@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
 using System.Linq;
-using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Project_DAL;
 using Project_Entity;
-using System.IO;
 using Project_UI.Areas.Admin.Models;
 using Project_UI.Areas.Admin.FilterAttributes;
 using Project_BLL.Interfaces;
@@ -41,13 +37,13 @@ namespace Project_UI.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Expert _expert, HttpPostedFileBase document)
+        public ActionResult Create(Expert expert, HttpPostedFileBase document)
         {
             try
             {
                 var imagePath = Functions.UploadImage(document);
-                _expert.ImagePath = imagePath;
-                _expertService.Create(_expert);
+                expert.ImagePath = imagePath;
+                _expertService.Create(expert);
                 return RedirectToAction("Index");
             }
             catch (Exception)
@@ -56,11 +52,11 @@ namespace Project_UI.Areas.Admin.Controllers
             }
         }
 
-        public ActionResult Edit(int ID)
+        public ActionResult Edit(int id)
         {
 
-            Expert _expert = _expertService.GetById(ID);
-            return View(_expert);
+            Expert expert = _expertService.GetById(id);
+            return View(expert);
 
         }
 
@@ -86,25 +82,25 @@ namespace Project_UI.Areas.Admin.Controllers
         }
 
 
-        public JsonResult Delete(int ID)
+        public JsonResult Delete(int id)
         {
             try
             {
-                _expertService.DeleteById(ID);
-                return Json(true);
+                _expertService.DeleteById(id);
+                return Json(new { result = true });
             }
             catch (Exception)
             {
-                return Json(false);
+                return Json(new { result = false });
             }
         }
 
-        public JsonResult Status(int ID)
+        public JsonResult Status(int id)
         {
             try
             {
-                _expertService.ChangeStatus(ID);
-                var status = _expertService.GetById(ID);
+                _expertService.ChangeStatus(id);
+                var status = _expertService.GetById(id);
                 return Json(new { result = true, status = status.IsActive });
             }
             catch (Exception)

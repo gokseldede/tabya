@@ -23,7 +23,7 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-lg-6">
-                    <form method="post" enctype="multipart/form-data" action="#">
+                    <form method="post" id="myForm" enctype="multipart/form-data" action="#">
                         @Html.ValidationSummary(true)
                         @Html.AntiForgeryToken()
                         <div class="form-group">
@@ -37,6 +37,7 @@
                         <div class="form-group">
                             <label> Fiyatı:</label>
                             @Html.TextBoxFor(x => x.Price, new { @class = "form-control", @id = "money-bank", @placeholder = "Örn: 10.5" })
+                            @*@Html.HiddenFor(x => x.Price)*@
                         </div>
                         <div class="form-group">
                             <label>Döviz Tipi</label>

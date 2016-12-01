@@ -54,15 +54,13 @@
                             }
                             @if (Model.Price != 0)
                             {
-                                <div class="col-xs-6"><span class="price">@Model.Price.ToString("N") @Model.Kur</span></div>
+                                <div class="col-xs-6"><span class="price" id="price">@Model.Price</span></div>
                             }
                         </div>
                         <div class="row">
-                            <div class="row">
                                 <div class="col-md-12 location">
                                     <p><i class="fa fa-map-marker"></i> @Model.Semt, @Model.Ilce, @Model.Il </p>
                                 </div>
-                            </div>
                         </div>
                     </div>
                     <div class="item">
@@ -102,14 +100,14 @@
                                 <div class="col-xs-6">@Model.Size</div>
                             </div>
                         }
-                        @if (Model.SizePrice != null)
+                        @if (Model.SizePrice != 0)
                         {
                             <div class="row">
                                 <div class="col-xs-6"><strong>m2 Fiyat</strong></div>
                                 <div class="col-xs-6">@Model.SizePrice.ToString("N") TL</div>
                             </div>
                         }
-                        @if (Model.AdaNo != null)
+                        @if (Model.AdaNo != 0)
                         {
                             <div class="row">
                                 <div class="col-xs-6"><strong>Ada No</strong></div>
@@ -144,14 +142,14 @@
                                 <div class="col-xs-6">@Model.KatKarsiligi</div>
                             </div>
                         }
-                        @if (Model.ParselNo != null)
+                        @if (Model.ParselNo != 0)
                         {
                             <div class="row">
                                 <div class="col-xs-6"><strong>Parsel No</strong></div>
                                 <div class="col-xs-6">@Model.ParselNo</div>
                             </div>
                         }
-                        @if (Model.PaftaNo != null)
+                        @if (Model.PaftaNo != 0)
                         {
                             <div class="row">
                                 <div class="col-xs-6"><strong>Pafta No</strong></div>
@@ -214,3 +212,15 @@
         </div>
     </div>
 </section>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $("#price").priceFormat({
+                clearPrefix: true,
+                suffix: ' @Model.Kur',
+                centsLimit: 0
+            });
+        });
+    </script>
+
+}

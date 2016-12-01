@@ -37,7 +37,14 @@
 @section Scripts{
     <script type="text/javascript">
         $(document).ready(function () {
-           
+            $(".price").each(function (ind, obj) {
+                $(obj).priceFormat({
+                    clearPrefix: true,
+                    suffix: ' ' + $(obj).data("currency"),
+                    centsLimit: 0
+                });
+            });
+
             $('#il').on('change', function () {
                 GetirIlceler($('#ilce'), this.value);
             });
@@ -60,6 +67,7 @@
                 data: { ilID: ilId },
                 dataType: "json",
                 success: function (ilceler) {
+                    $(list2).html('');
                     $.each(ilceler, function (index, ilce) {
                         $(list2).append("<option value=" + ilce.Id + ">" + ilce.Value + "</option>");
                     });

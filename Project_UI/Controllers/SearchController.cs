@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using Project_BLL.Implementation;
 using Project_BLL.Interfaces;
+using Project_BLL.ServiceModels;
 using Project_UI.Models;
 
 namespace Project_UI.Controllers
@@ -15,11 +16,20 @@ namespace Project_UI.Controllers
             _service = new WebSiteService();
         }
 
-        public ActionResult Query(string search, string order = null)
+        public ActionResult Query(QueryViewModel vm)
         {
-            var result = _service.GetAdvertisements(search);
+            var serviceModel = new QueryServiceModel()
+            {
+                AdType = vm.AdType,
+                IlceId = vm.IlceId,
+                Query = vm.Query,
+                Boyut = vm.Boyut,
+                IlId = vm.IlId,
+                Oda = vm.Oda
+            };
+            var result = _service.GetAdvertisements(serviceModel);
 
-            switch (order)
+            switch (vm.Order)
             {
                 case "yenideneskiye":
                     result = result.OrderByDescending(x => x.Id).ToList();
@@ -35,12 +45,7 @@ namespace Project_UI.Controllers
                     break;
             }
 
-            var vm = new QueryViewModel()
-            {
-                List=result,
-                Order = order,
-                Query = search
-            };
+            vm.List = result;
             return View(vm);
         }
     }

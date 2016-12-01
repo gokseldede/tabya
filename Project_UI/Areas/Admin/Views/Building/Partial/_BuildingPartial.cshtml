@@ -15,20 +15,23 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-lg-6">
-                    <form method="post" enctype="multipart/form-data" action="#">
+                    <form method="post" id="myForm" enctype="multipart/form-data" action="#">
                         @Html.ValidationSummary(true)
                         @Html.AntiForgeryToken()
                         <div class="form-group">
                             <label> Adı:</label>
                             @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(x => x.Name, null, new { @class = "text-danger" })
                         </div>
                         <div class="form-group">
                             <label> Satış Durumu:</label>
                             @Html.DropDownListFor(x => x.StatusId, Model.StatusList, "Satış Durumu Seçiniz", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(x => x.StatusId, null, new { @class = "text-danger" })
                         </div>
                         <div class="form-group">
                             <label> Fiyatı:</label>
                             @Html.TextBoxFor(x => x.Price, new { @class = "form-control", @id = "money-bank", @placeholder = "Örn: 10.5" })
+                            @Html.ValidationMessageFor(x => x.Price, null, new { @class = "text-danger" })
                         </div>
                         <div class="form-group">
                             <label>Döviz Tipi</label>

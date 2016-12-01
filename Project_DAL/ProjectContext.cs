@@ -14,7 +14,7 @@ namespace Project_DAL
     {
         public ProjectContext()
         {
-#if DEBUG
+#if !DEBUG
             Database.Connection.ConnectionString = @"server=WIN-Q8TU8RLSD8L\SQLEXPRESS;database=Db_Tabya;integrated security=true;";
 #else
             Database.Connection.ConnectionString = @"server=188.121.44.214;database=Db_Tabya;UID=1ki3;PWD=Magic89!;";

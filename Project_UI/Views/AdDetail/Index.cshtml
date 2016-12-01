@@ -6,8 +6,6 @@
     {
         Culture = UICulture = Request.QueryString["lang"];
     }
-    IFormatProvider formatProvider =
-      new System.Globalization.CultureInfo("tr-TR");
 }
 
 
@@ -24,61 +22,30 @@
             {
 
                 <div class="col-md-4 col-sm-6 col-xs-6">
-                    @if (item.Status.ToUpper() == "SATILIK" & Model != null)
-                {
-                        <div class="item satilik">
-                            <a href="/AdDetail/@(item.AdType=="İşyeri"?"WorkDetail":(item.AdType=="Arsa"?"LandDetail":(item.AdType=="Bina"?"BuildDetail":"Details")))/@item.Id">
-                                <div class="image">
-                                    <img src="@item.Photo" width="393" height="303" alt="ev">
-                                    <div class="over"><span>DETAYLI İNCELE</span></div>
-                                </div>
-                                <div class="text">
-                                    <div class="title">
-                                        <div class="row">
-                                            <div class="col-sm-6"><span class="type">@item.Status</span></div>
-                                            <div class="col-sm-6"><span class="price">@item.Price.ToString("N", formatProvider)  @item.Currency</span></div>
-                                        </div>
+                    <div class="item  @(item.Status.ToUpper() == "SATILIK"?"satilik":"kiralik")">
+                        <a href="/AdDetail/@(item.AdType=="Ofis"?"WorkDetail":(item.AdType=="Arsa"?"LandDetail":(item.AdType=="Bina"?"BuildDetail":"Details")))/@item.Id">
+                            <div class="image">
+                                <img src="@item.Photo" width="393" height="303" alt="ev">
+                                <div class="over"><span>DETAYLI İNCELE</span></div>
+                            </div>
+                            <div class="text">
+                                <div class="title">
+                                    <div class="row">
+                                        <div class="col-sm-6"><span class="type">@item.Status</span></div>
+                                        <div class="col-sm-6"><span class="price" id="price" data-currency="@item.Currency">@item.Price</span></div>
                                     </div>
+                                </div>
 
-                                    <div class="features">
-                                        <ul>
-                                            <li><i class="fa fa-map-marker"></i> @item.Address</li>
-                                            <li><i class="fa fa-type"></i> @item.AdType</li>
-                                            <li><i class="fa fa-arrows-h"></i>@item.SquareMetre m2</li>
-                                        </ul>
-                                    </div>
+                                <div class="features">
+                                    <ul>
+                                        <li><i class="fa fa-map-marker"></i> @item.Address</li>
+                                        <li><i class="fa fa-type"></i> @item.AdType</li>
+                                        <li><i class="fa fa-arrows-h"></i>@item.SquareMetre m2</li>
+                                    </ul>
                                 </div>
-                            </a>
-                        </div>
-                    }
-
-                    @if (item.Status.ToUpper() == "KIRALIK" & Model != null)
-                {
-                        <div class="item kiralik">
-                            <a href="/AdDetail/@(item.AdType=="İşyeri"?"WorkDetail":(item.AdType=="Arsa"?"LandDetail":(item.AdType=="Bina"?"BuildDetail":"Details")))/@item.Id">
-                                <div class="image">
-                                    <img src="@item.Photo" width="393" height="303" alt="ev">
-                                    <div class="over"><span>DETAYLI İNCELE</span></div>
-                                </div>
-                                <div class="text">
-                                    <div class="title">
-                                        <div class="row">
-                                            <div class="col-sm-6"><span class="type">@item.Status</span></div>
-                                            <div class="col-sm-6"><span class="price">@item.Price.ToString("C", formatProvider) @item.Currency</span></div>
-                                        </div>
-                                    </div>
-
-                                    <div class="features">
-                                        <ul>
-                                            <li><i class="fa fa-map-marker"></i> @item.Address</li>
-                                            <li><i class="fa fa-type"></i> @item.AdType</li>
-                                            <li><i class="fa fa-arrows-h"></i>@item.SquareMetre m2</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    }
+                            </div>
+                        </a>
+                    </div>
 
                 </div>
 
@@ -89,3 +56,18 @@
         </div>
     </div>
 </section>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $(".price").each(function (ind, obj) {
+                $(obj).priceFormat({
+                    clearPrefix: true,
+                    suffix: ' ' + $(obj).data("currency"),
+                    centsLimit: 0
+                });
+            });
+            
+        });
+    </script>
+
+}

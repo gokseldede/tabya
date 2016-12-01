@@ -63,6 +63,7 @@ namespace Project_BLL.Implementation
                 StatusID = model.StatusId,
                 Takas = model.Takas,
                 ThumbPath = model.ThumbPath,
+                SemtID = model.SemtId,
                 BinaFileDetails = model.FileDetails.Select(x => new BinaFileDetail()
                 {
                     Id = x.Id,
@@ -215,6 +216,8 @@ namespace Project_BLL.Implementation
                 Ilce = data.Semt.Ilce.Ad,
                 Il = data.Semt.Ilce.Il.Ad,
                 SemtId = data.SemtID,
+                IlId = data.Semt.Ilce.IlID,
+                IlceId=data.Semt.IlceID,
                 SelectedProperties = data.Propertieses.Select(x => new SelectlistItem() { Id = x.ID, Value = x.Name }).ToList(),
                 SelectedSecurities = data.Securities.Select(x => new SelectlistItem() { Id = x.ID, Value = x.Name }).ToList(),
                 SelectedSocialApps = data.SocialAppses.Select(x => new SelectlistItem() { Id = x.ID, Value = x.Name }).ToList(),

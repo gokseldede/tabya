@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Mapping;
+using System.Globalization;
 using System.Linq;
 using Project_BLL.ServiceModels;
 using Project_Entity;
@@ -50,7 +51,7 @@ namespace Project_BLL.Implementation
             var vm = new HomeViewModel();
             vm.Cities = _optionService.GetIllerList().ToList();
             vm.Projects = _projectRepository.Table.
-                Where(x => x.IsDelete == false && x.Vitrin && x.IsActive).Select(x => new NewProject()
+                Where(x => x.IsDelete == false && x.Vitrin && x.IsActive).OrderByDescending(x=>x.CreatedDate).Select(x => new NewProject()
                 {
                     Id = x.ID,
                     Name = x.Name,
@@ -58,37 +59,62 @@ namespace Project_BLL.Implementation
                     Company = x.SubName,
                     Photo = x.ImagePath
                 }).ToList();
-            vm.Advertisements = GetAdvertisements(true);
+            vm.Advertisements = QueryAdvertisements(true);
             vm.Advertisements.AddRange(GetLands(true));
             vm.Advertisements.AddRange(GetWorkplaces(true));
             vm.Advertisements.AddRange(GetBuildings(true));
             return vm;
         }
 
-        public List<NewAdvertisement> GetAdvertisements(string query = null)
+        public List<NewAdvertisement> GetAdvertisements(QueryServiceModel model)
         {
             var advertisements = new List<NewAdvertisement>();
 
-            advertisements.AddRange(GetWorkplaces(name: query));
-            advertisements.AddRange(GetLands(name: query));
-            advertisements.AddRange(GetAdvertisements(name: query));
-            advertisements.AddRange(GetBuildings(name: query));
+            if (model.AdType != null && model.AdType.ToLower() == "ofis")
+                advertisements.AddRange(GetWorkplaces(model: model));
+            else if (model.AdType != null && model.AdType.ToLower() == "arsa")
+                advertisements.AddRange(GetLands(model: model));
+            else if (model.AdType != null && model.AdType.ToLower() == "bina")
+                advertisements.AddRange(GetBuildings(model: model));
+            else if (model.AdType != null)
+                advertisements.AddRange(QueryAdvertisements(model: model));
+            else
+            {
+                advertisements.AddRange(GetWorkplaces(model: model));
+                advertisements.AddRange(GetLands(model: model));
+                advertisements.AddRange(GetBuildings(model: model));
+                advertisements.AddRange(QueryAdvertisements(model: model));
+            }
             return advertisements;
         }
 
-        private List<NewAdvertisement> GetAdvertisements(bool? vitrin = null, string name = null)
+        private List<NewAdvertisement> QueryAdvertisements(bool? vitrin = null, QueryServiceModel model = null)
         {
-            IQueryable<AdDetail> query;
-            if (vitrin != null && !string.IsNullOrEmpty(name))
-                query = _adDetailRepository.Table.Where(x => x.IsDelete == false && x.IsActive && x.Vitrin == vitrin && x.Name.Contains(name)).AsQueryable();
-            else if (vitrin != null)
-                query = _adDetailRepository.Table.Where(x => x.IsDelete == false && x.IsActive && x.Vitrin == vitrin).AsQueryable();
-            else if (!string.IsNullOrEmpty(name))
-                query = _adDetailRepository.Table.Where(x => x.IsDelete == false && x.IsActive && x.Name.Contains(name)).AsQueryable();
-            else
-                query = _adDetailRepository.Table.Where(x => x.IsDelete == false && x.IsActive).AsQueryable();
+            IQueryable<AdDetail> query = _adDetailRepository.Table.Where(x => x.IsDelete == false && x.IsActive);
 
-            return query.Select(x => new NewAdvertisement()
+            if (vitrin != null)
+                query = query.Where(x => x.Vitrin == vitrin);
+            if (model != null)
+            {
+                if (!string.IsNullOrEmpty(model.Query))
+                    query = query.Where(x => x.Name.Contains(model.Query));
+                if (model.IlceId != 0)
+                    query = query.Where(x => x.Semt.IlceID == model.IlceId);
+                if (model.IlId != 0)
+                    query = query.Where(x => x.Semt.Ilce.IlID == model.IlId);
+                if (!string.IsNullOrEmpty(model.Oda))
+                    query = query.Where(x => x.Room.Trim() == model.Oda.Trim());
+                if (!string.IsNullOrEmpty(model.AdType))
+                    query = query.Where(x => x.EmlakTip.Name.Trim().ToLower()== model.AdType.Trim().ToLower());
+                if (!string.IsNullOrEmpty(model.Boyut))
+                {
+                    int minSize = int.Parse(model.Boyut.Split('-')[0]);
+                    int maxSize = int.Parse(model.Boyut.Split('-')[1]);
+                    query = query.Where(x => minSize <= x.Size && x.Size <= maxSize);
+                }
+            }
+
+            return query.OrderByDescending(x=>x.CreatedDate).Select(x => new NewAdvertisement()
             {
                 Id = x.ID,
                 Photo = x.ThumbPath,
@@ -101,19 +127,29 @@ namespace Project_BLL.Implementation
             }).ToList();
         }
 
-        private List<NewAdvertisement> GetLands(bool? vitrin = null, string name = null)
+        private List<NewAdvertisement> GetLands(bool? vitrin = null, QueryServiceModel model = null)
         {
-            IQueryable<Land> query;
-            if (vitrin != null && !string.IsNullOrEmpty(name))
-                query = _landRepository.Table.Where(x => x.IsDelete == false && x.IsActive && x.Vitrin == vitrin && x.Name.Contains(name)).AsQueryable();
-            else if (vitrin != null)
-                query = _landRepository.Table.Where(x => x.IsDelete == false && x.IsActive && x.Vitrin == vitrin).AsQueryable();
-            else if (!string.IsNullOrEmpty(name))
-                query = _landRepository.Table.Where(x => x.IsDelete == false && x.IsActive && x.Name.Contains(name)).AsQueryable();
-            else
-                query = _landRepository.Table.Where(x => x.IsDelete == false && x.IsActive).AsQueryable();
+            IQueryable<Land> query = _landRepository.Table.Where(x => x.IsDelete == false && x.IsActive);
 
-            return query.Select(x => new NewAdvertisement()
+            if (vitrin != null)
+                query = query.Where(x => x.Vitrin == vitrin);
+            if (model != null)
+            {
+                if (!string.IsNullOrEmpty(model.Query))
+                    query = query.Where(x => x.Name.Contains(model.Query));
+                if (model.IlceId != 0)
+                    query = query.Where(x => x.Semt.IlceID == model.IlceId);
+                if (model.IlId != 0)
+                    query = query.Where(x => x.Semt.Ilce.IlID == model.IlId);
+                if (!string.IsNullOrEmpty(model.Boyut))
+                {
+                    int minSize = int.Parse(model.Boyut.Split('-')[0]);
+                    int maxSize = int.Parse(model.Boyut.Split('-')[1]);
+                    query = query.Where(x => minSize <= x.Size && x.Size <= maxSize);
+                }
+            }
+
+            return query.OrderByDescending(x => x.CreatedDate).Select(x => new NewAdvertisement()
             {
                 Id = x.ID,
                 Photo = x.ThumbPath,
@@ -126,19 +162,30 @@ namespace Project_BLL.Implementation
             }).ToList();
         }
 
-        private List<NewAdvertisement> GetBuildings(bool? vitrin = null, string name = null)
-        {
-            IQueryable<Bina> query;
-            if (vitrin != null && !string.IsNullOrEmpty(name))
-                query = _buildRepository.Table.Where(x => x.IsDelete == false && x.IsActive && x.Vitrin == vitrin && x.Name.Contains(name)).AsQueryable();
-            else if (vitrin != null)
-                query = _buildRepository.Table.Where(x => x.IsDelete == false && x.IsActive && x.Vitrin == vitrin).AsQueryable();
-            else if (!string.IsNullOrEmpty(name))
-                query = _buildRepository.Table.Where(x => x.IsDelete == false && x.IsActive && x.Name.Contains(name)).AsQueryable();
-            else
-                query = _buildRepository.Table.Where(x => x.IsDelete == false && x.IsActive).AsQueryable();
 
-            return query.Select(x => new NewAdvertisement()
+        private List<NewAdvertisement> GetBuildings(bool? vitrin = null, QueryServiceModel model = null)
+        {
+            IQueryable<Bina> query = _buildRepository.Table.Where(x => x.IsDelete == false && x.IsActive);
+
+            if (vitrin != null)
+                query = query.Where(x => x.Vitrin == vitrin);
+            if (model != null)
+            {
+                if (!string.IsNullOrEmpty(model.Query))
+                    query = query.Where(x => x.Name.Contains(model.Query));
+                if (model.IlceId != 0)
+                    query = query.Where(x => x.Semt.IlceID == model.IlceId);
+                if (model.IlId != 0)
+                    query = query.Where(x => x.Semt.Ilce.IlID == model.IlId);
+                if (!string.IsNullOrEmpty(model.Boyut))
+                {
+                    int minSize = int.Parse(model.Boyut.Split('-')[0]);
+                    int maxSize = int.Parse(model.Boyut.Split('-')[1]);
+                    query = query.Where(x => minSize <= x.Size && x.Size <= maxSize);
+                }
+            }
+
+            return query.OrderByDescending(x => x.CreatedDate).Select(x => new NewAdvertisement()
             {
                 Id = x.ID,
                 Photo = x.ThumbPath,
@@ -151,20 +198,32 @@ namespace Project_BLL.Implementation
             }).ToList();
         }
 
-        private List<NewAdvertisement> GetWorkplaces(bool? vitrin = null, string name = null)
+        private List<NewAdvertisement> GetWorkplaces(bool? vitrin = null, QueryServiceModel model = null)
         {
-            IQueryable<Workplace> query;
-            if (vitrin != null && !string.IsNullOrEmpty(name))
-                query = _workplaceRepository.Table.Where(x => x.IsDelete == false && x.IsActive && x.Vitrin == vitrin && x.Name.Contains(name)).AsQueryable();
-            else if (vitrin != null)
-                query = _workplaceRepository.Table.Where(x => x.IsDelete == false && x.IsActive && x.Vitrin == vitrin).AsQueryable();
-            else if (!string.IsNullOrEmpty(name))
-                query = _workplaceRepository.Table.Where(x => x.IsDelete == false && x.IsActive && x.Name.Contains(name)).AsQueryable();
-            else
-                query = _workplaceRepository.Table.Where(x => x.IsDelete == false && x.IsActive).AsQueryable();
+            IQueryable<Workplace> query = _workplaceRepository.Table.Where(x => x.IsDelete == false && x.IsActive);
+
+            if (vitrin != null)
+                query = query.Where(x => x.Vitrin == vitrin);
+            if (model != null)
+            {
+                if (!string.IsNullOrEmpty(model.Query))
+                    query = query.Where(x => x.Name.Contains(model.Query));
+                if (model.IlceId != 0)
+                    query = query.Where(x => x.Semt.IlceID == model.IlceId);
+                if (model.IlId != 0)
+                    query = query.Where(x => x.Semt.Ilce.IlID == model.IlId);
+                if (!string.IsNullOrEmpty(model.Oda))
+                    query = query.Where(x => x.Room.Trim().ToLower() == model.Oda.Trim().ToLower());
+                if (!string.IsNullOrEmpty(model.Boyut))
+                {
+                    int minSize = int.Parse(model.Boyut.Split('-')[0]);
+                    int maxSize = int.Parse(model.Boyut.Split('-')[1]);
+                    query = query.Where(x => minSize <= x.Size && x.Size <= maxSize);
+                }
+            }
 
 
-            return query.Select(x => new NewAdvertisement()
+            return query.OrderByDescending(x => x.CreatedDate).Select(x => new NewAdvertisement()
             {
                 Id = x.ID,
                 Photo = x.ThumbPath,
@@ -172,7 +231,7 @@ namespace Project_BLL.Implementation
                 Status = x.Status.Name,
                 Price = x.Price,
                 SquareMetre = x.Size,
-                AdType = "İşyeri",
+                AdType = x.EmlakTip.Name,
                 Address = x.Semt.Ilce.Ad + ", " + x.Semt.Ilce.Il.Ad
             }).ToList();
         }

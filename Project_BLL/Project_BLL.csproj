@@ -70,6 +70,7 @@
     <Compile Include="ServiceModels\HomeViewModel.cs" />
     <Compile Include="ServiceModels\LandServiceModel.cs" />
     <Compile Include="ServiceModels\ProjectServiceModel.cs" />
+    <Compile Include="ServiceModels\QueryServiceModel.cs" />
     <Compile Include="ServiceModels\WorkplaceServiceModel.cs" />
   </ItemGroup>
   <ItemGroup>

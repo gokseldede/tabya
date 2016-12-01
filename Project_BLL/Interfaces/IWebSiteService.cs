@@ -9,7 +9,7 @@ namespace Project_BLL.Interfaces
         List<SelectlistItem> GetCities();
         List<SelectlistItem> GetCounties(int cityId);
         List<SelectlistItem> GetProviences(int countyId);
-        List<NewAdvertisement> GetAdvertisements(string query=null);
+        List<NewAdvertisement> GetAdvertisements(QueryServiceModel model);
         void AddToNewster(string email, string ipAddres);
     }
 }

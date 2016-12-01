@@ -30,7 +30,7 @@ namespace Project_UI.Controllers
         // GET: AdDetail
         public ActionResult Index()
         {
-            var list = _webSiteService.GetAdvertisements();
+            var list = _webSiteService.GetAdvertisements(new QueryServiceModel());
             return View(list);
         }
 
@@ -38,6 +38,9 @@ namespace Project_UI.Controllers
         public ActionResult Details(int id)
         {
             var adDetail = _adService.GetActiveRecordById(id);
+            if (adDetail == null)
+                return RedirectToAction("NotFound", "Home");
+
             var vm = new AdDetailDetailViewModel()
             {
                 Id = adDetail.Id,
@@ -63,8 +66,8 @@ namespace Project_UI.Controllers
                 RoomCount = adDetail.RoomCount,
                 SiteStatus = adDetail.Site,
                 FileDetails = adDetail.FileDetails,
-                Il=adDetail.Il,
-                Ilce=adDetail.Ilce,
+                Il = adDetail.Il,
+                Ilce = adDetail.Ilce,
                 Semt = adDetail.Semt,
                 Expert = adDetail.Expert,
                 SelectedProperties = adDetail.SelectedProperties.Select(x => x.Value).ToArray(),
@@ -76,6 +79,9 @@ namespace Project_UI.Controllers
         public ActionResult LandDetail(int id)
         {
             var adDetail = _landService.GetActiveRecordById(id);
+            if (adDetail == null)
+                return RedirectToAction("NotFound", "Home");
+
             var vm = new AdDetailDetailViewModel()
             {
                 Id = adDetail.Id,
@@ -108,10 +114,12 @@ namespace Project_UI.Controllers
             };
             return View(vm);
         }
-
         public ActionResult WorkDetail(int id)
         {
             var adDetail = _workService.GetActiveRecordById(id);
+            if (adDetail == null)
+                return RedirectToAction("NotFound", "Home");
+
             var vm = new AdDetailDetailViewModel()
             {
                 Id = adDetail.Id,
@@ -132,7 +140,7 @@ namespace Project_UI.Controllers
                 Expert = adDetail.Expert,
                 Il = adDetail.Il,
                 Ilce = adDetail.Ilce,
-                Semt=adDetail.Semt,
+                Semt = adDetail.Semt,
                 SelectedProperties = adDetail.SelectedProperties.Select(x => x.Value).ToArray(),
                 SelectedSecurities = adDetail.SelectedSecurities.Select(x => x.Value).ToArray(),
                 SelectedSocialList = adDetail.SelectedSocialApps.Select(x => x.Value).ToArray(),
@@ -140,10 +148,12 @@ namespace Project_UI.Controllers
             };
             return View(vm);
         }
-
         public ActionResult BuildDetail(int id)
         {
             var adDetail = _binaService.GetActiveRecordById(id);
+            if (adDetail == null)
+                return RedirectToAction("NotFound", "Home");
+
             var vm = new AdDetailDetailViewModel()
             {
                 Id = adDetail.Id,

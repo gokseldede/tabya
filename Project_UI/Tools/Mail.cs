@@ -17,7 +17,7 @@ namespace Project_UI.Tools
                 smtp.EnableSsl = true;
                 smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
                 smtp.UseDefaultCredentials = false;
-                smtp.Credentials = new NetworkCredential(fromAddress.Address, "11021993gfb");
+                smtp.Credentials = new NetworkCredential(fromAddress.Address, "abcde");
                 //abcde kısmı e-posta adresinin şifresi
                 using (var message = new MailMessage(fromAddress, toAddress) { Body = body })
                 {
